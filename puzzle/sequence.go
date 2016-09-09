@@ -6,7 +6,7 @@ import (
 	u "github.com/dockerian/go-coding/utils"
 )
 
-// getLongestConsecutiveIncrease returns the length of
+// GetLongestConsecutiveIncrease returns the length of
 // the longest increasing consecutive subsequence,
 // and the slice, for example:
 //	3 from [10, 9, 2, 5,  3, 7, 101,  18]
@@ -15,7 +15,7 @@ import (
 //	2 from [-1, 0,  0, 3,  -10, 11]
 //	0 from [9, 9, 9]
 //	...
-func getLongestConsecutiveIncrease(arr []int) (int, []int) {
+func GetLongestConsecutiveIncrease(arr []int) (int, []int) {
 	var current, currentStart, currentEnd, saved, savedStart, savedEnd int
 	var size = len(arr)
 
@@ -47,7 +47,7 @@ func getLongestConsecutiveIncrease(arr []int) (int, []int) {
 	return saved + 1, arr[savedStart:savedEnd]
 }
 
-// getLongestIncrease returns the length of
+// GetLongestIncrease returns the length of
 // the longest increasing subsequence (no need to be consecutive),
 // and the slice, for example:
 //	4 from [10, 9, 2, 5, 3, 7, 101, 18]
@@ -56,7 +56,7 @@ func getLongestConsecutiveIncrease(arr []int) (int, []int) {
 //	9 from [-11, -10, 0, -15, -14, -12, -17, -11, 0, -9, -1, 0, 3, -10, 11]
 //	0 from [-7, -7, -7]
 //	...
-func getLongestIncrease(arr []int) (int, []int) {
+func GetLongestIncrease(arr []int) (int, []int) {
 	var size = len(arr)
 	var current, saved []int
 	var noIncrease = true

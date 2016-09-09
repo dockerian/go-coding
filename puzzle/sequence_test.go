@@ -25,7 +25,7 @@ func TestLongestConsecutiveIncrease(t *testing.T) {
 	}
 
 	for index, v := range tests {
-		var actual, slice = getLongestConsecutiveIncrease(v.Data)
+		var actual, slice = GetLongestConsecutiveIncrease(v.Data)
 		var msg = fmt.Sprintf("expecting %v from %+v = %+v", v.Expected, v.Data, slice)
 		t.Logf("Test %v: %v\n", index+1, msg)
 		assert.Equal(t, v.Expected, actual, msg)
@@ -44,7 +44,7 @@ func TestLongestIncrease(t *testing.T) {
 	}
 
 	for index, v := range tests {
-		var actual, slice = getLongestIncrease(v.Data)
+		var actual, slice = GetLongestIncrease(v.Data)
 		var msg = fmt.Sprintf("expecting %v from %+v = %+v", v.Expected, v.Data, slice)
 		t.Logf("Test %v: %v\n", index+1, msg)
 		assert.Equal(t, v.Expected, actual, msg)
