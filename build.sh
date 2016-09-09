@@ -28,6 +28,7 @@ function main() {
   docker run --rm \
     --hostname ${PROJECT} \
     --name ${PROJECT} \
+    -e DEBUG=${DEBUG} \
     -e BUILD_OS=${BUILD_OS} \
     -e BUILD_MASTER_VERSION \
     -e BUILD_VERSION \

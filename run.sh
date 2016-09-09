@@ -21,7 +21,8 @@ function main() {
 
   cd -P "${script_path}"
 
-  if [[ "${PROJECT_IMAGE}" == "${PROJECT}" ]]; then
+  echo -e "\nLooking docker image [${PROJECT_IMAGE}] for ${PROJECT} ..."
+  if [[ "${PROJECT_IMAGE}" != "${PROJECT}" ]]; then
     echo -e "\nBuilding docker container for ${PROJECT} ..."
     docker build -t ${PROJECT} .
   fi
@@ -32,6 +33,7 @@ function main() {
   docker run --rm \
     --hostname ${PROJECT} \
     --name ${PROJECT} \
+    -e DEBUG=${DEBUG} \
     -e BUILD_OS=${BUILD_OS} \
     -e BUILD_MASTER_VERSION \
     -e BUILD_VERSION \

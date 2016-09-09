@@ -8,7 +8,7 @@ import (
 
 // Debug prints logging message if DEBUG is set
 func Debug(format string, v ...interface{}) {
-	if HasEnv("DEBUG", true) {
+	if DebugEnv {
 		fmt.Printf(format, v...)
 	}
 }
