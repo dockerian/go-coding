@@ -1,5 +1,3 @@
-// +build all utils pair
-
 package utils
 
 import (

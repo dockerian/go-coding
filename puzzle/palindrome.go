@@ -1,5 +1,3 @@
-// +build all puzzle palindrome
-
 package puzzle
 
 import (

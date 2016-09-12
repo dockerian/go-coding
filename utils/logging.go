@@ -1,5 +1,3 @@
-// +build all utils logging
-
 package utils
 
 import (

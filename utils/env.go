@@ -1,5 +1,3 @@
-// +build all utils env
-
 package utils
 
 import (

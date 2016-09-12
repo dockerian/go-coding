@@ -1,5 +1,3 @@
-// +build all demo foo
-
 package demo
 
 import (

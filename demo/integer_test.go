@@ -1,4 +1,4 @@
-// +build all utils integer test
+// +build all demo integer test
 
 package demo
 
@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// DecodeIntegerTestData struct
 type DecodeIntegerTestData struct {
 	X      int
 	Y      int
@@ -16,6 +17,7 @@ type DecodeIntegerTestData struct {
 	Code   int
 }
 
+// TestDecodeEncodeIntegers tests decoding and encoding integers
 func TestDecodeEncodeIntegers(t *testing.T) {
 	testData := []DecodeIntegerTestData{
 		{78, 11, 33, 2585},

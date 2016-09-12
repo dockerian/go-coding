@@ -1,5 +1,3 @@
-// +build all utils integer
-
 package demo
 
 // DecodeInteger decrypts code by length to two integers

@@ -28,7 +28,6 @@ CMD_PACKAGE := $(PROJECT_PACKAGE)/cli/cmd
 SOURCE_PATH := $(GOPATH)/src/github.com/$(OWNER)/$(PROJECT)
 
 # Set testing parameters
-# TODO: How to use TEST_TAGS (to build all but test specific only) ?
 TEST_MATCH ?= .
 ifndef TEST_TAGS
 	TEST_TAGS := all

@@ -1,5 +1,3 @@
-// +build all puzzle sum
-
 package puzzle
 
 import (
@@ -20,10 +18,10 @@ func FindMatchedSum(inputs []int, sum int) (int, int) {
 		if index, ok := hashmap[target]; ok {
 			u.Debug("- FOUND inputs[%v] == %v, in hash %+v\n\n", i, value, hashmap)
 			return index, i
-		} else {
-			hashmap[value] = i
-			u.Debug("- ADDED inputs[%v] == %v, to hash %+v\n", i, value, hashmap)
 		}
+
+		hashmap[value] = i
+		u.Debug("- ADDED inputs[%v] == %v, to hash %+v\n", i, value, hashmap)
 	}
 
 	u.Debug("\n")

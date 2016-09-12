@@ -9,11 +9,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// FooTestCase struct
 type FooTestCase struct {
 	Data     Foo
 	Expected interface{}
 }
 
+// TestFoo is a testing function template
 func TestFoo(t *testing.T) {
 	tests := []FooTestCase{
 		{Foo{100}, 100},

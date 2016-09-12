@@ -1,5 +1,3 @@
-// +build all puzzle sequence
-
 package puzzle
 
 import (

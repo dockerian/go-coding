@@ -1,12 +1,10 @@
-// +build all puzzle string
-
 package puzzle
 
 import (
 	u "github.com/dockerian/go-coding/utils"
 )
 
-// GetLongestUniqueSubstring solves the following problem:
+// GetLongestSubstringLength solves the following problem:
 // Given a string, find the longest non-repeating substring length
 // Note: assuming all input are ASCII characters
 // Tags: hash table, map, two pointers, string
@@ -39,7 +37,7 @@ func GetLongestSubstringLength(input string) (int, string) {
 	return maxLeng, string(input[substrL:substrR])
 }
 
-// GetLongestUniqueSubstring solves the following problem:
+// GetLongestSubstringUTF8 solves the following problem:
 // Given a string, find the longest substring without repeating characters.
 // Note: This is to support UTF-8
 func GetLongestSubstringUTF8(input string) (int, string, int, int) {
@@ -103,7 +101,7 @@ func GetLongestUniqueSubstring(input string) string {
 	var szRunes = len([]rune(input))
 
 	u.Debug("input string: %+v (size= %v, len= )\n", input, szInput, szRunes)
-	for stIndex, _ := range input {
+	for stIndex := range input {
 		slice := input[stIndex:szInput]
 		u.Debug("%v: input slice: %+v\n", stIndex, slice)
 		for index, item := range slice {

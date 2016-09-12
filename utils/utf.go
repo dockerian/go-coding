@@ -1,5 +1,3 @@
-// +build all utils utf
-
 package utils
 
 import (
