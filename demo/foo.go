@@ -9,6 +9,7 @@ type Foo struct {
 	Anything interface{}
 }
 
+// GetAnything is a template function returning interface
 func (f *Foo) GetAnything() interface{} {
 	return f.Anything
 }

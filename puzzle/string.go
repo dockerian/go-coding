@@ -5,7 +5,7 @@ import (
 )
 
 // GetLongestSubstringLength solves the following problem:
-// Given a string, find the longest non-repeating substring length
+// Given a string, find the longest non-repeating substring length.
 // Note: assuming all input are ASCII characters
 // Tags: hash table, map, two pointers, string
 func GetLongestSubstringLength(input string) (int, string) {

@@ -36,8 +36,8 @@ func TestFindMatchedSum(t *testing.T) {
 	for index, test := range tests {
 		t.Logf("Finding sum=%v in %+v\n", test.Sum, test.Data)
 		result1, result2 := FindMatchedSum(test.Data, test.Sum)
-		expected := &u.Pair{test.ExpectedIndex1, test.ExpectedIndex2}
-		pair := &u.Pair{result1, result2}
+		expected := &u.Pair{Item1: test.ExpectedIndex1, Item2: test.ExpectedIndex2}
+		pair := &u.Pair{Item1: result1, Item2: result2}
 		result := pair.AreEqual(expected)
 		var msg = fmt.Sprintf("expecting %v == %v", *pair, *expected)
 		t.Logf("Test %v: %v\n", index+1, msg)

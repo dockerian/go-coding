@@ -5,6 +5,7 @@ import (
 )
 
 // FindMatchedSum returns index in input arry of two items match to the sum.
+// See: https://leetcode.com/problems/two-sum/
 // Problems: Given an array of integers, find indices of the two numbers
 //           such that they add up to a specific sum
 // Keywords: array, hash, sum

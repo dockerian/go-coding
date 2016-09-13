@@ -9,10 +9,12 @@ type Pair struct {
 	Item1, Item2 interface{}
 }
 
+// AreEqual method receiver compares 'this' Pair to 'other' Pair
 func (p *Pair) AreEqual(other *Pair) bool {
 	return p.Item1 == other.Item1 && p.Item2 == other.Item2
 }
 
-func (p *Pair) string() string {
+// String method receiver for Pair struct
+func (p *Pair) String() string {
 	return fmt.Sprintf("{%+v, %+v}", p.Item1, p.Item2)
 }

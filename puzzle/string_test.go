@@ -18,6 +18,7 @@ type StringTestCase struct {
 }
 
 // TestGetLongestSubstringLength tests GetLongestSubstringLength
+// See: https://leetcode.com/problems/longest-substring-without-repeating-characters/
 func TestGetLongestSubstringLength(t *testing.T) {
 	// NOTE: GetLongestSubstringLength does not work with UTF-8 string
 	tests := []StringTestCase{

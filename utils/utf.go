@@ -5,11 +5,13 @@ import (
 	"unicode"
 )
 
+// GetGraphemeCount function
 func GetGraphemeCount(str string) int {
 	regex := regexp.MustCompile("\\PM\\pM*|.")
 	return len(regex.FindAllString(str, -1))
 }
 
+// GetGraphemeCountInString function
 func GetGraphemeCountInString(str string) int {
 
 	checked := false
