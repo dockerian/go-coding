@@ -1,4 +1,4 @@
-// +build all ds stack test
+// +build all ds queue test
 
 package ds
 
@@ -7,15 +7,15 @@ import (
 	"testing"
 )
 
-// StackTestCase struct
-type StackTestCase struct {
+// QueueTestCase struct
+type QueueTestCase struct {
 	Data     interface{}
 	Expected interface{}
 }
 
-// TestStack is a testing function template
-func TestStack(t *testing.T) {
-	var tests []StackTestCase
+// TestQueue is a testing function template
+func TestQueue(t *testing.T) {
+	var tests []QueueTestCase
 
 	for index, test := range tests {
 		var val interface{}

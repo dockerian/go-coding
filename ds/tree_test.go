@@ -1,4 +1,4 @@
-// +build all ds Tree test
+// +build all ds tree test
 
 package ds
 

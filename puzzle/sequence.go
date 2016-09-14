@@ -100,3 +100,29 @@ func GetLongestIncrease(arr []int) (int, []int) {
 
 	return len(saved), saved
 }
+
+// GetLongestSequence returns the longest subsequence in a string
+func GetLongestSequence(str string, byDecending bool) string {
+	if len(str) == 0 {
+		return ""
+	}
+	start, length := 0, 1
+
+	for i, k := 1, 1; i < len(str); i++ {
+		diff := int(str[i]) - int(str[i-1])
+		sequential := byDecending && diff == -1 || !byDecending && diff == 1
+
+		if sequential {
+			// u.Debug("i = %v, k+1 = %v [start= %v, length= %v] in '%v'\n",
+			// 	i, k+1, start, length, str)
+			if k++; k > length {
+				start = i + 1 - k
+				length = k
+			}
+			continue
+		}
+		k = 1
+	}
+
+	return str[start : start+length]
+}
