@@ -32,3 +32,8 @@ func GetGraphemeCountInString(str string) int {
 
 	return count
 }
+
+// IsDigitOrLetter checks if a unicode char is digit or letter
+func IsDigitOrLetter(char rune) bool {
+	return unicode.IsDigit(char) || unicode.IsLetter(char)
+}
