@@ -8,6 +8,7 @@ script_path="$( cd "$( echo "${BASH_SOURCE[0]%/*}" )" && pwd )"
 function main() {
   getOS
 
+  ARGS="$@"
   PROJECT="go-coding"
   PROJECT_IMAGE=$(docker images | grep ${PROJECT} | awk '{ print $1; }')
   GITHUB_USER="dockerian"
@@ -27,7 +28,7 @@ function main() {
     docker build -t ${PROJECT} .
   fi
 
-  RUN_TARGET="${1:-test}"
+  RUN_TARGET="${ARGS:-test}"
 
   echo -e "\nRunning 'make ${RUN_TARGET}' in docker container ..."
   docker run --rm \
