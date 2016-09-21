@@ -60,3 +60,11 @@ func ReverseInt64(number int64) int64 {
 	u.Debug("number= %v, result= %v\n\n", number, result)
 	return result
 }
+
+// SwapInt swaps two integers
+func SwapInt(a, b int) (int, int) {
+	a = a ^ b
+	b = a ^ b
+	a = a ^ b
+	return b, a
+}
