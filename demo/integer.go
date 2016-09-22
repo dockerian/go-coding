@@ -21,8 +21,30 @@ const (
 	MinInt64 int64 = ^int64(^uint64(0) >> 1) // ^MaxInt64
 )
 
+// AddInt64 calculates sum of two integers without using arithmetic operators
+func AddInt64(x, y int64) int64 {
+	if y != 0 {
+		return AddInt64(x^y, (x&y)<<1)
+	}
+	return x
+}
+
+// AddIntegers calculates sum of two integers without using arithmetic operators
+func AddIntegers(x, y int) int {
+	// Iterate till there is no carry
+	for y != 0 {
+		// carry now contains common set bits of x and y
+		carry := x & y
+		// sum of bits of x and y where at least one of the bits is not set
+		x = x ^ y
+		// carry is shifted by one so that adding it to x gives the required sum
+		y = carry << 1
+	}
+	return x
+}
+
 // Atoi converts string to integer
-// Note: 0 for valid decimal number; return
+// Note: 0 for valid decimal number; return max or min on overflow
 func Atoi(input string) int64 {
 	input = strings.TrimSpace(input)
 	var maxint = int64(^uint64(0) >> 1)
