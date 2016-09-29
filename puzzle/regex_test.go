@@ -1,4 +1,4 @@
-// +build all puzzle integer test
+// +build all puzzle regex test
 
 package puzzle
 

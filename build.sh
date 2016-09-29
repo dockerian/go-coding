@@ -45,6 +45,9 @@ function main() {
 }
 
 # getOS function sets OS environment variable in runtime
+# Note: golang build system supports following GOOS values -
+#   darwin, dragonfly, freebsd, netbsd, openbsd, linux, plangs, solaris, windows
+# Additional to GOARCH `386` and `amd64`, all *bsd and linux support `arm`
 function getOS() {
   # Detect the platform (similar to $OSTYPE)
   UNAME="$(uname)"
