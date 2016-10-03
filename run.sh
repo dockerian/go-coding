@@ -45,6 +45,7 @@ function main() {
     -e TEST_TAGS \
     -e GITHUB_USERNAME \
     -e GITHUB_PASSWORD \
+    -e VERBOSE \
     -v "${PWD}":/go/${SOURCE_PATH} \
     ${PROJECT} bash -c "make ${RUN_TARGET}"
 }

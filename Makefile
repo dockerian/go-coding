@@ -27,6 +27,14 @@ PROJECT_PACKAGE := github.com/$(OWNER)/$(PROJECT)
 CMD_PACKAGE := $(PROJECT_PACKAGE)/cli/cmd
 SOURCE_PATH := $(GOPATH)/src/github.com/$(OWNER)/$(PROJECT)
 
+# TODO: Test the Makefile macros
+# to represent "ifdef VAR1 || VAR2", use
+#		ifneq ($(call ifdef_any,VAR1 VAR2),) # ifneq ($(VAR1)$(VAR2),)
+# to represent "ifdef VAR1 && VAR2", use
+#		ifeq ($(call ifdef_none,VAR1 VAR2),) # ifneq ($(and $(VAR1),$(VAR2)),)
+ifdef_any := $(filter-out undefined,$(foreach v,$(1),$(origin $(v))))
+ifdef_none := $(filter undefined,$(foreach v,$(1),$(origin $(v))))
+
 # Set testing parameters
 TEST_MATCH ?= .
 ifndef TEST_TAGS
@@ -36,12 +44,12 @@ ifdef TEST_DIR
 	TEST_COVERAGE := -cover -coverprofile cover.out ./$(TEST_DIR)
 	TEST_PACKAGE := $(PROJECT_PACKAGE)/$(TEST_DIR)
 else
-	TEST_PACKAGE := ./...
+	TEST_PACKAGE := ./... # $(shell go list ./... | grep -v /vendor/)
 endif
-ifdef TEST_VERBOSE
+ifneq ($(TEST_VERBOSE)$(VERBOSE),)
 	TEST_VERBOSE := -v
 endif
-TEST_ARGS := $(TEST_VERBOSE) -run="$(TEST_MATCH)" -tags='$(TEST_TAGS)' $(TEST_COVERAGE)
+TEST_ARGS := $(TEST_VERBOSE) -run='$(TEST_MATCH)' -tags='$(TEST_TAGS)' $(TEST_COVERAGE)
 
 # Set the -ldflags option for go build, interpolate the variable values
 LDFLAGS := -ldflags "-X '$(PROJECT_PACKAGE).buildVersion=$(BUILD_VERSION)'"

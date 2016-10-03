@@ -33,7 +33,7 @@ if [[ -f "${TESTLOG}" ]]; then
 
 		echo -e "\n=====================================================\n"
 	elif [[ "${VERBOSE}" == "" ]]; then
-		echo "No failed test (verbose mode is off)"
+		echo "No failed test (TEST_VERBOSE is unset)"
 	fi
 
 	# The exit code is 0 if there are no test failures.
