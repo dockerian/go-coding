@@ -104,3 +104,8 @@ docker run -it -v "$PWD":/go/src/github.com/dockerian/go-coding go-coding
 # or start container with downloaded 'go-coding' in the image
 docker run --rm -it go-coding
 ```
+
+
+### Learning Go
+- [awesome-go](https://github.com/avelino/awesome-go)
+- [go books](https://github.com/dariubs/GoBooks)
