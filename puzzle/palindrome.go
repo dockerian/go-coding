@@ -27,16 +27,25 @@ type PalindromeString struct {
 
 // GetData returns input data
 func (p *PalindromeNumber) GetData() string {
+	if p == nil {
+		return ""
+	}
 	return strconv.FormatUint(p.input, 10)
 }
 
 // GetData returns input data
 func (p *PalindromeString) GetData() string {
+	if p == nil {
+		return ""
+	}
 	return p.input
 }
 
 // GetSubstring returns the longest palindromic substring
 func (p *PalindromeString) GetSubstring() string {
+	if p == nil {
+		return ""
+	}
 	return GetPalindromicSubstring(p.input)
 }
 
@@ -95,16 +104,25 @@ func GetPalindromicSubstring(str string) string {
 
 // IsPalindrome checks if an input number is palindrome
 func (p *PalindromeNumber) IsPalindrome() bool {
+	if p == nil {
+		return false
+	}
 	return IsPalindromeNumber(p.input)
 }
 
 // IsPalindrome checks if an input string is palindrome
 func (p *PalindromeString) IsPalindrome() bool {
+	if p == nil {
+		return false
+	}
 	return IsPalindromeString(p.input)
 }
 
 // IsPalindromePhase checks if an input string is palindrome phase
 func (p *PalindromeString) IsPalindromePhase() bool {
+	if p == nil {
+		return false
+	}
 	return IsPalindromePhase(p.input)
 }
 
