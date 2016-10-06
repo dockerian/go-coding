@@ -5,9 +5,7 @@ package demo
 import (
 	"fmt"
 	"math"
-	"math/rand"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -29,28 +27,6 @@ type DecodeIntegerTestData struct {
 	Y      int
 	Length int
 	Code   int
-}
-
-// TestAddIntegers tests AddIntegers func
-func TestAddIntegers(t *testing.T) {
-	// Create and seed the generator.
-	// Typically to use a non-fixed seed, e.g. time.Now().UnixNano()
-	// Using a fixed seed will produce the same output on every run
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-
-	for i := 1; i < 1000; i++ {
-		a := r.Int()
-		b := r.Int()
-		c := AddIntegers(a, b)
-		var msg = fmt.Sprintf("expecting %d + %d == %d", a, b, c)
-		// t.Logf("Test %3d: %v\n", i, msg)
-		assert.Equal(t, a+b, c, msg)
-
-		x := r.Int63()
-		y := r.Int63()
-		s := AddInt64(x, y)
-		assert.Equal(t, x+y, s)
-	}
 }
 
 // TestAtoi tests Atoi function
