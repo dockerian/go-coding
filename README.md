@@ -4,12 +4,13 @@ This is a project for [Golang](https://golang.org/) exercises.
 
 
 
+<br/>
 ### Installing Go
 
 #### Local Installation
 See https://www.goinggo.net/2016/05/installing-go-and-your-workspace.html
 
-After installed go and set `$GOPATH` (which typically is `$HOME/go`)
+After installed `go` and set `$GOPATH` (which typically is `$HOME/go`)
 
 ```
 mkdir -p $GOPATH/src/github.com/dockerian
@@ -28,8 +29,10 @@ cd -P $HOME/projects/go-coding
 ```
 
 
+
+<br/>
 #### Using Docker
-Installing Go may not be needed if you choose to use [Docker](#docker). With running a go-coding container, you can clone this repo at any location on your disk, for example `$HOME/projects`, without having to set ```$GOPATH```. And you can still access (e.g. for editing) the source code locally.
+Installing `Go` may not be needed if you choose to use [Docker](#docker). With running a go-coding container, you can clone this repo at any location on your disk, for example `$HOME/projects`, without having to set ```$GOPATH```. And you can still access (e.g. for editing) the source code locally.
 
 ```
 # assume in your projects folder
@@ -42,6 +45,7 @@ To build and run in docker container, see [here](#docker).
 
 
 
+<br/>
 ### Build, test and run
 
 The `Makefile` has included `build`, `test`, `run` targets. For example, to build, simply change to the project directory and run
@@ -57,7 +61,8 @@ make test  # or ./run.sh test
 ```
 
 
-###<a name="docker" />Build and run go-coding in Docker container
+<br/>
+###<a name="docker"></a>Build and run go-coding in Docker container
 
 **Install Docker Toolbox**  
 
@@ -85,27 +90,37 @@ or
 
 ```
 # current path is the source root where Dockerfile exists
-docker build -t go-coding .
+docker build -t dockerian/go-coding .
 ```
 
 
 **Start Docker container**
 
-Running `Makefile` target, default is `test` :
+Recommend to run inside the docker container, simply by
 
 ```
-./run.sh
+make  # or `make cmd`, which starts a bash shell in the container
 ```
 
 or
 
 ```
-docker run -it -v "$PWD":/go/src/github.com/dockerian/go-coding go-coding
-# or start container with downloaded 'go-coding' in the image
-docker run --rm -it go-coding
+docker run -it --rm --name go-coding \
+  -v "$PWD":/go/src/github.com/dockerian/go-coding \
+  dockerian/go-coding
+
+```
+
+Now `golang` environment is available (in the container);
+otherwise, using the hybrid script `run.sh` to call any `Makefile` target,
+default is `test` :
+
+```
+./run.sh  # inside or outside of the container
 ```
 
 
+<br/>
 ### Learning Go
 - [awesome-go](https://github.com/avelino/awesome-go)
 - [go books](https://github.com/dariubs/GoBooks)

@@ -27,6 +27,10 @@ PROJECT_PACKAGE := github.com/$(OWNER)/$(PROJECT)
 CMD_PACKAGE := $(PROJECT_PACKAGE)/cli/cmd
 SOURCE_PATH := $(GOPATH)/src/github.com/$(OWNER)/$(PROJECT)
 
+HUB_ACCOUNT := dockerian
+DOCKER_IMAG := go-coding
+DOCKER_TAGS := $(HUB_ACCOUNT)/$(DOCKER_IMAG)
+
 # TODO: Test the Makefile macros
 # to represent "ifdef VAR1 || VAR2", use
 #		ifneq ($(call ifdef_any,VAR1 VAR2),) # ifneq ($(VAR1)$(VAR2),)
@@ -67,8 +71,10 @@ BUILD_DIR := build
 BIN_DIR := $(BUILD_DIR)/bin
 
 
+.PHONY: build build-all clean cmd qb run test fmt lint vet
+
+default: cmd
 all: build-all run test
-default: build-all test
 
 build: clean fmt lint vet show-env
 	@echo "............................................................"
@@ -82,7 +88,7 @@ build: clean fmt lint vet show-env
 	@echo ""
 	@echo "Copying $(BIN_DIR)/$(BUILD_OS)/$(BINARY) [BUILD_OS = $(BUILD_OS)]"
 	cp -f $(BIN_DIR)/$(BUILD_OS)/$(BINARY) $(BUILD_DIR)/$(BINARY)
-	@echo "DONE: $@"
+	@echo "DONE: [$@]"
 
 build-all: clean fmt lint vet show-env qb
 	@echo "............................................................"
@@ -129,13 +135,19 @@ qb:
 	@echo "............................................................"
 	@echo "Building $(BIN_DIR)/$(OS_PLATFORM)/$(BINARY) [OS = $(OS_PLATFORM)]"
 	GOARCH=$(DIST_ARCH) GOOS=$(OS_PLATFORM) go build $(LDFLAGS) -o $(BUILD_DIR)/$(BINARY) main.go
-	@echo "DONE: $@"
+	@echo "DONE: [$@]"
+
+cmd:
+	@echo "............................................................"
+	@echo "Start cmd shell in docker container ..."
+	./run.sh "cmd"
+	@echo "DONE: [$@]"
 
 run:
 	@echo "............................................................"
 	@echo "Running: $(BUILD_DIR)/$(BINARY) ..."
 	@$(BUILD_DIR)/$(BINARY)
-	@echo "DONE: $@"
+	@echo "DONE: [$@]"
 
 test:
 	@echo "............................................................"
@@ -143,7 +155,7 @@ test:
 	@echo "go test $(TEST_PACKAGE) $(TEST_ARGS)"
 	go test $(TEST_PACKAGE) $(TEST_ARGS) 2>&1 | tee ./tests.log
 	@tools/get-test-summary.sh "./tests.log"
-	@echo "DONE: $@"
+	@echo "DONE: [$@]"
 
 
 clean:
@@ -152,7 +164,17 @@ clean:
 	rm -rf $(BIN_DIR)
 	rm -rf $(BUILD_DIR)
 	rm -rf $(DIST_DIR)
-	@echo "DONE: $@"
+	@echo "DONE: [$@]"
+
+
+clean-all: clean
+ifeq ("$(wildcard /.dockerenv)","")
+	# not in a docker container
+	docker rm -f $(docker ps -a|grep ${DOCKER_IMAG}|awk '{print $1}') 2>/dev/null || true
+	docker rmi -f $(docker images -a|grep ${DOCKER_TAGS} 2>&1|awk '{print $1}') 2>/dev/null || true
+endif
+	@echo "DONE: [$@]"
+
 
 show-env:
 	@echo "............................................................"
@@ -170,17 +192,17 @@ show-env:
 fmt:
 	@echo "Formatting code..."
 	go fmt ./...
-	@echo "DONE: $@"
+	@echo "DONE: [$@]"
 
 lint:
 	@echo "Check coding style..."
 	go get -u github.com/golang/lint/golint
 	golint -set_exit_status puzzle
-	@echo "DONE: $@"
+	@echo "DONE: [$@]"
 
 # http://godoc.org/code.google.com/p/go.tools/cmd/vet
 # go get code.google.com/p/go.tools/cmd/vet
 vet:
 	@echo "Check go code correctness..."
 	go vet ./...
-	@echo "DONE: $@"
+	@echo "DONE: [$@]"

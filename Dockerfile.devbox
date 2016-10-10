@@ -1,0 +1,75 @@
+from ubuntu:14.04
+# See https://github.com/shykes/devbox and https://github.com/jmMeessen/devbox
+label Description="devbox example"
+
+run apt-get update -y && apt-get install -y \
+    build-essential \
+    cmake \
+    curl \
+    diffstat \
+    git \
+    jq \
+    mercurial \
+    pkg-config \
+    python \
+    screen \
+    strace \
+    tcpdump \
+    vim \
+    wget
+
+# Install go
+run curl https://storage.googleapis.com/golang/go1.7.1.linux-amd64.tar.gz | tar -C /usr/local -zx
+
+# Setup home environment
+run useradd dev && \
+    mkdir /home/dev && chown -R dev: /home/dev && \
+    mkdir -p /home/dev/go /home/dev/bin /home/dev/lib /home/dev/include
+env LD_LIBRARY_PATH=/home/dev/lib \
+    PKG_CONFIG_PATH=/home/dev/lib/pkgconfig \
+    GOROOT=/usr/local/go \
+    GOPATH=/home/dev/go \
+    PATH=/home/dev/bin:/usr/local/go/bin:$PATH \
+    HOME=/home/dev
+
+# run go get github.com/dotcloud/gordon/pulls
+
+# Create a shared data volume
+# We need to create an empty file, otherwise the volume will belong to root.
+# This is probably a Docker bug.
+run mkdir /var/shared/  \
+ && touch /var/shared/placeholder  \
+ && chown -R dev:dev /var/shared
+
+# Note: use `docker run --rm` or `docker rm -v ` to remove volumes
+volume /var/shared
+
+workdir /home/dev
+run echo "export GOPATH=$HOME/go" >> /home/dev/.bash_profile \
+ && echo "export PATH=$HOME/go/bin:$PATH" >> /home/dev/.bash_profile \
+ && echo "export PS1='\\\\n\\\\u@\\\\h \\\\w [\\\\#]:\\\\n\\\\$ '" >> /home/dev/.bash_profile \
+ && echo "[[ -f ~/.bashrc ]] && source ~/.bashrc" >> /home/dev/.bash_profile \
+ && echo "" >> /home/dev/.bash_profile \
+ && echo "alias bashrc='source ~/.bash_profile'" >> /home/dev/.bashrc \
+ && echo "alias gst='git status'" >> /home/dev/.bashrc \
+ && echo "alias ll='ls -al'" >> /home/dev/.bashrc \
+ && echo "" >> /home/dev/.bashrc \
+ && chown -R dev: /home/dev
+
+
+# Link in shared parts of the home directory
+run ln -s /var/shared/.ssh  \
+ && ln -s /var/shared/.bash_history  \
+ && ln -s /var/shared/.maintainercfg
+
+# Share volumes between devbox containers
+# function newbox () {
+#   NEWBOX=${1}
+#   DEVBOX=${2:-my/devbox}
+#   docker run -it --rm --name ${NEWBOX} \
+#   --volumes-from=volume_container \
+#   -v /var/run/docker.sock:/var/run/docker.sock \
+#   -e BOX_NAME=${NEWBOX} ${DEVBOX}
+# }
+
+user dev

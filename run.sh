@@ -9,10 +9,13 @@ function main() {
   getOS
 
   ARGS="$@"
-  PROJECT="go-coding"
-  PROJECT_IMAGE=$(docker images | grep ${PROJECT} | awk '{ print $1; }')
+  GITHUB_REPO="go-coding"
   GITHUB_USER="dockerian"
-  SOURCE_PATH="src/github.com/${GITHUB_USER}/${PROJECT}"
+  DOCKER_IMAG="${GITHUB_USER}/${GITHUB_REPO}"
+  DOCKER_TAGS=$(docker images 2>&1|grep ${DOCKER_IMAG}|awk '{print $1;}')
+  # detect if running inside the container
+  DOCKER_PROC="$(cat /proc/1/cgroup 2>&1|grep -e "/docker/[0-9a-z]\{64\}"|head -1)"
+  SOURCE_PATH="src/github.com/${GITHUB_USER}/${GITHUB_REPO}"
   BUILD_OS=${BUILD_OS:-${OS}}
 
   if [[ "${BUILD_OS}" == "" ]]; then
@@ -22,32 +25,52 @@ function main() {
 
   cd -P "${script_path}"
 
-  echo -e "\nLooking docker image [${PROJECT_IMAGE}] for ${PROJECT} ..."
-  if [[ "${PROJECT_IMAGE}" != "${PROJECT}" ]]; then
-    echo -e "\nBuilding docker container for ${PROJECT} ..."
-    docker build -t ${PROJECT} .
+  RUN_TARGET="${ARGS:-test}"
+  if [[ -e "/.dockerenv" ]] || [[ "${DOCKER_PROC}" != "" ]]; then
+    if [[ "${RUN_TARGET}" != "cmd" ]]; then
+      make ${RUN_TARGET}
+    else
+      echo "Env in the container:"
+      make show-env
+    fi
+    return
   fi
 
-  RUN_TARGET="${ARGS:-test}"
+  echo -e "\nChecking docker image [${DOCKER_IMAG}] for '${GITHUB_REPO}'"
+  if [[ "${DOCKER_TAGS}" != "${DOCKER_IMAG}" ]]; then
+    echo -e "\nBuilding docker image [${DOCKER_IMAG}] for '${GITHUB_REPO}'"
+    echo "------------------------------------------------------------"
+    docker build -t ${DOCKER_IMAG} .
+    echo "------------------------------------------------------------"
+  fi
 
-  echo -e "\nRunning 'make ${RUN_TARGET}' in docker container ..."
-  docker run --rm \
-    --hostname ${PROJECT} \
-    --name ${PROJECT} \
-    -e DEBUG=${DEBUG} \
-    -e BUILD_OS=${BUILD_OS} \
-    -e BUILD_MASTER_VERSION \
-    -e BUILD_VERSION \
-    -e BINARY \
-    -e TEST_VERBOSE \
-    -e TEST_DIR \
-    -e TEST_MATCH \
-    -e TEST_TAGS \
-    -e GITHUB_USERNAME \
-    -e GITHUB_PASSWORD \
-    -e VERBOSE \
-    -v "${PWD}":/go/${SOURCE_PATH} \
-    ${PROJECT} bash -c "make ${RUN_TARGET}"
+  CMD="docker run -it --rm
+  --hostname ${GITHUB_REPO}
+  --name ${GITHUB_REPO}
+  -e DEBUG=${DEBUG}
+  -e BUILD_OS=${BUILD_OS}
+  -e BUILD_MASTER_VERSION
+  -e BUILD_VERSION
+  -e BINARY
+  -e TEST_VERBOSE=${TEST_VERBOSE}
+  -e TEST_DIR
+  -e TEST_MATCH
+  -e TEST_TAGS
+  -e GITHUB_USERNAME
+  -e GITHUB_PASSWORD
+  -e VERBOSE=${VERBOSE}
+  -v "${PWD}":/go/${SOURCE_PATH}
+  ${DOCKER_IMAG} "
+
+  echo -e "\nRunning 'make ${RUN_TARGET}' in docker container"
+  echo "${CMD} bash -c \"make ${RUN_TARGET}\""
+  echo "............................................................"
+  if [[ "${RUN_TARGET}" != "cmd" ]]; then
+    ${CMD} bash -c "make ${RUN_TARGET}"
+  else
+    ${CMD}
+  fi
+  echo "............................................................"
 }
 
 # getOS function sets OS environment variable in runtime
