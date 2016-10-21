@@ -24,9 +24,9 @@ func CreateMatrix(elementType reflect.Type, rows, columns int) (interface{}, err
 	return matrix.Interface(), nil
 }
 
-// Insert inserts the value into the slice at the specified index,
+// InsertIntoSlice inserts the value into the slice at the specified index,
 // which must be in range and the slice must have room for the new element.
-func Insert(slice []interface{}, index int, value interface{}) []interface{} {
+func InsertIntoSlice(slice []interface{}, index int, value interface{}) []interface{} {
 	var newSlice []interface{}
 
 	// Grow the slice by one element.
@@ -45,8 +45,8 @@ func Insert(slice []interface{}, index int, value interface{}) []interface{} {
 	return newSlice
 }
 
-// Reverse re-arranges array items reversely
-func Reverse(slice []interface{}) {
+// ReverseArray re-arranges array items reversely
+func ReverseArray(slice []interface{}) {
 	for i, j := 0, len(slice)-1; i < j; i, j = i+1, j-1 {
 		slice[i], slice[j] = slice[j], slice[i]
 	}

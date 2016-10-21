@@ -53,7 +53,7 @@ endif
 ifneq ($(TEST_VERBOSE)$(VERBOSE),)
 	TEST_VERBOSE := -v
 endif
-TEST_ARGS := $(TEST_VERBOSE) -run='$(TEST_MATCH)' -tags='$(TEST_TAGS)' $(TEST_COVERAGE)
+TEST_ARGS := $(TEST_VERBOSE) -bench='$(TEST_MATCH)' -run='$(TEST_MATCH)' -tags='$(TEST_TAGS)' $(TEST_COVERAGE)
 
 # Set the -ldflags option for go build, interpolate the variable values
 LDFLAGS := -ldflags "-X '$(PROJECT_PACKAGE).buildVersion=$(BUILD_VERSION)'"
