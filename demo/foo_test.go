@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/dockerian/go-coding/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,6 +18,7 @@ type FooTestCase struct {
 
 // TestFoo is a testing function template
 func TestFoo(t *testing.T) {
+	testName := utils.GetTestName(t)
 	tests := []FooTestCase{
 		{Foo{100}, 100},
 		{Foo{"aaa"}, "aaa"},
@@ -26,7 +28,7 @@ func TestFoo(t *testing.T) {
 		var foo = &Foo{test.Expected}
 		var val = test.Data.GetAnything()
 		var msg = fmt.Sprintf("expecting %v == %v", val, test.Expected)
-		t.Logf("Test %v: %v\n", index+1, msg)
+		t.Logf("Test %v [%v]: %v\n", index+1, testName, msg)
 		assert.Equal(t, test.Expected, foo.GetAnything(), msg)
 		assert.Equal(t, test.Expected, val, msg)
 	}
