@@ -10,25 +10,29 @@ if [[ -f "./cover.out" ]]; then
 	echo ''
 fi
 
+# NOTE: use 'grep --text' (or 'grep -a', processing as text file)
+#       to avoid from 'grep' error: Binary file (standard input) matches
+#  see: man page at http://ss64.com/bash/grep.html
+#
 if [[ -f "${TESTLOG}" ]]; then
-	COUNT_FAIL=`(cat "${TESTLOG}" | grep "\--- FAIL:" | wc -l)`
-	COUNT_PASS=`(cat "${TESTLOG}" | grep "\--- PASS:" | wc -l)`
-	COUNT_SKIP=`(cat "${TESTLOG}" | grep "\--- SKIP:" | wc -l)`
+	COUNT_FAIL=`(cat "${TESTLOG}" | grep -a "\--- FAIL:" | wc -l)`
+	COUNT_PASS=`(cat "${TESTLOG}" | grep -a "\--- PASS:" | wc -l)`
+	COUNT_SKIP=`(cat "${TESTLOG}" | grep -a "\--- SKIP:" | wc -l)`
 
   if [[ "${COUNT_FAIL}${COUNT_PASS}${COUNT_SKIP}" != "000" ]]; then
 		echo -e "\n==================== TEST SUMMARY ===================="
 
 		if [[ ${COUNT_PASS} != 0 ]] || [[ "${VERBOSE}" != "" ]]; then
 			printf "\n*** Passed tests  : %2d ***\n" ${COUNT_PASS}
-			(cat "${TESTLOG}" | grep "\--- PASS:" | cut -d':' -f2 | sort)
+			(cat "${TESTLOG}" | grep --text "\--- PASS:" | cut -d':' -f2 | sort)
 		fi
 		if [[ ${COUNT_SKIP} != 0 ]] || [[ "${VERBOSE}" != "" ]]; then
 			printf "\n*** Skipped tests : %2d ***\n" ${COUNT_SKIP}
-			(cat "${TESTLOG}" | grep "\--- SKIP:" | cut -d':' -f2 | sort)
+			(cat "${TESTLOG}" | grep --text "\--- SKIP:" | cut -d':' -f2 | sort)
 		fi
 		if [[ ${COUNT_FAIL} != 0 ]] || [[ "${VERBOSE}" != "" ]]; then
 			printf "\n*** Failed tests  : %2d ***\n" ${COUNT_FAIL}
-			(cat "${TESTLOG}" | grep "\--- FAIL:"| cut -d':' -f2 | sort)
+			(cat "${TESTLOG}" | grep --text "\--- FAIL:" | cut -d':' -f2 | sort)
 		fi
 
 		echo -e "\n=====================================================\n"
