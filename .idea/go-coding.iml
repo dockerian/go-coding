@@ -3,6 +3,11 @@
   <component name="Go">
     <buildTags>
       <option name="goVersion" value="go1.7" />
+      <option name="customFlags">
+        <array>
+          <option value="all" />
+        </array>
+      </option>
     </buildTags>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
