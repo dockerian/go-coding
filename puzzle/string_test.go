@@ -9,6 +9,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type RuneTestCase struct {
+	Data     string
+	Expected rune
+	Count    int
+}
+
 type StringTestCase struct {
 	Expected string
 	Data     string
@@ -72,5 +78,23 @@ func TestGetLongestUniqueSubstring(t *testing.T) {
 		var msg = fmt.Sprintf("expecting '%v' from '%v'", test.Expected, test.Data)
 		t.Logf("Test %v: %v\n", index+1, msg)
 		assert.Equal(t, test.Expected, val, msg)
+	}
+}
+
+// TestGetMostFrequentRune tests GetGetMostFrequentRune
+func TestGetMostFrequentRune(t *testing.T) {
+	tests := []RuneTestCase{
+		{"--##aaabcabcbb", 'a', 4},
+		{"吃葡萄不吐葡萄皮不吃葡萄不一定不吐葡萄皮吐葡萄籽儿", '葡', 5},
+		{"寻寻觅觅，冷冷清清，凄凄惨惨戚戚。乍暖还寒时候，最难将息。", '，', 3},
+		{"", '\x00', 0},
+	}
+
+	for index, test := range tests {
+		var val, count = GetMostFrequentRune(test.Data)
+		var msg = fmt.Sprintf("expecting ('%c', %v) from '%v'", test.Expected, test.Count, test.Data)
+		t.Logf("Test %v: %v\n", index+1, msg)
+		assert.Equal(t, test.Expected, val, msg)
+		assert.Equal(t, test.Count, count, msg)
 	}
 }

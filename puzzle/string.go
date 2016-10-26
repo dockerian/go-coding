@@ -136,3 +136,24 @@ func GetLongestUniqueSubstring(input string) string {
 
 	return string(longest)
 }
+
+// GetMostFrequentRune returns the rune and count of the most appearance
+func GetMostFrequentRune(input string) (rune, int) {
+	var runeHash = make(map[rune]int)
+	var mostFreq = '\x00'
+	var maxCount = 0
+	for _, r := range input {
+		n, okay := runeHash[r]
+		if okay {
+			runeHash[r] = 1 + n
+		} else {
+			runeHash[r] = 1
+		}
+		if maxCount < runeHash[r] {
+			maxCount = runeHash[r]
+			mostFreq = r
+		}
+		// u.Debug("%c: %c, %v\n", r, mostFreq, maxCount)
+	}
+	return mostFreq, maxCount
+}
