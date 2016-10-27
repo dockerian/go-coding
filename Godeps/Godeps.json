@@ -1,6 +1,6 @@
 {
 	"ImportPath": "github.com/dockerian/go-coding",
-	"GoVersion": "go1.6",
+	"GoVersion": "go1.7",
 	"GodepVersion": "v74",
 	"Packages": [
 		"./..."
@@ -20,14 +20,12 @@
 			"Rev": "6fe211e493929a8aac0469b93f28b1d0688a9a3a"
 		},
 		{
-			"ImportPath": "github.com/stretchr/testify/vendor/github.com/davecgh/go-spew/spew",
-			"Comment": "v1.1.3-6-g6fe211e",
-			"Rev": "6fe211e493929a8aac0469b93f28b1d0688a9a3a"
+			"ImportPath": "golang.org/x/text/transform",
+			"Rev": "5a42fa2464759cbb7ee0af9de00b54d69f09a29c"
 		},
 		{
-			"ImportPath": "github.com/stretchr/testify/vendor/github.com/pmezard/go-difflib/difflib",
-			"Comment": "v1.1.3-6-g6fe211e",
-			"Rev": "6fe211e493929a8aac0469b93f28b1d0688a9a3a"
+			"ImportPath": "golang.org/x/text/unicode/norm",
+			"Rev": "5a42fa2464759cbb7ee0af9de00b54d69f09a29c"
 		}
 	]
 }
