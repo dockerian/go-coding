@@ -15,12 +15,43 @@ type RuneTestCase struct {
 	Count    int
 }
 
+type StringPairTestCase struct {
+	Data     string
+	Begin    string
+	Close    string
+	IsPaired bool
+}
+
 type StringTestCase struct {
 	Expected string
 	Data     string
 	Start    int
 	End      int
 	Len      int
+}
+
+// TestCheckMatchedPair tests CheckMatchedPair
+func TestCheckMatchedPair(t *testing.T) {
+	tests := []StringPairTestCase{
+		{"", "", "", true},
+		{"<h1>Hello</h1>", "<h1>", "</h1>", true},
+		{"<p>你好<p>", "<p>", "</p>", false},
+		{"for(var i=0;i<10;i++){\n\tconsole.log(i);\n}", "{", "}", true},
+		{"So sad :( and so happy :)", "(", ")", true},
+		{"Miss you in the heaven :)", "(", ")", false},
+		{"Not okay *)(*", "(", ")", false},
+	}
+
+	for index, test := range tests {
+		var val, err = CheckMatchedPair(test.Data, test.Begin, test.Close)
+		var msg = fmt.Sprintf("expecting '%v' and '%v' matched in '%v' ? %v",
+			test.Begin, test.Close, test.Data, test.IsPaired)
+		t.Logf("Test %v: %v\n", index+1, msg)
+		assert.Equal(t, test.IsPaired, val, msg)
+		if !test.IsPaired {
+			assert.NotNil(t, err, msg)
+		}
+	}
 }
 
 // TestGetLongestSubstringLength tests GetLongestSubstringLength

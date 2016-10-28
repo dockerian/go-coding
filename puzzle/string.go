@@ -1,8 +1,48 @@
 package puzzle
 
 import (
+	"fmt"
+
 	u "github.com/dockerian/go-coding/utils"
 )
+
+// CheckMatchedPair determines if a given pair, e.g. parenthesis or bracket,
+// in a string all have valid matches
+func CheckMatchedPair(s, begin, close string) (bool, error) {
+	matchCount := 0
+	beginCount, closeCount := 0, 0
+	beginLen, closeLen, sz := len(begin), len(close), len(s)
+	var okay = true
+	var err error
+
+	for i := 0; i < sz; i++ {
+		if i+beginLen <= sz && s[i:i+beginLen] == begin {
+			beginCount++
+		}
+		if i+closeLen <= sz && s[i:i+closeLen] == close {
+			if beginCount-matchCount >= 1 {
+				matchCount++
+			}
+			closeCount++
+		}
+	}
+
+	okay = beginCount == matchCount && beginCount == closeCount
+
+	u.Debug("begin/close: '%s' [%d] and '%s' [%d] in '%s' [%d] - matched %v\n", begin, beginCount, close, closeCount, s, sz, matchCount)
+
+	if !okay {
+		msg := fmt.Sprintf("begin/close: '%s' [%d] and '%s' [%d]",
+			begin, beginCount, close, closeCount)
+		if beginCount == closeCount {
+			err = fmt.Errorf("Paired but misplaced %s", msg)
+		} else {
+			err = fmt.Errorf("Unproperly paired %s", msg)
+		}
+	}
+
+	return okay, err
+}
 
 // GetLongestSubstringLength solves the following problem:
 // Given a string, find the longest non-repeating substring length.
