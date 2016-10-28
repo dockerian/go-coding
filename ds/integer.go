@@ -2,6 +2,7 @@ package ds
 
 import (
 	"fmt"
+	"math"
 
 	u "github.com/dockerian/go-coding/utils"
 )
@@ -31,13 +32,50 @@ func MultiplyUint64(a, b uint64) (uint64, error) {
 	return m, nil
 }
 
-// SumUint64 gets sum of two integers
-func SumUint64(a, b uint64) (uint64, error) {
-	s := a + b
-	if s-a != b {
-		return 0, fmt.Errorf("overflow: sum of %v, %v", a, b)
+// ParseInt64 converts a string to integer, assuming base-10
+func ParseInt64(s string) (int64, error) {
+	var init = true
+	var icut int64 = math.MaxInt64/10 + 1
+	var imod int64 = math.MaxInt64 % 10
+	var ival int64
+	var sign int64 = 1
+	var size = len(s)
+	var perr error
+
+	for i := 0; i < size; i++ {
+		if s[i] == '+' {
+			init = false
+			continue
+		} else if s[i] == '-' {
+			init = false
+			sign = -1
+			continue
+		}
+		if s[i] == ' ' || s[i] == '+' || s[i] == '-' {
+			if init {
+				continue
+			}
+			break
+		}
+		if '0' <= s[i] && s[i] <= '9' {
+			digit := int64(s[i] - '0')
+			n := ival*10 + digit
+			if ival >= icut ||
+				(ival == icut-1) &&
+					(sign == -1 && digit > imod+1 || sign == 1 && digit > imod) {
+				perr = fmt.Errorf("Overflow: %s [range: %d, %d]",
+					s, math.MinInt64, math.MaxInt64)
+				return ival, perr
+			}
+			init = false
+			ival = n
+		} else {
+			perr = fmt.Errorf("Invalid digit: '%c' in '%s'", s[i], s)
+			return ival, perr
+		}
 	}
-	return s, nil
+
+	return sign * ival, perr
 }
 
 // ReverseInt64 reverses a decimal integer
@@ -59,6 +97,15 @@ func ReverseInt64(number int64) int64 {
 
 	u.Debug("number= %v, result= %v\n\n", number, result)
 	return result
+}
+
+// SumUint64 gets sum of two integers
+func SumUint64(a, b uint64) (uint64, error) {
+	s := a + b
+	if s-a != b {
+		return 0, fmt.Errorf("overflow: sum of %v, %v", a, b)
+	}
+	return s, nil
 }
 
 // SwapInt swaps two integers

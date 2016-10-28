@@ -4,15 +4,48 @@ package ds
 
 import (
 	"fmt"
+	"math"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
+type ParseInt64TestCase struct {
+	Data    string
+	Integer int64
+	IsValid bool
+}
+
 // ReverseInt64TestCase struct
 type ReverseInt64TestCase struct {
 	Number   int64
 	Reversed int64
+}
+
+// TestParseInt64 tests ParseInt64 function
+// Note: int64 range: -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807
+func TestParseInt64(t *testing.T) {
+	var tests = []ParseInt64TestCase{
+		{"", 0, true},
+		{"-9223372036854775808", math.MinInt64, true},
+		{"9223372036854775808", 922337203685477580, false},
+		{"9223372036854775807", math.MaxInt64, true},
+		{"  +31415926", 31415926, true},
+		{"123 - 456", 123, true},
+		{"-2147483648", -2147483648, true},
+		{"3.1415926", 3, false},
+		{"0xFFFF", 0, false},
+	}
+
+	for index, test := range tests {
+		v, err := ParseInt64(test.Data)
+		var msg = fmt.Sprintf("expecting %20d <= [%5v] '%s'", test.Integer, test.IsValid, test.Data)
+		t.Logf("Test %v: %v\n", index+1, msg)
+		assert.Equal(t, err == nil, test.IsValid, msg)
+		if err == nil {
+			assert.Equal(t, test.Integer, v, msg)
+		}
+	}
 }
 
 // TestReverseInt64 tests ReverseInt function
