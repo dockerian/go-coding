@@ -1,0 +1,15 @@
+[
+  {"a":"ab", "b":true, "c":["able", "about", "above"]},
+  {"a":"cu", "b":true, "c":["culture", "cup", "currently", "cut"]},
+  {"a":"java", "b":true, "c":["java", "java EE", "java bean", "java engine", "java lib", "javaScript", "javadoc"]},
+  {"a":"lu", "b":false, "c":[]},
+  {"a":"na", "b":true, "c":["name"]},
+  {"a":"to", "b":true, "c":["to", "today", "together", "told", "too", "took", "top", "total"]},
+  {"a":"wu", "b":false, "c":[]},
+  {"a":"x", "b":true, "c":["xerox"]},
+  {"a":"ze", "b":true, "c":["zen", "zero"]},
+  {"a":"中", "b":true, "c":["中华人民共和国", "中华民国", "中南海", "中国", "中心"]},
+  {"a":"中华", "b":true, "c":["中华人民共和国", "中华民国"]},
+  {"a":"国", "b":false, "c":[]},
+  {"a":"", "b":false, "c":[]}
+]
