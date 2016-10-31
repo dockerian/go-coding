@@ -1,6 +1,6 @@
 // +build all ds queue test
 
-package ds
+package queue
 
 import (
 	"fmt"

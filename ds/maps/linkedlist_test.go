@@ -1,12 +1,13 @@
-// +build all ds linkedlist test
+// +build all ds maps linkedlist test
 
-package ds
+package maps
 
 import (
 	"fmt"
 	"strconv"
 	"testing"
 
+	"github.com/dockerian/shuati/ds"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -50,7 +51,7 @@ func TestLinkedListNumbers(t *testing.T) {
 		assert.Equal(t, strconv.FormatUint(test.Num1, 10), st1, ms1)
 		assert.Equal(t, strconv.FormatUint(test.Num2, 10), st2, ms2)
 
-		var cmp = Compare(test.Num1, test.Num2)
+		var cmp = ds.Compare(test.Num1, test.Num2)
 		msg = fmt.Sprintf("expecting compare LinkedListNumber (%v, %v) == %v",
 			test.Num1, test.Num2, cmp)
 		assert.Equal(t, cmp, ln1.Compare(ln2), msg)

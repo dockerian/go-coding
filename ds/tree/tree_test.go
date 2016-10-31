@@ -1,21 +1,21 @@
-// +build all ds stack test
+// +build all ds tree test
 
-package ds
+package tree
 
 import (
 	"fmt"
 	"testing"
 )
 
-// StackTestCase struct
-type StackTestCase struct {
+// TreeTestCase struct
+type TreeTestCase struct {
 	Data     interface{}
 	Expected interface{}
 }
 
-// TestStack is a testing function template
-func TestStack(t *testing.T) {
-	var tests []StackTestCase
+// TestTree is a testing function template
+func TestTree(t *testing.T) {
+	var tests []TreeTestCase
 
 	for index, test := range tests {
 		var val interface{}

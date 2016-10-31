@@ -1,8 +1,10 @@
-package ds
+package maps
 
 import (
 	"fmt"
 	"strings"
+
+	ds "github.com/dockerian/go-coding/ds"
 )
 
 // LinkedList struct
@@ -94,11 +96,11 @@ func (pList *LinkedListNumber) GetNumber() (uint64, error) {
 	p := pList
 	for p != nil {
 		u := uint(p.Data)
-		m, err := MultiplyUint64(x, uint64(u))
+		m, err := ds.MultiplyUint64(x, uint64(u))
 		if err != nil {
 			return 0, err
 		}
-		n, err = SumUint64(n, m)
+		n, err = ds.SumUint64(n, m)
 		if err != nil {
 			return 0, err
 		}

@@ -1,21 +1,21 @@
-// +build all ds map test
+// +build all ds stack test
 
-package ds
+package stack
 
 import (
 	"fmt"
 	"testing"
 )
 
-// MapTestCase struct
-type MapTestCase struct {
+// StackTestCase struct
+type StackTestCase struct {
 	Data     interface{}
 	Expected interface{}
 }
 
-// TestMap is a testing function template
-func TestMap(t *testing.T) {
-	var tests []MapTestCase
+// TestStack is a testing function template
+func TestStack(t *testing.T) {
+	var tests []StackTestCase
 
 	for index, test := range tests {
 		var val interface{}
