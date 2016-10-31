@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	phase_file = "palindrome_test_phase.json"
-	vocab_file = "palindrome_test_voc.json"
+	phaseFile = "palindrome_test_phase.json"
+	vocabFile = "palindrome_test_voc.json"
 )
 
 // PalindromePhaseTestCase struct
@@ -43,16 +43,17 @@ func TestPalindrome(t *testing.T) {
 	testPalindromeNumber(t, 0, true)
 
 	// Testing palindrome strings, read from test file
-	file, err1 := os.Open(vocab_file)
+	file, err1 := os.Open(vocabFile)
 	if err1 != nil {
-		t.Errorf("Cannot read test file (%v): %v\n", vocab_file, err1)
+		t.Errorf("Cannot read test file (%v): %v\n", vocabFile, err1)
 		t.Fail()
 	}
+	defer file.Close()
 
 	keys := make(map[string]bool)
 	decoder := json.NewDecoder(file)
 	if err2 := decoder.Decode(&keys); err2 != nil {
-		t.Errorf("Cannot decode test file (%v): %v\n", vocab_file, err2)
+		t.Errorf("Cannot decode test file (%v): %v\n", vocabFile, err2)
 		t.Fail()
 	}
 
@@ -76,15 +77,15 @@ func TestPalindrome(t *testing.T) {
 func TestPalindromePhase(t *testing.T) {
 	tests := []PalindromePhaseTestCase{}
 
-	data, err := ioutil.ReadFile(phase_file)
+	data, err := ioutil.ReadFile(phaseFile)
 	if err != nil {
-		t.Errorf("Cannot read test file (%v): %v\n", phase_file, err)
+		t.Errorf("Cannot read test file (%v): %v\n", phaseFile, err)
 		t.Fail()
 	}
 
 	err = json.Unmarshal(data, &tests)
 	if err != nil {
-		t.Errorf("Cannot parse test file (%v): %v\n", phase_file, err)
+		t.Errorf("Cannot parse test file (%v): %v\n", phaseFile, err)
 		t.Fail()
 	}
 
