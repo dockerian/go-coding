@@ -6,16 +6,16 @@ import (
 	u "github.com/dockerian/go-coding/utils"
 )
 
-// -------- RuneTrieItem, and method receivers
+// -------- RuneTrieNodeItem, and method receivers
 
-// RuneTrieItem struct
-type RuneTrieItem struct {
+// RuneTrieNodeItem struct
+type RuneTrieNodeItem struct {
 	node *RuneTrieNode
 	data string
 }
 
 // String func for RuneTrieItem
-func (e *RuneTrieItem) String() string {
+func (e *RuneTrieNodeItem) String() string {
 	return fmt.Sprintf("node: %+v, data: %s", e.node, e.data)
 }
 
@@ -23,13 +23,13 @@ func (e *RuneTrieItem) String() string {
 
 // RuneTrieStack struct
 type RuneTrieStack struct {
-	top      *RuneTrieItem
-	elements []*RuneTrieItem
+	top      *RuneTrieNodeItem
+	elements []*RuneTrieNodeItem
 	size     int
 }
 
 // Peek is a pointer method receiver for RuneTrieStack to peek the top item
-func (s *RuneTrieStack) Peek() *RuneTrieItem {
+func (s *RuneTrieStack) Peek() *RuneTrieNodeItem {
 	if s.size > 0 {
 		v := s.top
 		u.Debug("stack: {%+v}, peek: {%+v}\n", s, v)
@@ -39,7 +39,7 @@ func (s *RuneTrieStack) Peek() *RuneTrieItem {
 }
 
 // Pop is a pointer method receiver for RuneTrieStack to pop the top item
-func (s *RuneTrieStack) Pop() *RuneTrieItem {
+func (s *RuneTrieStack) Pop() *RuneTrieNodeItem {
 	if s.size > 0 {
 		v := s.top
 		// u.Debug("- pop: {%+v}, from: {%+v}\n", v, s)
@@ -57,9 +57,9 @@ func (s *RuneTrieStack) Pop() *RuneTrieItem {
 }
 
 // Push is a pointer method receiver for RuneTrieStack to push into the stack
-func (s *RuneTrieStack) Push(p *RuneTrieItem) {
+func (s *RuneTrieStack) Push(p *RuneTrieNodeItem) {
 	if s.size == 0 {
-		s.elements = make([]*RuneTrieItem, 0)
+		s.elements = make([]*RuneTrieNodeItem, 0)
 	}
 	// u.Debug("+push: {%+v}, to: {%+v}\n", p, s)
 	s.top = p

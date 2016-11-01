@@ -33,7 +33,7 @@ func (t *RuneTrie) FindMatchedPhases(prefix string) []string {
 	// u.Debug("stack: {%+v}, hasMatch = %v, node = %+v\n", stack, hasMatch, node)
 
 	if hasMatch {
-		stack.Push(&RuneTrieItem{node, prefix})
+		stack.Push(&RuneTrieNodeItem{node, prefix})
 
 		for stack.Size() > 0 {
 			ptop := stack.Pop()
@@ -48,7 +48,7 @@ func (t *RuneTrie) FindMatchedPhases(prefix string) []string {
 				if !child.IsEnd() {
 					data = fmt.Sprintf("%s%c", part, child.content)
 				}
-				stack.Push(&RuneTrieItem{child, data})
+				stack.Push(&RuneTrieNodeItem{child, data})
 			}
 		}
 	}

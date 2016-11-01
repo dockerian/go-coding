@@ -12,8 +12,8 @@ import (
 
 // RuneTrieNodeStackTestCase struct
 type RuneTrieNodeStackTestCase struct {
-	Data     *RuneTrieItem  `json:"data,omitempty"`
-	Expected *RuneTrieItem  `json:"expected,omitempty"`
+	Data     *RuneTrieNodeItem  `json:"data,omitempty"`
+	Expected *RuneTrieNodeItem  `json:"expected,omitempty"`
 	Stack    *RuneTrieStack `stack:"a,omitempty"`
 }
 
