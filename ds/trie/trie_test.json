@@ -1,0 +1,14 @@
+[
+  {"prefix":"ab", "result":["able", "about", "above"]},
+  {"prefix":"cro", "result":["crop", "cross", "crowd"]},
+  {"prefix":"experi", "result":["experience", "experiment"]},
+  {"prefix":"hear", "result":["hear", "heard", "heart"]},
+  {"prefix":"lu", "result":[]},
+  {"prefix":"too", "result":["too", "took", "tool"]},
+  {"prefix":"x", "result":[]},
+  {"prefix":"ze", "result":["zen", "zero"]},
+  {"prefix":"一", "result":["一丝不苟", "一泻千里"]},
+  {"prefix":"山", "result":["山明水秀", "山水一色", "山水相依", "山清水秀"]},
+  {"prefix":"光明", "result":["光明正大", "光明磊落"]},
+  {"prefix":"", "result":[]}
+]

@@ -13,8 +13,6 @@ import (
 )
 
 const (
-	eng1000wDict = "en-1000.dic"
-	eng4000wDict = "en-4000.dic"
 	runeTrieDict = "runeTrie_test.dic"
 	runeTrieTest = "runeTrie_test.json"
 	phaseEndChar = '$'
