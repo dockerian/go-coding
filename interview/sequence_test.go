@@ -1,6 +1,6 @@
-// +build all puzzle sequence test
+// +build all interview sequence test
 
-package puzzle
+package interview
 
 import (
 	"fmt"

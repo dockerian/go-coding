@@ -1,4 +1,4 @@
-package puzzle
+package interview
 
 import (
 	u "github.com/dockerian/go-coding/utils"

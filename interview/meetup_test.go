@@ -1,6 +1,6 @@
-// +build all puzzle map meetup test
+// +build all interview map meetup graph test
 
-package puzzle
+package interview
 
 import (
 	"fmt"

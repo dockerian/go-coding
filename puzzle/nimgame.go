@@ -1,7 +1,7 @@
 package puzzle
 
 // canWinNimGame checks who (opponent or I) will win the Nim game.
-// See Nim game (https://leetcode.com/problems/single-number/)
+// See Nim game (https://leetcode.com/problems/nim-game/)
 // There is a heap of chips on the table, each time one of players take turns to
 // remove 1 to 3 chips. The one who removes the last stone will be the winner.
 func canWinNimGame(n int, myTurn bool) bool {

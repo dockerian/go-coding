@@ -1,4 +1,4 @@
-package puzzle
+package interview
 
 import (
 	"fmt"
