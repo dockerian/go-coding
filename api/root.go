@@ -40,16 +40,11 @@ type Routes []Route
 func Index() {
 	// handleRequests()
 	// or
-	// router := rootRouter(RootRoutes)
-	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/", rootHandler)
-	router.HandleFunc("/info", info.GetInfo)
-	port := fmt.Sprintf(":%d", ListenPort)
-
+	router, port := rootRouter(RootRoutes)
 	log.Fatal(http.ListenAndServe(port, router))
 }
 
-// handleRequests is using basic http
+// handleRequests (deprecated) is using basic http
 func handleRequests() {
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/all", info.GetInfo)
@@ -63,8 +58,11 @@ func rootHandler(res http.ResponseWriter, req *http.Request) {
 }
 
 // rootRouter returns a configured mux.Router
-func rootRouter(routes []Route) *mux.Router {
+func rootRouter(routes []Route) (*mux.Router, string) {
 	router := mux.NewRouter().StrictSlash(true)
+	// router.HandleFunc("/", rootHandler)
+	// router.HandleFunc("/info", info.GetInfo)
+	// or
 	for _, route := range routes {
 		var handler http.Handler
 		handler = Logger(route.Handler, route.Name)
@@ -74,5 +72,8 @@ func rootRouter(routes []Route) *mux.Router {
 			Name(route.Name).
 			Handler(handler)
 	}
-	return router
+
+	port := fmt.Sprintf(":%d", ListenPort)
+
+	return router, port
 }
