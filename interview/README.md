@@ -2,6 +2,17 @@
 
 
 <br />
+## Resources
+
+- http://bigocheatsheet.com (review data structure time complexity)
+- http://careercup.com (actual interview questions)
+- http://codechef.com (judge code by other engineers)
+- http://hackerrank.com (rank programmer on coding skill)
+- http://hiredintech.com (tips/tricks on algorithm and systems design)
+- http://leetcode.com (interview code online judge)
+
+
+<br />
 ## General
 
 - data team: DSA and data science questions; algorithms and data structures questions with attention to complexity and possible optimizations.

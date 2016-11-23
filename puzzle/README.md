@@ -11,8 +11,10 @@
 <br />
 ## String
 - [basic regular expression](regex.go) | [java](regex.java) | [js](regex.js)
+- [compress/decompress string](../ds/str/str.go)
 - [convert string to integer](../demo/integer.go)
 - [find palindrome in string](palindrome.go)
+- [eval mathematical expressions](eval.go) (2-stack without parentheses grouping)
 - [find the longest subsequence in a string](../interview/sequence.go)
 - [justify a line of string text](../interview/justify.go)
 
