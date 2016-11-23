@@ -1,6 +1,6 @@
 // +build all ds math test
 
-package ds
+package ma
 
 import (
 	"fmt"
@@ -107,6 +107,6 @@ func TestSqrt(t *testing.T) {
 		val := Sqrt(rnd)
 		msg := fmt.Sprintf("expecting Sqrt(%v): %v ~= %v", rnd, val, exp)
 		t.Logf("Test %2d: %v\n", i+1, msg)
-		assert.True(t, NearEqual(exp, val, MathPrecision), msg)
+		assert.True(t, NearEqual(exp, val, Precision), msg)
 	}
 }

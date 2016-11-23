@@ -1,4 +1,4 @@
-package ds
+package ma
 
 import (
 	"fmt"
@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	// MathPrecision set precision for math functions
-	MathPrecision = 0.00000000000001
+	// Precision set precision for math functions
+	Precision = 0.00000000000001
 )
 
 // LogBaseX caculates base log of x
@@ -61,7 +61,7 @@ func Sqrt(x float64) float64 {
 		return math.NaN()
 	}
 
-	const BEGIN, PRECISION = 1.0, MathPrecision
+	const BEGIN, PRECISION = 1.0, Precision
 	var result, temp = BEGIN, float64(0.0)
 
 	for {
