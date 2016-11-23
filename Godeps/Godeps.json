@@ -11,10 +11,6 @@
 			"Rev": "5215b55f46b2b919f50a1df0eaa5886afe4e3b3d"
 		},
 		{
-			"ImportPath": "github.com/dockerian/shuati/ds",
-			"Rev": "5292b22dd7e7c2004c2b8ffa565322b1d21ec238"
-		},
-		{
 			"ImportPath": "github.com/gorilla/mux",
 			"Comment": "v1.1-27-g757bef9",
 			"Rev": "757bef944d0f21880861c2dd9c871ca543023cba"

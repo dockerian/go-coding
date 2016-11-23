@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/dockerian/shuati/ds"
+	"github.com/dockerian/go-coding/ds"
 	"github.com/stretchr/testify/assert"
 )
 

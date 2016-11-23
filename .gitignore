@@ -15,6 +15,7 @@
 *.swp
 *.test
 *.tst
+go-coding
 
 # Logs and databases
 *.log
