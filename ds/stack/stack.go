@@ -16,6 +16,11 @@ type Stack struct {
 	size     int
 }
 
+// IsEmpty returns true if stack has no element
+func (s *Stack) IsEmpty() bool {
+	return s.size == 0
+}
+
 // Len returns the stack's length/size
 func (s *Stack) Len() int {
 	return s.size
@@ -45,7 +50,7 @@ func (s *Stack) Pop() (value interface{}) {
 // Push a new element on top of the stack
 func (s *Stack) Push(value interface{}) {
 	if s.size == 0 {
-		s.elements = make([]*Element, 1)
+		s.elements = make([]*Element, 0, 1)
 	}
 	s.top = &Element{value, s.top}
 	s.elements = append(s.elements, s.top)
