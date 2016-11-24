@@ -41,13 +41,14 @@ func Index() {
 	// handleRequests()
 	// or
 	router, port := rootRouter(RootRoutes)
+	log.Printf("Listen on %v ...\n", port)
 	log.Fatal(http.ListenAndServe(port, router))
 }
 
 // handleRequests (deprecated) is using basic http
 func handleRequests() {
 	http.HandleFunc("/", rootHandler)
-	http.HandleFunc("/all", info.GetInfo)
+	http.HandleFunc("/info", info.GetInfo)
 	port := fmt.Sprintf(":%d", ListenPort)
 	log.Fatal(http.ListenAndServe(port, nil))
 }

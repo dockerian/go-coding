@@ -54,7 +54,8 @@ func init() {
 
 // mockHandler mocks api root handler
 func mockHandler(res http.ResponseWriter, req *http.Request) {
-	// io.WriteString(w, `{"name": "mock name", "desc": "mock info"}`)
+	// io.WriteString(res, `{"name": "mock name", "desc": "mock info"}`)
+	// or
 	json.NewEncoder(res).Encode(mockTestData[0])
 }
 

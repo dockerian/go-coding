@@ -2,26 +2,33 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
+	"os"
+	"strings"
+
+	"github.com/dockerian/go-coding/api"
 )
 
-var packageVar = 0
+var (
+	help = `
+	Args:
+		api - Start a RESTful API server
+
+		cli - Run CLI commands (TBD)
+	`
+)
 
 func main() {
-	var result = getSum(rand.Intn(10))
-	fmt.Println("Result:", result)
-
-}
-
-func getXplus(n int) int {
-	packageVar += n
-	return packageVar
-}
-
-func getSum(n int) int {
-	var sum int
-	for i := 1; i <= n; i++ {
-		sum += getXplus(i)
+	var arg string
+	if len(os.Args) > 1 {
+		arg = strings.ToLower(os.Args[1])
 	}
-	return sum
+	switch arg {
+	case "api":
+		api.Index()
+
+	case "cli":
+		fallthrough
+	default:
+		fmt.Println(help)
+	}
 }
