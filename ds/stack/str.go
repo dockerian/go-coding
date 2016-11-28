@@ -2,33 +2,31 @@ package stack
 
 import "fmt"
 
-// string stack implementations
-
-// OpStack struct
-type OpStack struct {
+// Str struct is a string stack implementation
+type Str struct {
 	top      string
 	elements []string
 	size     int
 }
 
 // IsEmpty returns true if stack has no element
-func (s *OpStack) IsEmpty() bool {
+func (s *Str) IsEmpty() bool {
 	return s.size == 0
 }
 
 // Len returns the stack's length/size
-func (s *OpStack) Len() int {
+func (s *Str) Len() int {
 	return s.size
 }
 
 // Peek returns the top of the stack without popping out the item
-func (s *OpStack) Peek() string {
+func (s *Str) Peek() string {
 	return s.top
 }
 
 // Pop and return the top element from the stack
 // returns nil if the stack is empty
-func (s *OpStack) Pop() string {
+func (s *Str) Pop() string {
 	if s.size > 0 {
 		p := s.elements[s.size-1]
 		if s.size > 1 {
@@ -44,7 +42,7 @@ func (s *OpStack) Pop() string {
 }
 
 // Push a new element on top of the stack
-func (s *OpStack) Push(value string) {
+func (s *Str) Push(value string) {
 	if s.size == 0 {
 		s.elements = make([]string, 0, 1)
 	}
@@ -54,7 +52,7 @@ func (s *OpStack) Push(value string) {
 }
 
 // String func
-func (s OpStack) String() string {
+func (s Str) String() string {
 	var ubound = s.size - 1
 	var output = fmt.Sprintf("(%d) [ ", s.size)
 	for i := 0; i <= ubound; i++ {

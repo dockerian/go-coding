@@ -35,32 +35,34 @@ func eval(s string) (float64, error) {
 	return e.eval()
 }
 
-// Eval struct
+// Eval struct is a string stack implementation
 type Eval struct {
 	expression string
-	operators  stack.OpStack
-	operands   stack.OpStack
+	operators  stack.Str
+	operands   stack.Str
 }
 
 // NewEval return a new instance of Eval struct
 func NewEval(e string) *Eval {
 	return &Eval{
 		expression: e,
-		operators:  stack.OpStack{},
-		operands:   stack.OpStack{},
+		operators:  stack.Str{},
+		operands:   stack.Str{},
 	}
 }
 
-func (e *Eval) calc() error {
+func (e *Eval) calc() (string, error) {
 	op, bv, av := e.operators.Pop(), e.operands.Pop(), e.operands.Pop()
+	if op == "" && av == "" {
+		return bv, nil
+	}
 	result, err := evaluate(op, av, bv)
 	u.Debug("calc: '%s' %s '%s' == %v \n", av, op, bv, result)
 	if err != nil {
-		return err
+		return "", err
 	}
 	item := fmt.Sprintf("%f", result)
-	e.operands.Push(item)
-	return nil
+	return item, nil
 }
 
 func (e *Eval) eval() (float64, error) {
@@ -77,10 +79,11 @@ func (e *Eval) eval() (float64, error) {
 				e.operators.Push(token)
 			} else {
 				for !e.operators.IsEmpty() && priority < peekPriority {
-					err := e.calc()
+					result, err := e.calc()
 					if err != nil {
 						return 0.0, err
 					}
+					e.operands.Push(result)
 				}
 				e.operators.Push(token)
 			}
@@ -90,10 +93,11 @@ func (e *Eval) eval() (float64, error) {
 	}
 
 	for !e.operators.IsEmpty() {
-		err := e.calc()
+		result, err := e.calc()
 		if err != nil {
 			return 0.0, err
 		}
+		e.operands.Push(result)
 	}
 
 	peekValue := e.operands.Peek()
