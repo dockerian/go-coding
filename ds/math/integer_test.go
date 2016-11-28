@@ -1,6 +1,6 @@
-// +build all ds integer test
+// +build all ds math integer test
 
-package ds
+package ma
 
 import (
 	"fmt"

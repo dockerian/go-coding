@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	ds "github.com/dockerian/go-coding/ds"
+	ma "github.com/dockerian/go-coding/ds/math"
 )
 
 // LinkedList struct
@@ -96,11 +96,11 @@ func (pList *LinkedListNumber) GetNumber() (uint64, error) {
 	p := pList
 	for p != nil {
 		u := uint(p.Data)
-		m, err := ds.MultiplyUint64(x, uint64(u))
+		m, err := ma.MultiplyUint64(x, uint64(u))
 		if err != nil {
 			return 0, err
 		}
-		n, err = ds.SumUint64(n, m)
+		n, err = ma.SumUint64(n, m)
 		if err != nil {
 			return 0, err
 		}
