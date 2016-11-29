@@ -2,6 +2,7 @@ package trie
 
 import (
 	"fmt"
+	"reflect"
 	"sort"
 	"strings"
 
@@ -136,6 +137,9 @@ func (n *RuneTrieNode) Contains(k rune) bool {
 }
 
 // Equals checks if two nodes have the same content
+func (n *RuneTrieNode) Equals(p *RuneTrieNode) bool {
+	return reflect.DeepEqual(*n, *p)
+}
 
 // GetChildNode is a RuneTrieNode pointer receiver to get a node by key
 func (n *RuneTrieNode) GetChildNode(k rune) *RuneTrieNode {

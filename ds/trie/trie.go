@@ -2,6 +2,7 @@ package trie
 
 import (
 	"fmt"
+	"reflect"
 	"sort"
 	"strings"
 
@@ -45,6 +46,9 @@ func (n *Node) Contains(k string) bool {
 }
 
 // Equals checks if two nodes have the same content
+func (n *Node) Equals(p *Node) bool {
+	return reflect.DeepEqual(*n, *p)
+}
 
 // GetChildNode is a Node pointer receiver to get a node by key
 func (n *Node) GetChildNode(k string) *Node {
