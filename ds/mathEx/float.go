@@ -1,4 +1,4 @@
-package ma
+package mathEx
 
 import (
 	"fmt"

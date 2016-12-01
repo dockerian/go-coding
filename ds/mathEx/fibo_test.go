@@ -1,6 +1,6 @@
 // +build all ds math fibo fibonacci test
 
-package ma
+package mathEx
 
 import (
 	"fmt"
