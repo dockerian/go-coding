@@ -4,4 +4,7 @@
 <br />
 This is a collection of packages for more complicate solutions.
 
-- [Buying stocks](pkg/stock)
+## Solutions
+
+- [Buying stocks](stock) | [test](stock/stock_test.go)
+-

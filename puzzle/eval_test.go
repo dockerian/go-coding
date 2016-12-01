@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TreeTestCase struct
+// EvalTestCase struct
 type EvalTestCase struct {
 	Expression string
 	Expected   float64

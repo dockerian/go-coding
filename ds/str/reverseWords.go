@@ -2,7 +2,6 @@ package str
 
 import (
 	"bytes"
-	"fmt"
 )
 
 // ReverseWords reverses a string by words
@@ -12,7 +11,7 @@ func ReverseWords(s string) string {
 
 	var k int
 	var endOfWord = true
-	fmt.Printf("s = '%s'\n", s)
+	// fmt.Printf("s = '%s'\n", s)
 	for i, ch := range s {
 		if ch == ' ' {
 			if !endOfWord {

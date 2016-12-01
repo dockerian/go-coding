@@ -5,6 +5,18 @@ This is a project for [Golang](https://golang.org/) exercises.
 
 
 <br/>
+### Contents
+- [Data structure solutions](ds)
+- [Dev interview: coding solutions](puzzle)
+- [Dev interview: examples](interview)
+- [Go API example](api)
+- [Go CLI example](cli) (TBD)
+- [Online coding examples](demo)
+- [Package solutions](pkg)
+- [Utilities](utils)
+
+
+<br/>
 ### Installing Go
 
 #### Local Installation

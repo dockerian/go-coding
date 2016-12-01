@@ -2,25 +2,37 @@
 
 <br />
 ## Array
-- [find duplicated number in an array contains n numbers ranging from 0 to n-2](duplicate.go)
-- [find the best meetup point for all given points](../interview/meetup.go)
-- [find the second largest in an array](integer.go)
+- [find duplicated number in an array contains n numbers ranging from 0 to n-2](duplicate.go) | [test](duplicate_test.go)
+- [find the best meetup point for all given points](../interview/meetup.go) | [test](../interview/meetup_test.go)
+- [find the second largest in an array](integer.go) | [test](integer_test.go)
 - [find the single integer in an array where all other elements appear twice](singleNumber.js)
 
 
 <br />
+## Mathematics
+- [buying stock at best price](../pkg/stock) | [test](../pkg/stock/stock_test.go)
+- [fibonacci](../ds/mathEx/fibo.go) | [test](../ds/mathEx/fibo_test.go)
+
+
+<br />
 ## String
-- [basic regular expression](regex.go) | [java](regex.java) | [js](regex.js)
-- [compress/decompress string](../ds/str/str.go)
-- [convert string to integer](../demo/integer.go)
-- [find palindrome in string](palindrome.go)
-- [eval mathematical expressions](eval.go) (2-stack without parentheses grouping)
-- [find the longest subsequence in a string](../interview/sequence.go)
-- [justify a line of string text](../interview/justify.go)
+- [basic regular expression](regex.go) | [test](regex_test.go) | [java](regex.java) | [js](regex.js)
+- [compress/decompress string](../ds/str/str.go) | [test](../ds/str/str_test.go)
+- [convert string to integer](../demo/integer.go) | [test](../demo/integer_test.go)
+- [find palindrome in string](palindrome.go) | [test](palindrome_test.go)
+- [eval mathematical expressions](eval.go) (2-stack without parentheses grouping) | [test]()
+- [find the longest subsequence in a string](../interview/sequence.go) | [test](../interview/sequence_test.go)
+- [justify a line of string text](../interview/justify.go) | [test](../interview/justify_test.go)
+- [search trie](../ds/trie/trie.go) | [test](../ds/trie/trie_test.go)
+- [reverse string](../ds/str/reverse.go) | [test](../ds/str/reverse_test.go)
+- [reverse words](../ds/str/reverseWords.go) | [test](../ds/str/reverseWords_test.go)
+- [sort array](../ds/str/sort.go) | [test](../ds/str/sort_test.go)
 
 
 <br />
 ## Others
+- [chan](../demo/chan.go) | [test](../demo/chan_test.go)
 - [nim game](nimgame.go)
 - [singleton](../demo/singleton.go)
-- [trie](../ds/trie/trie.go)
+- [testing template](../demo/foo.go) | [test](../demo/foo_test.go)
+- [trie](../ds/trie/trie.go) | [test](../ds/trie/trie_test.go)
