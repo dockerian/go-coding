@@ -1,6 +1,8 @@
 package interview
 
 import (
+	"math"
+
 	u "github.com/dockerian/go-coding/utils"
 )
 
@@ -125,4 +127,53 @@ func GetLongestSequence(str string, byDecending bool) string {
 	}
 
 	return str[start : start+length]
+}
+
+// GetMaxSumSequence returns maximum sum of a continuous subsequence/subarray in
+// an array of integers input;
+// the maximum length of sequence is specified by maxLen
+// no limit on maximum length if maxLen <= 0
+func GetMaxSumSequence(inputs []int, maxLen int) ([]int, int64) {
+	size := len(inputs)
+	sums := make([]int64, 0, size)
+	starts := make([]int, 0, size)
+	ends := make([]int, 0, size)
+
+	if size == 0 {
+		return []int{}, int64(0)
+	}
+	if maxLen <= 0 {
+		maxLen = size // no limit on maximum length of sequence
+	}
+
+	u.Debug("\ninputs = %+v, %d\n", inputs, maxLen)
+
+	for i := range inputs {
+		var start, end int
+		sum, max := int64(0), int64(math.MinInt64)
+		for j := i; j-i <= maxLen && j <= size; j++ {
+			if j < size {
+				sum += int64(inputs[j])
+			}
+			if sum < max || j == size || j-i == maxLen {
+				sums = append(sums, max)
+				starts = append(starts, start)
+				ends = append(ends, end)
+				// u.Debug("sum = %d (%d, %d) %+v\n", max, start, end, inputs[start:end+1])
+			} else {
+				max, start, end = sum, i, j
+			}
+		}
+	}
+
+	start, end, max := 0, 0, int64(math.MinInt64)
+	for n, v := range sums {
+		if v > max {
+			start, end, max = starts[n], ends[n], v
+		}
+	}
+
+	u.Debug("max = %d (%d, %d) in %+v(%d)\n", max, start, end, inputs, size)
+	result := inputs[start : end+1]
+	return result, max
 }

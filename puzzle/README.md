@@ -4,6 +4,7 @@
 ## Array
 - [find duplicated number in an array contains n numbers ranging from 0 to n-2](duplicate.go) | [test](duplicate_test.go)
 - [find the best meetup point for all given points](../interview/meetup.go) | [test](../interview/meetup_test.go)
+- [find the maximum sum of sequence in an integer array](../interview/sequence.go) | [test](../interview/sequence_test.go)
 - [find the median in an integer array](median.go) | [test](median_test.go)
 - [find the second largest in an array](integer.go) | [test](integer_test.go)
 - [find the single integer in an array where all other elements appear twice](singleNumber.js)
@@ -23,6 +24,7 @@
 - [find palindrome in string](palindrome.go) | [test](palindrome_test.go)
 - [eval mathematical expressions](eval.go) (2-stack without parentheses grouping) | [test]()
 - [find the longest subsequence in a string](../interview/sequence.go) | [test](../interview/sequence_test.go)
+- [find the number of occurrences of the most frequent substring in a string](../interview/string.go) | [test](../interview/string_test.go)
 - [justify a line of string text](../interview/justify.go) | [test](../interview/justify_test.go)
 - [search trie](../ds/trie/trie.go) | [test](../ds/trie/trie_test.go)
 - [reverse string](../ds/str/reverse.go) | [test](../ds/str/reverse_test.go)

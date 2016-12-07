@@ -21,6 +21,13 @@ type SequenceTestCase struct {
 	Data     []int
 }
 
+type SumSequenceTestCase struct {
+	Data     []int
+	MaxLen   int // maximum length of sequence to test
+	Expected []int
+	Sum      int64
+}
+
 // TestLongestConsecutiveIncrease tests GetLongestConsecutiveIncrease
 func TestLongestConsecutiveIncrease(t *testing.T) {
 	tests := []SequenceTestCase{
@@ -76,5 +83,28 @@ func TestLongestSequence(t *testing.T) {
 			seq, test.Sequence, test.Data)
 		t.Logf("Test %v: %v\n", index+1, msg)
 		assert.Equal(t, test.Sequence, val, msg)
+	}
+}
+
+// TestMaxSumSequence tests GetMaxSumSequence
+func TestMaxSumSequence(t *testing.T) {
+	tests := []SumSequenceTestCase{
+		{[]int{1, 2, 3, 4, -1, 2, 3, -1, 5}, 0, []int{1, 2, 3, 4, -1, 2, 3, -1, 5}, 18},
+		{[]int{-1, 0, 1, 2, 3, 4, -1, 2, 3, -1, 5}, 4, []int{0, 1, 2, 3, 4}, 10},
+		{[]int{1, 2, 3, 4, -10, 2, 3, -11}, 0, []int{1, 2, 3, 4}, 10},
+		{[]int{}, 0, []int{}, 0},
+	}
+
+	for index, test := range tests {
+		var sub, val = GetMaxSumSequence(test.Data, test.MaxLen)
+		var msg = fmt.Sprintf("max sum in %+v: %+v => %d",
+			test.Data, test.Expected, test.Sum)
+		t.Logf("Test %v: %v\n", index+1, msg)
+		var sum int64
+		for _, n := range sub {
+			sum += int64(n)
+		}
+		assert.Equal(t, test.Sum, val, msg)
+		assert.Equal(t, test.Sum, sum, msg)
 	}
 }
