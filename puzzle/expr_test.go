@@ -15,8 +15,8 @@ type CheckExpressionTestCase struct {
 	expected   bool
 }
 
-// TestCheckExpressionTestCase tests func CheckExpressionTestCase
-func TestCheckExpressionTestCase(t *testing.T) {
+// TestCheckExpression tests func CheckExpression
+func TestCheckExpression(t *testing.T) {
 	var tests = []CheckExpressionTestCase{
 		{"(~_^) (/) (°,,°) (/) see more @ https://textfac.es/", true},
 		{"(c) test case {3} :/[ ", false},
@@ -26,6 +26,7 @@ func TestCheckExpressionTestCase(t *testing.T) {
 		{"hash := { key:'a', value:(1+(2*(3-4)/(5*(6+7/(8-9))))-foo[0]) }", true},
 		{`regex: \((?:[^)(]+|\((?:[^)(]+|\([^)(]*\))*\))*\)`, false},
 		{"regex = [^\\(]*(\\(.*\\))[^\\)]*", false},
+		{"v := test // assignment #1", true},
 		{"", true},
 	}
 	for index, test := range tests {

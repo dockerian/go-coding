@@ -38,30 +38,99 @@ const (
 	MININT64 int64 = ^int64(^uint64(0) >> 1) // ^MAXINT64
 )
 
-// MaxInt returns maximum int from v ...int
-func MaxInt(v ...int) int {
-	if len(v) <= 0 {
-		return MAXINT
-	}
-	a := MININT
-	for _, i := range v {
-		if i > a {
-			a = i
+// MaxAndMin returns maximum and minimum integers from v ...int
+func MaxAndMin(v ...int) (int, int) {
+	max, min := MAXINT, MININT
+	if len(v) > 0 {
+		max, min = min, max
+		for _, i := range v {
+			if i > max {
+				max = i
+			}
+			if i < min {
+				min = i
+			}
 		}
 	}
+	return max, min
+}
+
+// MaxAndMinInt16 returns maximum and minimum 16-bit integers from v ...int
+func MaxAndMinInt16(v ...int16) (int16, int16) {
+	max, min := MAXINT16, MININT16
+	if len(v) > 0 {
+		max, min = min, max
+		for _, i := range v {
+			if i > max {
+				max = i
+			}
+			if i < min {
+				min = i
+			}
+		}
+	}
+	return max, min
+}
+
+// MaxAndMinInt32 returns maximum and minimum 32-bit integers from v ...int
+func MaxAndMinInt32(v ...int32) (int32, int32) {
+	max, min := MAXINT32, MININT32
+	if len(v) > 0 {
+		max, min = min, max
+		for _, i := range v {
+			if i > max {
+				max = i
+			}
+			if i < min {
+				min = i
+			}
+		}
+	}
+	return max, min
+}
+
+// MaxAndMinInt64 returns maximum and minimum 64-bit integers from v ...int
+func MaxAndMinInt64(v ...int64) (int64, int64) {
+	max, min := MAXINT64, MININT64
+	if len(v) > 0 {
+		max, min = min, max
+		for _, i := range v {
+			if i > max {
+				max = i
+			}
+			if i < min {
+				min = i
+			}
+		}
+	}
+	return max, min
+}
+
+// MaxAndMinInt8 returns maximum and minimum 8-bit integers from v ...int
+func MaxAndMinInt8(v ...int8) (int8, int8) {
+	max, min := MAXINT8, MININT8
+	if len(v) > 0 {
+		max, min = min, max
+		for _, i := range v {
+			if i > max {
+				max = i
+			}
+			if i < min {
+				min = i
+			}
+		}
+	}
+	return max, min
+}
+
+// MaxInt returns maximum int from v ...int
+func MaxInt(v ...int) int {
+	a, _ := MaxAndMin(v...)
 	return a
 }
 
 // MinInt returns minimum int from v ...int
 func MinInt(v ...int) int {
-	if len(v) <= 0 {
-		return MININT
-	}
-	a := MAXINT
-	for _, i := range v {
-		if i < a {
-			a = i
-		}
-	}
+	_, a := MaxAndMin(v...)
 	return a
 }
