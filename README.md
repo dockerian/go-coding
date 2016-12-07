@@ -5,15 +5,17 @@ This is a project for [Golang](https://golang.org/) exercises.
 
 
 <br/>
-### Contents
+## Contents
 - [Data structure solutions](ds)
 - [Dev interview: coding solutions](puzzle)
 - [Dev interview: examples](interview)
 - [Go API example](api)
 - [Go CLI example](cli) (TBD)
-- [Online coding examples](demo)
+- [Online coding examples](demo) | [Golang Notes](demo/golang-notes.md)
 - [Package solutions](pkg)
 - [Utilities](utils)
+- [How to build, test, and run](#build-test-run)
+- [Learning Go](#learning-go)
 
 
 <br/>
@@ -57,7 +59,7 @@ To build and run in docker container, see [here](#docker).
 
 
 
-<br/>
+<br/><a name="build-test-run"></a>
 ### Build, test and run
 
 The `Makefile` has included `build`, `test`, `run` targets. For example, to build, simply change to the project directory and run
@@ -132,7 +134,7 @@ default is `test` :
 ```
 
 
-<br/>
+<br/><a name="learning-go"></a>
 ### Learning Go
 - [awesome-go](https://github.com/avelino/awesome-go)
 - [go books](https://github.com/dariubs/GoBooks)

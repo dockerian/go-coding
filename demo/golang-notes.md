@@ -1,3 +1,4 @@
+# Golang Notes
 ----------
 ## Golang Study Notes
 
@@ -15,12 +16,36 @@
 	  - https://gophers.slack.com/messages/training (channel)
   - go playground: http://play.golang.org
   - main material: http://github.com/ardanlabs/gotrainings
+  - awecome collection: [awesome-go](https://github.com/avelino/awesome-go)
+  - books: [go books](https://github.com/dariubs/GoBooks)
   - Ultimate Go ([5-day material](https://github.com/ardanlabs/gotraining/blob/master/courses/ultimate/README.md))
   - package builtin https://golang.org/pkg/builtin/
   - https://forum.golangbridge.org/
   - https://sourcegraph.com/
 
 
+<br/>
+**Concurreny in Go**
+
+  - Channels
+
+  ```go
+  const MaxOutstanding = 5
+  var semaphore = make(chan int, MaxOutstanding)
+  func Serve(queue chan *Request) {
+      for req := range queue {
+          semaphore <- 1
+          // goroutine with `req` parameter to create a closure
+          go func(req *Request) {
+              process(req)
+              <-semaphore
+          }(req)
+      }
+  }
+  ```
+
+
+<br/>
 **Go testing**
 
   - use `-timeout` to timeout the testing
@@ -44,6 +69,7 @@ func mockServer() *httptest.Server {
   - vet
 
 
+<br/>
 **Go debugging/gdb**
 
   - https://github.com/wg/wrk (GUI http://www.graphviz.org/Download.php)
@@ -65,6 +91,7 @@ func mockServer() *httptest.Server {
   - dump https://github.com/davecgh/go-spew
 
 
+<br/>
 **Go benchmarking**
 
   - example
@@ -92,6 +119,7 @@ go tool pprof profiling.test cpu.out
   - live benchmark ?
 
 
+<br/>
 **Go logging**
 
   - http://dave.cheney.net/2015/11/05/lets-talk-about-logging
@@ -101,6 +129,7 @@ go tool pprof profiling.test cpu.out
   - https://github.com/cloudfoundry/lager
 
 
+<br/>
 **Questions/tips**
 
   - nested scope ?
@@ -119,10 +148,10 @@ go tool pprof profiling.test cpu.out
   - use `[]byte()` to gain performance
   - variadic var must be the last one (caution ... operator)
 
-```
-func takeVariadic(foo int, users ...user) {}
-takeVariadic(users...)
-```
+	```
+	func takeVariadic(foo int, users ...user) {}
+	takeVariadic(users...)
+	```
 
   - map order is not guaranteed
   - receiver: value vs pointer (attention to the signature)
@@ -158,6 +187,7 @@ signal.Notify(sigChan, os.Interrupt)
 ```
 
 
+<br/>
 **Other Topics**
 
   - https://github.com/peterh/liner
@@ -172,6 +202,7 @@ signal.Notify(sigChan, os.Interrupt)
   - Router https://github.com/julienschmidt/httprouter
 
 
+<br/>
 **See also**
 
   - https://github.com/dariubs/GoBooks
@@ -179,6 +210,7 @@ signal.Notify(sigChan, os.Interrupt)
   - https://www.reddit.com/r/golang/
 
 
+<br/>
 ----------
 ----------
 ## Gophercon 2016 Session Notes
@@ -209,10 +241,10 @@ signal.Notify(sigChan, os.Interrupt)
   * Slices
     - A `nil` slice can still be appended to, a slice does not have to be preallocated with `make([]type)` to start appending
 
-```
-var s int[] // len(s) == 0, cap(s) == 0, s == nil, s is "[]"
-s = append(s, 1)
-```
+	```
+	var s int[] // len(s) == 0, cap(s) == 0, s == nil, s is "[]"
+	s = append(s, 1)
+	```
     - Reallocation to grow the size of a slice is usually fast enough so that preallocation is not always necessary
   * Maps
     - When a map is required for reading (not writing) nil is a valid empty map
@@ -261,8 +293,8 @@ s = append(s, 1)
     - parent’s /vendor
     - parent’s parent’s /vendor
     - ...
-    - until GOPATH
-    - GOROOT
+    - until `GOPATH`
+    - and `GOROOT`
   * Even standard library can be overridden via vendoring so avoid shadowing standard library names
   * Vendored Interfaces
     - Nested vendoring can cause issues when a vendored package A uses another vendored package B, and the main application needs to implement an interface in package B and vendors package B at the same level as A, the compiler sees a mismatch between the two interfaces.
@@ -319,9 +351,9 @@ s = append(s, 1)
 ### Practical Advice for Go Library Authors
 ----------
   * Generally imports are not renamed, so package names are used as part of the interface, thus stuttering struct names should be avoided
-    - client.Client // bad, this provides no information about what the Client is
-    - context.Context // stuttering but accepted
-    - http.Client // optimal, this provides information about what the Client is a client of
+    - `client.Client` // bad, this provides no information about what the Client is
+    - `context.Context` // stuttering but accepted
+    - `http.Client` // optimal, this provides information about what the Client is a client of
   * Package function names should never stutter
   * Object construction
     - Avoid “New” function and use struct zero value if possible
@@ -402,4 +434,3 @@ s = append(s, 1)
   * golang.org/x/tools/cmd/guru
   * Provides simple command line utility to gain insight in to go code
   * Can perform pointer analysis to provide insight on what concrete or dynamic types a pointer may point to
-

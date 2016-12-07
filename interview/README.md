@@ -8,7 +8,7 @@
 - [Data Structure](#data-structure)
 - [Design and scrum](#design-and-scrum)
 - [C#](#csharp)
-- [Go (Golang)](#golang)
+- [Go (Golang)](#golang) | [Notes](../demo/golang-notes.md)
 - [Java](#java)
 - [JavaScript](#javascript)
 - [Database](#database)
@@ -29,6 +29,7 @@
 - [CodePad](https://codepad.remoteinterview.io) (remote interview supports golang)
 - [CodeShare](https://codeshare.io/) (sharing code in real time with others)
 - [CollabEdit](http://collabedit.com/) (online coding interview, free version of https://codinghire.com)
+- [Geeks for geeks](http://www.geeksforgeeks.org/)
 - [HackerRank](http://hackerrank.com) (rank programmer on coding skill)
 - [Hiredintech](http://hiredintech.com) (tips/tricks on algorithm and systems design)
 - [LeetCode](http://leetcode.com) (interview code online judge)
@@ -62,7 +63,11 @@
 	- divide and conquer
 	- composition
 - Breaking down to smaller problems
-- see [here](https://www.palantir.com/2011/09/how-to-ace-an-algorithms-interview/)
+- see
+	- [here](https://www.palantir.com/2011/09/how-to-ace-an-algorithms-interview/)
+	- [ace the coding interview](https://www.linkedin.com/pulse/20141120061048-6976444-ace-the-coding-interview-every-time)
+	- [Facebook interview](https://www.facebook.com/notes/facebook-engineering/get-that-job-at-facebook/10150964382448920)
+	- [Google interview](http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html)
 
 
 <a name="general"><br /></a>
@@ -176,6 +181,9 @@
 - advantages and disadvantages of golang ?
 	- simpler (as interpreted lang), strongly typed, fast (compiling), portable
 	- no generics (yet)
+- compare type conversion vs type assertion
+- compare `v.(type)` vs `v.(string)` (`v.(SomeTypeName)`), where `v` is `interface{}`
+- use [reflection](https://blog.golang.org/laws-of-reflection)
 
 
 <a name="java"><br /></a>
