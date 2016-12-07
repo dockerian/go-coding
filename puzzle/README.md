@@ -4,6 +4,7 @@
 ## Array
 - [find duplicated number in an array contains n numbers ranging from 0 to n-2](duplicate.go) | [test](duplicate_test.go)
 - [find the best meetup point for all given points](../interview/meetup.go) | [test](../interview/meetup_test.go)
+- [find the median in an integer array](median.go) | [test](median_test.go)
 - [find the second largest in an array](integer.go) | [test](integer_test.go)
 - [find the single integer in an array where all other elements appear twice](singleNumber.js)
 
