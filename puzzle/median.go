@@ -17,10 +17,10 @@ func FindMedian(stream []int) float64 {
 
 	addNumber := func(v int) {
 		maxH.Add(v)
-		n := 0 - maxH.ExtractMin()
+		n := maxH.ExtractMin()
 		minH.Add(n)
 		if maxH.GetSize() < minH.GetSize() {
-			n = 0 - minH.ExtractMin()
+			n = minH.ExtractMax()
 			maxH.Add(n)
 		}
 	}
@@ -31,16 +31,17 @@ func FindMedian(stream []int) float64 {
 			return float64(m)
 		}
 		a, _ := maxH.PeekMin()
-		b, _ := minH.PeekMin()
-		return float64(a+b) / float64(2)
+		b, _ := minH.PeekMax()
+		// u.Debug("median: (%d + %d) / 2\n", a, b)
+		return (float64(a) + float64(b)) / 2.0
 	}
 
 	u.Debug("\ninputs: %+v\n", stream)
 	for _, v := range stream {
 		addNumber(v)
+		// u.Debug("-largers: %+v\n", maxH)
+		// u.Debug("-smaller: %+v\n", minH)
 	}
 
-	// u.Debug("-largers: %+v\n", maxH)
-	// u.Debug("-smaller: %+v\n", minH)
 	return findMedian()
 }
