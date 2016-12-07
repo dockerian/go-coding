@@ -12,6 +12,12 @@ This is a data structures library and general algorithm solutions in Go (golang)
 
 
 <br />
+##Heap
+- [Min Heap](heap) | [java](heap/minHeap.java)
+- [Min-Heap](heap/minHeap.go) | [test](heap/minHeap_test.go) | [java](heap/minHeap.java)
+
+
+<br />
 ##Linked List
 - [Linked list](maps/linkedlist.go) | [test](maps/linkedlist_test.go)
 
