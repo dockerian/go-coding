@@ -2,6 +2,8 @@
 
 <a name="contents"><br /></a>
 ## Contents
+
+- [Books](#books)
 - [Resources](#resources)
 - [Interview tips](#tips)
 - [General questions](#general)
@@ -20,8 +22,18 @@
 - [Tree](#tree)
 
 
+<a name="books"><br /></a>
+## Books
+
+- Aziz, [Elements of Programming Interviews](https://www.amazon.com/Elements-Programming-Interviews-Insiders-Guide/dp/1479274836): 300 Questions and Solutions by Aziz, Adnan, Prakash, Amit, Lee, Tsung-Hsien 1st (first) Edition (10/11/2012), 2012, 481 pages, 6 x 9, $25, 300 problems (mostly C++, concurrency in Java, discrete math in formulas and English)
+- Aziz, [Elements of Programming Interviews in Java: The Insiders' Guide](https://www.amazon.com/Elements-Programming-Interviews-Java-Insiders/dp/1517435803/): 2nd Edition (9/19/2015), 542 pages · ISBN 1517435803 $27, 250 Problems and solutions in Java
+- McDowell, [Cracking the Coding Interview](https://www.amazon.com/Cracking-Coding-Interview-Programming-Questions/dp/098478280X): 150 Programming Questions and Solutions, 2011 (5th edition), 500 pages, 6 x 9, $23, 150 problems, (mostly all Java except of course the C, C++ question sections!)
+- Guiness, [Ace the Programming Interview](https://www.amazon.com/Ace-Programming-Interview-Questions-Answers/dp/111851856X): 160 Questions and Answers for Success, 2013, 419 pages, 6 x 9, $20, 160 problems, (mostly Java and C# but some unusual JavaScript, SQL, Ruby and Perl examples too)
+- Mongan, [Programming Interviews Exposed](https://www.amazon.com/Programming-Interviews-Exposed-Secrets-Landing/dp/1118261364): Secrets to Landing Your Next Job, 2013 (ed. 3), 301 pages, 7.4 x 9, $18, 150+ problems (C, C++, C#, Java)
+
+
 <a name="resource"><br /></a>
-## Resources
+## Online Resources
 
 - [Big-O Cheatsheet](http://bigocheatsheet.com) (review data structure time complexity)
 - [CareerCup](http://careercup.com) (actual interview questions)
@@ -106,6 +118,27 @@
 
 <a name="design-and-scrum"><br /></a>
 ## Design and Scrum
+
+- design:
+	- a card game, with Card, Hand, Deck, and interfaces
+	- a parking lot, e.g. with FindBestSpot()
+	- an elevator system
+- design patterns
+	- creational patterns
+		- abstract factory
+		- builder
+		- factory method
+		- prototype
+	- behaviorial patterns
+		- command
+		- strategy
+		- state
+	- structural patterns
+		- adapter
+		- bridge
+		- decorator
+		- facade
+	- concurrency patterns
 - explain SOLID, KISS, and DRY (principles of software development)
 	* DRY=Don't Repeat Yourself;
 	* KISS=Keep It Simple, S*****;
@@ -116,7 +149,7 @@
 		- **Interface segregation**: many client-specific interfaces are better than one general-purpose interface;
 		- **Dependency inversion**: entities must depend on abstractions not on concretions;
 		- see http://www.codemag.com/article/1001061
-- Dependency inversion (IoC)
+- dependency inversion (IoC)
 	- a special form of decoupling
 	- high-level modules should not depend on low-level modules. Both should depend on abstractions.
 	- abstractions should not depend upon details. Details should depend upon abstractions.
@@ -127,6 +160,10 @@
 			- interface (type 1)
 			- constructor (type 3)
 			- setter (type 3)
+- mvp vs mvc vs mvvm
+	- MVP: view <=> presenter <=> model (inputs begin with view)
+	- MVC: views <= controller => model \[=> view] (starts with controller)
+	- MVVM: view => viewmodel <=> model (inputs begin with view)
 
 
 <a name="csharp"><br /></a>

@@ -28,6 +28,9 @@ func ReverseWords(s string) string {
 		rwList = append(rwList, s[k:strLen])
 	}
 
+	// note: alternatively using strings.Split
+	// rwList = strings.Split(s, " ")
+
 	var buffer bytes.Buffer
 	for j := len(rwList) - 1; j >= 0; j-- {
 		buffer.WriteString(rwList[j])
@@ -36,5 +39,7 @@ func ReverseWords(s string) string {
 		}
 	}
 
+	// note: alternatively using strings.Join
+	// return strings.Join(rwList, " ")
 	return buffer.String()
 }

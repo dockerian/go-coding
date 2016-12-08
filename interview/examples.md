@@ -149,3 +149,16 @@ public interface PathNormalizer {
 
 
 <br />
+## Example 4
+
+- Write a function to return the nth Fibonacci number in the Fibonacci Sequence.
+  - Fibonacci Sequence: 1, 1, 2, 3, 5, 8, 13, 21, 34
+  - Example: N = 6
+  - Return: 8
+
+- Write a function to reverse the order of words in a string, with reversing the order of the letters in the words.
+  - Input: "The quick brown fox jumped over the lazy dog."
+  - Return: "dog. lazy the over jumped fox brown quick The"
+
+
+<br />
