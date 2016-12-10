@@ -6,8 +6,11 @@
 - [find the best meetup point for all given points](../interview/meetup.go) | [test](../interview/meetup_test.go)
 - [find the maximum sum of sequence in an integer array](../interview/sequence.go) | [test](../interview/sequence_test.go)
 - [find the median in an integer array](median.go) | [test](median_test.go)
+- [find the first available parking spot](array.go) | [test](array_test.go) | [solution](../pkg/parking)
 - [find the second largest in an array](integer.go) | [test](integer_test.go)
 - [find the single integer in an array where all other elements appear twice](singleNumber.js)
+- [place N queens on NxN chessboard so that they can't attack each other](queens.go) | [test](queens_test.go) | [java](queens.java)
+- [sum of matrix diagonal items](matrix.go)
 
 
 <br />
