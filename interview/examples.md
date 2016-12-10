@@ -1,6 +1,6 @@
 # Interview Session Examples
 
-## Example 1
+## Session 1
 
 ### Coding/Language
 
@@ -81,7 +81,7 @@ public interface PathNormalizer {
 
 
 <br />
-## Example 2
+## Session 2
 
 - Q: When should you use NOLOCK for SQL statements ?
 
@@ -109,7 +109,7 @@ public interface PathNormalizer {
 
 
 <br />
-## Example 3
+## Session 3
 - Q: Explain Polymorphism.
 
 - Q: Explain Abstract class, comparing to Interface.
@@ -149,7 +149,13 @@ public interface PathNormalizer {
 
 
 <br />
-## Example 4
+## Session 4
+
+- Describe when you know the code quality is good enough.
+
+- Design a card game, or a scrabble, or a board game.
+
+- Find the number of occurrences of the most frequent substring of length L (L>=2) in a string of length N (N<10000).
 
 - Write a function to return the nth Fibonacci number in the Fibonacci Sequence.
   - Fibonacci Sequence: 1, 1, 2, 3, 5, 8, 13, 21, 34
@@ -160,5 +166,8 @@ public interface PathNormalizer {
   - Input: "The quick brown fox jumped over the lazy dog."
   - Return: "dog. lazy the over jumped fox brown quick The"
 
+- Reverse a linked list at each pair and write test cases
+
+- Find first K closest points
 
 <br />

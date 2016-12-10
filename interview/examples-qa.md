@@ -1,6 +1,6 @@
 # Interview Session Examples
 
-## Example 1
+## Session 1
 
 ### Coding/Language
 
@@ -81,7 +81,7 @@ public interface PathNormalizer {
 
 
 <br />
-## Example 2
+## Session 2
 
 - Q: When should you use NOLOCK for SQL statements ?
 
@@ -115,7 +115,7 @@ ListOfListOfString.SelectMany(ll => ll).Distinct().ToList()
 
 
 <br />
-## Example 3
+## Session 3
 
 - Q: Explain Polymorphism.
 
