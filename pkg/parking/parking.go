@@ -32,7 +32,12 @@ func New(capacity, levels, groundLevels int, regulation IParkingRegulation) *Par
 	return builder.parking
 }
 
-// FindAvailableSpot returns the first best available
+// FindAvailableSpot returns the first best available to the entryLevel
+// per specific handicap, carpool, or compact property of the vehical
+// note: the caculation for the best spot assumes for the walking distance to
+//       the entry level, instead of driving distance to the spot, since the
+//       the parking does not specify which level is the garage entry;
+//       otherwise, the best/first available spot would be different.
 func (p *Parking) FindAvailableSpot(
 	isHandicap, isCarpool, isCompact bool, entryLevel int) *Spot {
 	parkingMutex.Lock()
