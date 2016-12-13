@@ -1,6 +1,6 @@
-// +build all puzzle palindrome test
+// +build all str palindrome test
 
-package puzzle
+package str
 
 import (
 	"encoding/json"
