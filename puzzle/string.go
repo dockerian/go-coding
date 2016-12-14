@@ -44,6 +44,30 @@ func CheckMatchedPair(s, begin, close string) (bool, error) {
 	return okay, err
 }
 
+// GetAllCases returns all variations of upper and lower cases
+func GetAllCases(s string) []string {
+	var size = len(s)
+	var maxL = int64(1) << uint(size)
+	var diff = byte('a' - 'A')
+	results := make([]string, 0, maxL)
+	var getAll func([]byte, int)
+
+	getAll = func(bytes []byte, len int) {
+		pos := len - 1
+		if pos <= 0 {
+			results = append(results, string(bytes))
+		}
+		getAll(bytes, pos)
+		bytes[pos] = bytes[pos] + diff
+		getAll(bytes, pos)
+	}
+
+	bytes := []byte(s)
+	getAll(bytes, size)
+
+	return results
+}
+
 // GetLongestSubstringLength solves the following problem:
 // Given a string, find the longest non-repeating substring length.
 // Note: assuming all input are ASCII characters
