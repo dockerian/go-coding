@@ -12,8 +12,8 @@ import (
 // See https://leetcode.com/problems/find-median-from-data-stream/
 func FindMedian(stream []int) float64 {
 	size := len(stream)
-	maxH := heap.NewHeap(size / 2)
-	minH := heap.NewHeap(size / 2)
+	maxH := heap.NewIxHeap(size / 2)
+	minH := heap.NewIxHeap(size / 2)
 
 	addNumber := func(v int) {
 		maxH.Add(v)

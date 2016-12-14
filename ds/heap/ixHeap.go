@@ -1,38 +1,58 @@
 package heap
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
-// Heap struct
-type Heap struct {
+// IxHeap struct
+type IxHeap struct {
 	heap     []int
 	position int // bound limit of the last item in the heap
 	capacity int // capacity of the heap
+	capLimit int // capacity limit of the heap
 }
 
-// NewHeap constructs a heap per specific capacity
-func NewHeap(capacity int) *Heap {
-	if capacity < 0 {
-		capacity = 0
+// NewIxHeap constructs an int heap per specific capacity and optionally limit
+func NewIxHeap(v ...int) *IxHeap {
+	var capacity int
+	var capLimit = -1
+	if len(v) > 0 {
+		if v[0] > 0 {
+			capacity = v[0]
+		}
+		if len(v) > 1 && v[1] > 1 {
+			capLimit = v[1]
+		}
 	}
-	return &Heap{
+	return &IxHeap{
 		heap:     make([]int, 1, capacity+1),
 		capacity: capacity,
+		capLimit: capLimit,
 		position: 0,
 	}
 }
 
 // Add func
-func (h *Heap) Add(i int) {
+func (h *IxHeap) Add(i int) {
+	siz := len(h.heap) - 1
+	if h.capLimit > 1 && siz >= h.capLimit {
+		if min, err := h.PeekMin(); err == nil && i < min {
+			h.ExtractMin()
+		} else if max, err := h.PeekMax(); err == nil && i > max {
+			h.ExtractMax()
+		}
+	}
 	h.heap = append(h.heap, i)
 	h.position = h.position + 1
-	if len(h.heap) > h.capacity {
+	if len(h.heap)-1 > h.capacity {
 		h.capacity = len(h.heap) - 1
 	}
-	h.bubbleUp()
+	h.bubbleUp(h.position)
 }
 
 // Delete func
-func (h *Heap) Delete(item int) int {
+func (h *IxHeap) Delete(item int) int {
 	for k, p := range h.heap {
 		if p == item {
 			h.DeleteAt(k)
@@ -43,12 +63,13 @@ func (h *Heap) Delete(item int) int {
 }
 
 // DeleteAt func
-func (h *Heap) DeleteAt(k int) int {
+func (h *IxHeap) DeleteAt(k int) int {
 	if k > 0 && h.position > 0 {
 		item := h.heap[k]
 		if k < h.position {
 			h.heap[k] = h.heap[h.position]
 			h.sinkDown(k)
+			h.bubbleUp(k)
 		}
 		h.heap = h.heap[0:h.position]
 		h.position = h.position - 1
@@ -58,7 +79,7 @@ func (h *Heap) DeleteAt(k int) int {
 }
 
 // ExtractMax func
-func (h *Heap) ExtractMax() int {
+func (h *IxHeap) ExtractMax() int {
 	max := h.heap[0]
 	if h.position > 0 {
 		j, k := h.position-1, h.position
@@ -75,7 +96,7 @@ func (h *Heap) ExtractMax() int {
 }
 
 // ExtractMin func
-func (h *Heap) ExtractMin() int {
+func (h *IxHeap) ExtractMin() int {
 	min := h.heap[0]
 	if h.position > 0 {
 		min = h.heap[1]
@@ -88,33 +109,33 @@ func (h *Heap) ExtractMin() int {
 }
 
 // GetSize func returns the position of the heap
-func (h *Heap) GetSize() int {
+func (h *IxHeap) GetSize() int {
 	return h.position
 }
 
 // IsEmpty checks if the heap is empty
-func (h *Heap) IsEmpty() bool {
+func (h *IxHeap) IsEmpty() bool {
 	return h.position == 0
 }
 
 // PeekMax func
-func (h *Heap) PeekMax() (int, error) {
+func (h *IxHeap) PeekMax() (int, error) {
 	if h.position > 0 {
 		return h.heap[h.position], nil
 	}
-	return 0, fmt.Errorf("Empty heap")
+	return math.MinInt32, fmt.Errorf("Empty heap")
 }
 
 // PeekMin func
-func (h *Heap) PeekMin() (int, error) {
+func (h *IxHeap) PeekMin() (int, error) {
 	if h.position > 0 {
 		return h.heap[1], nil
 	}
-	return 0, fmt.Errorf("Empty heap")
+	return math.MaxInt32, fmt.Errorf("Empty heap")
 }
 
 // String func
-func (h *Heap) String() string {
+func (h *IxHeap) String() string {
 	var str string
 	for i, item := range h.heap {
 		if i == 0 {
@@ -127,27 +148,33 @@ func (h *Heap) String() string {
 }
 
 // bubbleUp the last item to correct position in the heap
-func (h *Heap) bubbleUp() {
-	if h.position > 1 {
-		pos := h.position
-		for pos > 1 && h.heap[pos/2] > h.heap[pos] {
-			h.heap[pos], h.heap[pos/2] = h.heap[pos/2], h.heap[pos]
-			if pos%2 == 1 && h.heap[pos] < h.heap[pos-1] {
-				h.heap[pos], h.heap[pos-1] = h.heap[pos-1], h.heap[pos]
+func (h *IxHeap) bubbleUp(end int) {
+	if 1 <= end && end <= h.position {
+		pos := end
+		for pos > 1 {
+			i := pos / 2
+			if h.heap[i] > h.heap[pos] {
+				h.heap[pos], h.heap[i] = h.heap[i], h.heap[pos]
+				if pos%2 == 1 && h.heap[pos] < h.heap[pos-1] {
+					h.heap[pos], h.heap[pos-1] = h.heap[pos-1], h.heap[pos]
+				}
 			}
-			pos = pos / 2
+			pos = i
 		}
 	}
 }
 
 // sinkDown the item to correct position in the heap
-func (h *Heap) sinkDown(k int) {
+func (h *IxHeap) sinkDown(k int) {
 	pos := k
-	if 2*k <= h.position && h.heap[pos] > h.heap[2*k] {
-		pos = 2 * k
-	}
-	if 2*k+1 <= h.position && h.heap[pos] > h.heap[2*k+1] {
-		pos = 2 * k
+	pc1, pc2 := 2*k, 2*k+1            // position for left and right child
+	if h.position >= pc1 && pc1 > 0 { // check potential overflow
+		if h.heap[pos] > h.heap[pc1] {
+			pos = pc1
+		}
+		if h.position >= pc2 && pc2 > 0 && h.heap[pos] > h.heap[pc2] {
+			pos = pc2
+		}
 	}
 	if pos != k {
 		h.heap[k], h.heap[pos] = h.heap[pos], h.heap[k]
