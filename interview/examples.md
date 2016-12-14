@@ -1,6 +1,6 @@
 # Interview Session Examples
 
-## Session 1
+## Session 1 - [Answers](examples-qa.md#session1)
 
 ### Coding/Language
 
@@ -81,7 +81,7 @@ public interface PathNormalizer {
 
 
 <br />
-## Session 2
+## Session 2 - [Answers](examples-qa.md#session2)
 
 - Q: When should you use NOLOCK for SQL statements ?
 
@@ -109,7 +109,8 @@ public interface PathNormalizer {
 
 
 <br />
-## Session 3
+## Session 3 - [Answers](examples-qa.md#session3)
+
 - Q: Explain Polymorphism.
 
 - Q: Explain Abstract class, comparing to Interface.
@@ -149,25 +150,33 @@ public interface PathNormalizer {
 
 
 <br />
-## Session 4
+## Session 4 - [Answers](examples-qa.md#session4)
 
-- Describe when you know the code quality is good enough.
+- Q: Describe when you know the code quality is good enough.
 
-- Design a card game, or a scrabble, or a board game.
+- Q: Design a card game, or a scrabble, or a board game.
 
-- Find the number of occurrences of the most frequent substring of length L (L>=2) in a string of length N (N<10000).
+- Q: Find first K closest points from a point.
 
-- Write a function to return the nth Fibonacci number in the Fibonacci Sequence.
+- Q: Find the number of occurrences of the most frequent substring of length L (L>=2) in a string of length N (N<10000).
+
+- Q: Function to return the nth Fibonacci number in the Fibonacci Sequence.
   - Fibonacci Sequence: 1, 1, 2, 3, 5, 8, 13, 21, 34
   - Example: N = 6
   - Return: 8
 
-- Write a function to reverse the order of words in a string, with reversing the order of the letters in the words.
+- Q: Function to reverse the order of words in a string, with reversing the order of the letters in the words.
   - Input: "The quick brown fox jumped over the lazy dog."
   - Return: "dog. lazy the over jumped fox brown quick The"
 
-- Reverse a linked list at each pair and write test cases
+- Q: Function passes a file as an argument that checks a file and excludes duplicative words.
 
-- Find first K closest points
+- Q: Given a string, print out all possible variations of upper and lower case.
+
+- Q: Reverse a linked list at each pair and write test cases.
+
+- Q: Spiral printing of 2D array.
+
+- Q:
 
 <br />

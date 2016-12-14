@@ -4,7 +4,7 @@
 ## Contents
 
 - [Books](#books)
-- [Resources](#resources)
+- [Resources](#resources) | My [Archives](#archives)
 - [Interview tips](#tips)
 - [General questions](#general)
 - [Data Structure](#data-structure)
@@ -32,7 +32,7 @@
 - Mongan, [Programming Interviews Exposed](https://www.amazon.com/Programming-Interviews-Exposed-Secrets-Landing/dp/1118261364): Secrets to Landing Your Next Job, 2013 (ed. 3), 301 pages, 7.4 x 9, $18, 150+ problems (C, C++, C#, Java)
 
 
-<a name="resource"><br /></a>
+<a name="resources"><br /></a>
 ## Online Resources
 
 - [Big-O Cheatsheet](http://bigocheatsheet.com) (review data structure time complexity)
@@ -41,15 +41,33 @@
 - [CodePad](https://codepad.remoteinterview.io) (remote interview supports golang)
 - [CodeShare](https://codeshare.io/) (sharing code in real time with others)
 - [CollabEdit](http://collabedit.com/) (online coding interview, free version of https://codinghire.com)
-- [Geeks for geeks](http://www.geeksforgeeks.org/)
+- [EdRepublic](edrepublic.com) (problems by companies and focus area)
+- [Educative](https://www.educative.io) (online lessons, and free courses)
+- [Gainlo](http://www.gainlo.co/#!/faq) (mock interviews with professionals)
+- [Geeks for geeks](http://www.geeksforgeeks.org/) (a computer science portal for geeks)
+- [Glassdoor](http://www.glassdoor.com/) (company rates/reviews, salary comparisons, and interviews)
+- [HackerEarth](https://www.hackerearth.com/@jason_zhuyx) (programming challenges & coding competitions)
 - [HackerRank](http://hackerrank.com) (rank programmer on coding skill)
 - [Hiredintech](http://hiredintech.com) (tips/tricks on algorithm and systems design)
 - [LeetCode](http://leetcode.com) (interview code online judge)
-- [Data Science Tutorials](https://www.topcoder.com/community/data-science/data-science-tutorials/)
+- [Project Euler](https://projecteuler.net/archives) (a series of computational problems)
+- [SPOJ](http://www.spoj.com/tutorials/) (problemset archive, online judge and contest)
+- [Topcoder](https://www.topcoder.com/members/jason_zhuyx/) (online computer programming competitions)
+- [Case study](http://www.careerprofiles.info/case-study-interview-examples.html)
 - [Courses](https://www.coursera.org/courses?categories=cs-theory&languages=en)
-- see also
-	- some [examples](examples.md) and [answers](examples-qa.md) | [C# QA](examples-cs.md)
-	- go [quiz/puzzle solutions](../puzzle)
+  - [Algorithms by Pinceton](https://www.coursera.org/learn/algorithms-part1)
+  - [Algorithms: Design and Analysis, Part 1 (Stanford)](https://www.coursera.org/course/algo)
+  - [Algorithms: Design and Analysis, Part 2 (Stanford)](https://www.coursera.org/course/algo2)
+  - [Data Science Tutorials](https://www.topcoder.com/community/data-science/data-science-tutorials/)
+
+
+<a name="archives"><br /></a>
+## Archives
+  - coding [notes](coding.md)
+  - hard/bigger [problems](problems.md)
+  - puzzle/quiz/teaser [questions](puzzles.md)
+  - some [examples](examples.md) and [answers](examples-qa.md) | [c# qa](examples-cs.md)
+  - go [quiz/puzzle solutions](../puzzle)
 
 
 <a name="tips"><br /></a>
@@ -63,47 +81,47 @@
   - Heap
   - Stack / Queue
   - Tree / binary tree
-	- Graph
+  - Graph
 - Think algorithms.
-	- Sorting (plus searching / binary search)
-	- Divide-and-conquer
-	- Dynamic programming / memoization
-	- Greediness
-	- Recursion
+  - Sorting (plus searching / binary search)
+  - Divide-and-conquer
+  - Dynamic programming / memoization
+  - Greediness
+  - Recursion
 - Think about similar problems and solutions
-	- dynamic programming
-	- divide and conquer
-	- composition
+  - dynamic programming
+  - divide and conquer
+  - composition
 - Breaking down to smaller problems
 - See blogs
-	- [here](https://www.palantir.com/2011/09/how-to-ace-an-algorithms-interview/)
-	- [ace the coding interview](https://www.linkedin.com/pulse/20141120061048-6976444-ace-the-coding-interview-every-time)
-	- [Facebook interview](https://www.facebook.com/notes/facebook-engineering/get-that-job-at-facebook/10150964382448920)
-	- [Google interview](http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html)
-	- [Big-O](http://bigocheatsheet.com/)
+  - [here](https://www.palantir.com/2011/09/how-to-ace-an-algorithms-interview/)
+  - [ace the coding interview](https://www.linkedin.com/pulse/20141120061048-6976444-ace-the-coding-interview-every-time)
+  - [Facebook interview](https://www.facebook.com/notes/facebook-engineering/get-that-job-at-facebook/10150964382448920)
+  - [Google interview](http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html)
+  - [Big-O](http://bigocheatsheet.com/)
 
-	| Data Structure | Read (Avg/Worst) | Write       | Space    |
-	| -------------- |:----------------:|:-----------:|:--------:|
-	| Array          | 1 / n            | n           | n        |
-	| Stack / Queue  | n                | 1           | n        |
-	| Linked List    | n                | 1           | n        |
-	| Skip List      | log(n) / n       | log(n) / n  | n log(n) |
-	| Hash Table     | 1 / n            | 1 / n       | n        |
-	| BST / Tree     | log(n) / n       | log(n) / n  | n        |
+  | Data Structure | Read (Avg/Worst) | Write       | Space    |
+  | -------------- |:----------------:|:-----------:|:--------:|
+  | Array          | 1 / n            | n           | n        |
+  | Stack / Queue  | n                | 1           | n        |
+  | Linked List    | n                | 1           | n        |
+  | Skip List      | log(n) / n       | log(n) / n  | n log(n) |
+  | Hash Table     | 1 / n            | 1 / n       | n        |
+  | BST / Tree     | log(n) / n       | log(n) / n  | n        |
 
-	| Algorithm      | Best     | Average  | Worst    | Space    |
-	| -------------- |:--------:|:--------:|:--------:|:--------:|
-	| Bubble-sort    | n        | n^2      | n^2      | 1        |
-	| Bucket-sort    | n+k      | n+k      | n^2      | n        |
-	| Cube-sort      | n        | n log(n) | n log(n) | n        |
-	| Heap-sort      | n log(n) | n log(n) | n log(n) | 1        |
-	| Insertion-sort | n        | n^2      | n^2      | 1        |
-	| Merge-sort     | n log(n) | n log(n) | n log(n) | n        |
-	| Quick-sort     | n log(n) | n log(n) | n^2      | log(n)   |
-	| Radix-sort     | n\*k     | n\*k     | n\*k     | n+k      |
-	| Selection-sort | n^2      | n^2      | n^2      | 1        |
-	| Shell-sort     | n log(n) |n log(n)^2|n log(n)^2| 1        |
-	| Tree-sort      | n log(n) | n log(n) | n^2      | n        |
+  | Algorithm      | Best     | Average  | Worst    | Space    |
+  | -------------- |:--------:|:--------:|:--------:|:--------:|
+  | Bubble-sort    | n        | n^2      | n^2      | 1        |
+  | Bucket-sort    | n+k      | n+k      | n^2      | n        |
+  | Cube-sort      | n        | n log(n) | n log(n) | n        |
+  | Heap-sort      | n log(n) | n log(n) | n log(n) | 1        |
+  | Insertion-sort | n        | n^2      | n^2      | 1        |
+  | Merge-sort     | n log(n) | n log(n) | n log(n) | n        |
+  | Quick-sort     | n log(n) | n log(n) | n^2      | log(n)   |
+  | Radix-sort     | n\*k     | n\*k     | n\*k     | n+k      |
+  | Selection-sort | n^2      | n^2      | n^2      | 1        |
+  | Shell-sort     | n log(n) |n log(n)^2|n log(n)^2| 1        |
+  | Tree-sort      | n log(n) | n log(n) | n^2      | n        |
 
 
 <a name="general"><br /></a>
@@ -144,59 +162,97 @@
 ## Design and Scrum
 
 - design:
-	- a card game, with Card, Hand, Deck, and interfaces
-	- a parking lot, e.g. with FindBestSpot()
-	- an elevator system
+  - a card game, with Card, Hand, Deck, and interfaces
+  - a chess game, or a borad game
+  - a database model for movie ticketing system
+  - a parking lot, e.g. with FindBestSpot()
+  - a scalable twitter feed filter system which builds a public sentiment every minute.
+  - an elevator system
 - design patterns
-	- creational patterns
-		- abstract factory
-		- builder
-		- factory method
-		- prototype
-	- behaviorial patterns
-		- command
-		- strategy
-		- state
-	- structural patterns
-		- adapter
-		- bridge
-		- decorator
-		- facade
-	- concurrency patterns
+  - creational patterns
+    - abstract factory
+    - builder
+    - factory method
+    - prototype
+  - behaviorial patterns
+    - command
+    - strategy
+    - state
+  - structural patterns
+    - adapter
+    - bridge
+    - decorator
+    - facade
+  - concurrency patterns
 - explain SOLID, KISS, and DRY (principles of software development)
-	* DRY=Don't Repeat Yourself;
-	* KISS=Keep It Simple, S*****;
-	* SOLID
-		- **Single responsibility**: only one potential change to affect the spec;
-		- **Open-closed**: a well-encapsulated and highly-cohesive system open for extension but closed for modification;
-		- **Liskov substitution**: every subclass/derived class should be substitutable for their base/parent class
-		- **Interface segregation**: many client-specific interfaces are better than one general-purpose interface;
-		- **Dependency inversion**: entities must depend on abstractions not on concretions;
-		- see http://www.codemag.com/article/1001061
+  * DRY=Don't Repeat Yourself;
+  * KISS=Keep It Simple, S*****;
+  * SOLID
+    - **Single responsibility**: only one potential change to affect the spec;
+    - **Open-closed**: a well-encapsulated and highly-cohesive system open for extension but closed for modification;
+    - **Liskov substitution**: every subclass/derived class should be substitutable for their base/parent class
+    - **Interface segregation**: many client-specific interfaces are better than one general-purpose interface;
+    - **Dependency inversion**: entities must depend on abstractions not on concretions;
+    - see http://www.codemag.com/article/1001061
 - dependency inversion (IoC)
-	- a special form of decoupling
-	- high-level modules should not depend on low-level modules. Both should depend on abstractions.
-	- abstractions should not depend upon details. Details should depend upon abstractions.
-	- implementations:
-		- factory pattern
-		- service locator pattern
-		- dependency injection:
-			- interface (type 1)
-			- constructor (type 3)
-			- setter (type 3)
-- mvp vs mvc vs mvvm
-	- MVP: view <=> presenter <=> model (inputs begin with view)
-	- MVC: views <= controller => model \[=> view] (starts with controller)
-	- MVVM: view => viewmodel <=> model (inputs begin with view)
+  - a special form of decoupling
+  - high-level modules should not depend on low-level modules. Both should depend on abstractions.
+  - abstractions should not depend upon details. Details should depend upon abstractions.
+  - implementations:
+    - factory pattern
+    - service locator pattern
+    - dependency injection:
+      - interface (type 1)
+      - constructor (type 3)
+      - setter (type 3)
+- compare mvp vs mvc vs mvvm
+  - MVP: view <=> presenter <=> model (inputs begin with view)
+  - MVC: views <= controller => model \[=> view] (starts with controller)
+  - MVVM: view <= viewmodel <=> model (inputs begin with view)
+
+- compare mutex vs semaphore
+
+- describe properties of RESTful
+  - Representational State Transfer (REST) is an architectural style
+  - **Uniform interface**: a fixed set of CRUD (create, read, update, delete) operations: POST, GET, PUT, and DELETE
+  - **Resource identification**: data and functionality are considered resources and accessible through URI
+  - **Self-descriptive messages**: Resources are decoupled from representation so that the content can be accessed in a variety of formats, e.g. HTML/text, XML, JSON, JPEG, PDF
+  - **Stateless to stateful interactions**: use stateless communication protocol, e.g. HTTP, (with stateless resource and self-contained request messages) to transfer states (e.g. embedded in response message)
+
+- explain Responsive Web Design (RWD). how it comares to adaptive design ?
+  - a design approach which prioritizes on giving the user
+    an optimal viewing/reading and navigational experience
+    across multiple devices and screen resolutions
+    by utilizing many design concepts.
+  - the goal is to have one content base with multiple 'disconnected' views.
+    The word responsive signifies that your content responds to
+    the user's current view (i.e. resolution, capabilities etc.) and
+    the design process is all about optimizing and creating views.
+  - Bootstrap is the most popular CSS, HTML and JS framework
+    used for developing responsive web design
+  - see http://www.alistapart.com/articles/responsive-web-design/
+  - adaptive web design essentially utilizes many of the components of
+    progressive enhancement (PE) as a way to define the set of
+    design methods that focus on the user and not the browser.
+    Using a predefined set of layout sizes based on device screen size
+    along with CSS and JavaScript, the AWD approach adapts to the detected device.
+    The three layers of Progressive Enhancement:
+      - Content layer = rich semantic HTML markup
+      - Presentation layer = CSS and styling
+      - Client-side scripting layer = JavaScript or jQuery behaviors
+
+- discuss [NP-complete problems](https://en.wikipedia.org/wiki/List_of_NP-complete_problems)
+
+- how to balance conflicting, urgent priorities from different teams ?
 
 
 <a name="csharp"><br /></a>
 ## C&#35;
 
 - books
-	- [C# in Depth](http://csharpindepth.com/Articles.aspx)
-	- [Threading in C#](http://www.albahari.com/threading/)
-	- [more ...](http://codecall.net/2014/05/26/16-free-ebooks-for-c-learner/)
+  - [C# in Depth](http://csharpindepth.com/Articles.aspx)
+  - [Threading in C#](http://www.albahari.com/threading/)
+  - [more ...](http://codecall.net/2014/05/26/16-free-ebooks-for-c-learner/)
 - boxing vs unboxing
 - class vs struct (reference vs value type, on heap vs stack, inheritance vs no)
 - compare `abstract`, `virtual`, and concrete methods; `override` vs overloading
@@ -210,12 +266,12 @@
 - explain the purpose of LINQ (Language Integrated Query) and Enterprise Framework
 - LINQ and lambda
 
-	```csharp
-	// public delegate TResult Func<T1, T2, TResult>(T1 a1, T2 a2);
-	Func<int, int, bool> compare = (a, b) => a > b
-	// bool compare(int a, int b) { return a > b; }
-	u = users.Where(u => u.Age > 20).First();  
-	```
+  ```csharp
+  // public delegate TResult Func<T1, T2, TResult>(T1 a1, T2 a2);
+  Func<int, int, bool> compare = (a, b) => a > b
+  // bool compare(int a, int b) { return a > b; }
+  u = users.Where(u => u.Age > 20).First();  
+  ```
 
 - how to use `using` statement ?
 - how to configure a service or web site for SSL/TLS or https? (using ABC, address-binding-contract, configuration in web.config)
@@ -227,10 +283,10 @@
 
 - what is `delegate`, `Delegate`, `MulticastDelege`, handler, event ?
 
-	```
-	public delegate FooTypeDelegateOrHandler Func<int, bool>;
-	public event FooTypeDelegateOrHandler FooEvent; // class property
-	```
+  ```
+  public delegate FooTypeDelegateOrHandler Func<int, bool>;
+  public event FooTypeDelegateOrHandler FooEvent; // class property
+  ```
 
 - what is good and bad about `try catch` ?
 - what is nullable type ?
@@ -240,8 +296,8 @@
 ## Go (Golang)
 
 - advantages and disadvantages of golang ?
-	- simpler (as interpreted lang), strongly typed, fast (compiling), portable
-	- no generics (yet)
+  - simpler (as interpreted lang), strongly typed, fast (compiling), portable
+  - no generics (yet)
 - compare type conversion vs type assertion
 - compare `v.(type)` vs `v.(string)` (`v.(SomeTypeName)`), where `v` is `interface{}`
 - use [reflection](https://blog.golang.org/laws-of-reflection)
@@ -288,45 +344,45 @@
 - collation is defined to specify the sort order in a table. 3 types (case in/sensitive, binary)
 - common table expression (CTE), as a temp query/view
 
-	```
-	WITH foo_cte AS (
-		SELECT a, b FROM [foo_table]
-	) --, bar_cte AS (
-	  --	SELECT c, d FROM [bar_table]
-	),
-	SELECT * FROM [foo_cte] -- JOIN [bar_cte] ON ...
-	```
+  ```
+  WITH foo_cte AS (
+    SELECT a, b FROM [foo_table]
+  ) --, bar_cte AS (
+    --  SELECT c, d FROM [bar_table]
+  ),
+  SELECT * FROM [foo_cte] -- JOIN [bar_cte] ON ...
+  ```
 
 - delete duplicate rows
 
-	```
-	WITH cte_rows AS (
-	    SELECT ROW_NUMBER()
-	    OVER (PARTITION BY Col1, Col2 ORDER BY (SELECT 0)) RN
-	    FROM #MyTable)
-	DELETE FROM cte_rows
-	WHERE  RN > 1;
-	```
+  ```
+  WITH cte_rows AS (
+      SELECT ROW_NUMBER()
+      OVER (PARTITION BY Col1, Col2 ORDER BY (SELECT 0)) RN
+      FROM #MyTable)
+  DELETE FROM cte_rows
+  WHERE  RN > 1;
+  ```
 
 - difference between clustered and a non-clustered index? (clustered index reorder the row as physically stored, the leaf nodes contain the data pages)
 - difference between primary key and unique key? (PR constraint is a unique identifier for each row, it creates clustered index and does not allow NULL)
 - difference between `DELETE` and `TRUNCATE` commands?
 - difference between `HAVING` clause and `WHERE` clause? (`HAVING` used only with the GROUP BY)
 - explain ACID: 4 properties to qualify a transaction (which is a sequence of operations performed as a single logical unit of work)
-	- Atomicity: as atomic unit of work, either all or none of modifications are perform.
-	- Consistency: all data in a consistent state; all rules must be applied to maintain all data integrity.
-	- Isolation: modifications must be isolated from modifications made by any other concurrent transaction.
-	- Durability: modifications persist permanently in the system, even in the event of system failure.
-	- Lock modes: Intent shared (IS), Intent exclusive (IX), Shared with intent exclusive (SIX), Intent update (IU), Shared intent update (SIU), Update intent exclusive (UIX)
-	- see https://technet.microsoft.com/en-us/library/jj856598(v=sql.110).aspx
+  - Atomicity: as atomic unit of work, either all or none of modifications are perform.
+  - Consistency: all data in a consistent state; all rules must be applied to maintain all data integrity.
+  - Isolation: modifications must be isolated from modifications made by any other concurrent transaction.
+  - Durability: modifications persist permanently in the system, even in the event of system failure.
+  - Lock modes: Intent shared (IS), Intent exclusive (IX), Shared with intent exclusive (SIX), Intent update (IU), Shared intent update (SIU), Update intent exclusive (UIX)
+  - see https://technet.microsoft.com/en-us/library/jj856598(v=sql.110).aspx
 
-	| Isolation level  | Dirty read | Nonrepeatable read | Phantom |
-	| ---------------- |:----------:|:------------------:|:-------:|
-	| Read uncommitted | Yes        | Yes                | Yes     |
-	| Read committed   | No         | Yes                | Yes     |
-	| Repeatable read  | No         | No                 | Yes     |
-	| Snapshot         | No         | No                 | No      |
-	| Serializable     | No         | No                 | No      |
+  | Isolation level  | Dirty read | Nonrepeatable read | Phantom |
+  | ---------------- |:----------:|:------------------:|:-------:|
+  | Read uncommitted | Yes        | Yes                | Yes     |
+  | Read committed   | No         | Yes                | Yes     |
+  | Repeatable read  | No         | No                 | Yes     |
+  | Snapshot         | No         | No                 | No      |
+  | Serializable     | No         | No                 | No      |
 
 - explain inner vs outer joins
 - explain normalization vs. denomarlization
@@ -334,22 +390,22 @@
 - how to check locks in database ? (`sp_lock`)
 - how to get a list of triggers ? types of triggers ? (`INSERT`, `DELETE`, `UPDATE`, `INSTEAD OF`)
 
-	```
-	select * from sys.objects where type=’tr’
-	```
+  ```
+  select * from sys.objects where type=’tr’
+  ```
 
 - use nested SQL select statements to determine a value in table A from information in table B
 - use SQL Server `ROW_NUMBER()`
 
-	```
-	SELECT ROW_NUMBER() OVER(PARTITION BY city ORDER BY age) AS rank, city, age
-	FROM People
-	```
+  ```
+  SELECT ROW_NUMBER() OVER(PARTITION BY city ORDER BY age) AS rank, city, age
+  FROM People
+  ```
 - use COALESCE to return first non-null expression within the arguments.
 - use methods to protect against SQL injection attack:
   - Use Parameters for Stored Procedures
-	- Use Parameter collection with Dynamic SQL
-	- In like clause, user escape characters
+  - Use Parameter collection with Dynamic SQL
+  - In like clause, user escape characters
   - Filtering input parameters
 
 
@@ -366,15 +422,15 @@
 - troubleshoot a network connection from your workstation to a server inside the company? and from your workstation to a client in another time zone?
 - what is idempotent ? apply for which HTTP method ?
 
-	| HTTP Method | Idempotent | Safe |
-	| ----------- |:----------:| ----:|
-	| HEAD        | yes        | yes  |
-	| OPTIONS     | yes        | yes  |
-	| GET         | yes        | yes  |
-	| PUT         | yes        | no   |
-	| DELETE      | yes        | no   |
-	| PATCH       | no         | no   |
-	| POST        | no         | no   |
+  | HTTP Method | Idempotent | Safe |
+  | ----------- |:----------:| ----:|
+  | HEAD        | yes        | yes  |
+  | OPTIONS     | yes        | yes  |
+  | GET         | yes        | yes  |
+  | PUT         | yes        | no   |
+  | DELETE      | yes        | no   |
+  | PATCH       | no         | no   |
+  | POST        | no         | no   |
 
 
 <a name="math"><br /></a>
@@ -388,14 +444,14 @@
 - how to figure out if an integer is out of range
 - giving a 2D grid with pixels valued 0 or 1. How to check if pixels A and B are connected through a path of 0-valued pixels
 - give a deck of card, calculate total number of point that is closes to 21. e.g. A,A,J = 12; J,J,A,2 = 23; A,2 = 13
-	- game of blackjack, implement a function for blackjack that returns the score of your hand - write code for `getScore()`:
+  - game of blackjack, implement a function for blackjack that returns the score of your hand - write code for `getScore()`:
 
-	```
-	class Hand {
-		List<Card> cards;
-		int getScore( ) { }
-	}
-	```
+  ```
+  class Hand {
+    List<Card> cards;
+    int getScore( ) { }
+  }
+  ```
 - print out Fibonacci series in MATLAB
 - reverse a number
 
@@ -403,7 +459,7 @@
 <a name="linked-list"><br /></a>
 ## Linked List
 
-- find a loop in a linked list
+- find the loop starting node (if any) in a linked list
 - find the middle of a linked list with only one pass and 2 pointers (references)
 - merge two sorted linked lists. Questions on time and space complexity.
 - reverse a linked list
@@ -444,127 +500,127 @@
 - questions about trees with unconventional structures
 - search through a binary search tree, what is the worst-case big-O complexity?
 - traversal methods
-	- breadth-first
+  - breadth-first
 
-	```javascript
-	//        A(root)
-	//       /      \
-	//      B        C
-	//     /  \       \
-	//    D    E       F
-	//        / \     /
-	//       G   H   I
-	//
-	breadthFirst(root) {
-		var node = root;
-		var nodeList = []; // node list
-		var queue = [];
-		queue.push(node); // push root into queue
-		while (queue.length > 0) {
-			node = queue.shift(); // dequeue the node
-			nodeList.push(node);  // append node to the list
-			if (node.left) queue.push(node.left);
-			if (node.right) queue.push(node.right);
-		}
-		return nodeList;
-	}
-	```
+  ```javascript
+  //        A(root)
+  //       /      \
+  //      B        C
+  //     /  \       \
+  //    D    E       F
+  //        / \     /
+  //       G   H   I
+  //
+  breadthFirst(root) {
+    var node = root;
+    var nodeList = []; // node list
+    var queue = [];
+    queue.push(node); // push root into queue
+    while (queue.length > 0) {
+      node = queue.shift(); // dequeue the node
+      nodeList.push(node);  // append node to the list
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+    return nodeList;
+  }
+  ```
 
-	- depth-first (pre-order):
+  - depth-first (pre-order):
       - top-down order
       - e.g. reading hierarchical document in natural oder (chapters/sections/... in a book)
       - e.g. prefix expression tree `"(a+b)*c" => * + a b c` (Polish Notation) in arithmetic parser
 
-	```javascript
-	//        A(root)
-	//       /      \
-	//      B        G
-	//     /  \       \
-	//    C    D       H
-	//        / \     /
-	//       E   F   I
-	//
-	depthFirstPreOrder(root) {
-		var node = root;
-		var nodeList = [];
-		var stack = [];
-		stack.push(node);
-		while (stack.length > 0) {
-			node = stack.pop(); // pop the node from stack
-			if (node.right) stack.push(node.right);
-			if (node.left) stack.push(node.left);
-		}
-		return nodeList;
-	}
+  ```javascript
+  //        A(root)
+  //       /      \
+  //      B        G
+  //     /  \       \
+  //    C    D       H
+  //        / \     /
+  //       E   F   I
+  //
+  depthFirstPreOrder(root) {
+    var node = root;
+    var nodeList = [];
+    var stack = [];
+    stack.push(node);
+    while (stack.length > 0) {
+      node = stack.pop(); // pop the node from stack
+      if (node.right) stack.push(node.right);
+      if (node.left) stack.push(node.left);
+    }
+    return nodeList;
+  }
 
-	depthFirstPreOrderRecursive(node, nodeList) {
-		if (node) {
-			nodeList.push(node);
-			depthFirstInOrder(node.left, nodeList);
-			depthFirstInOrder(node.right, nodeList);
-		}
-	}
-	```
+  depthFirstPreOrderRecursive(node, nodeList) {
+    if (node) {
+      nodeList.push(node);
+      depthFirstInOrder(node.left, nodeList);
+      depthFirstInOrder(node.right, nodeList);
+    }
+  }
+  ```
 
-	- depth-first (in-order)
-	  - e.g. binary search tree, or infix `(a+b)*c`
+  - depth-first (in-order)
+    - e.g. binary search tree, or infix `(a+b)*c`
 
-	```javascript
-	//        F(root)
-	//       /      \
-	//      B        G
-	//     /  \       \
-	//    A    D       I
-	//        / \     /
-	//       C   E   H
-	//
-	depthFirstInOrder(node, nodeList) {
-		if (node) {
-			depthFirstInOrder(node.left, nodeList);
-			nodeList.push(node);
-			depthFirstInOrder(node.right, nodeList);
-		}
-	}
-	```
-	- depth-first (post-order)
-	  - bottom-up order, visiting all leaves before their parent
-	  - e.g. postfix expression tree `"(a+b)*c" => a b + c *` (Reverse Polish Notation) in arithmetic parser
+  ```javascript
+  //        F(root)
+  //       /      \
+  //      B        G
+  //     /  \       \
+  //    A    D       I
+  //        / \     /
+  //       C   E   H
+  //
+  depthFirstInOrder(node, nodeList) {
+    if (node) {
+      depthFirstInOrder(node.left, nodeList);
+      nodeList.push(node);
+      depthFirstInOrder(node.right, nodeList);
+    }
+  }
+  ```
+  - depth-first (post-order)
+    - bottom-up order, visiting all leaves before their parent
+    - e.g. postfix expression tree `"(a+b)*c" => a b + c *` (Reverse Polish Notation) in arithmetic parser
 
-	```javascript
-	//        I(root)
-	//       /      \
-	//      E        H
-	//     /  \       \
-	//    A    D       G
-	//        / \     /
-	//       B   C   F
-	//
-	depthFirstPostOrder(node, nodeList) {
-		if (node) {
-			depthFirstInOrder(node.left, nodeList);
-			depthFirstInOrder(node.right, nodeList);
-			nodeList.push(node);
-		}
-	}
-	```
+  ```javascript
+  //        I(root)
+  //       /      \
+  //      E        H
+  //     /  \       \
+  //    A    D       G
+  //        / \     /
+  //       B   C   F
+  //
+  depthFirstPostOrder(node, nodeList) {
+    if (node) {
+      depthFirstInOrder(node.left, nodeList);
+      depthFirstInOrder(node.right, nodeList);
+      nodeList.push(node);
+    }
+  }
+  ```
 
 - tree construction
   - create from pre-order
 
   ```javascript
   fromPreOrder(inputs) {
-  	 var root = {};
-  	 var size = inputs.length;
-  	 var half = size / 2 + 1;
-  	 if (size > 0) {
-  	   root.value = inputs[0]; // first item is the root
-  	   if (size > 1) {
-  	     root.left = fromPreOrder(inputs.slice(1, half));
-  	   } else if (size > half) {
-  	     root.left = fromPreOrder(inputs.slice(half, size));
-  	   }
-  	 }
-  	 return null;
+     var root = {};
+     var size = inputs.length;
+     var half = size / 2 + 1;
+     if (size > 0) {
+       root.value = inputs[0]; // first item is the root
+       if (size > 1) {
+         root.left = fromPreOrder(inputs.slice(1, half));
+       } else if (size > half) {
+         root.left = fromPreOrder(inputs.slice(half, size));
+       }
+     }
+     return null;
   }
   ```
 
@@ -572,18 +628,18 @@
 
   ```javascript
   fromPostOrder(inputs) {
-  	 var root = {};
-  	 var size = inputs.length;
-  	 var half = size / 2;
-  	 if (size > 0) {
-  	   root.value = inputs[size-1]; // last item is the root
-  	   if (size > 1) {
-  	     root.left = fromPreOrder(inputs.slice(0, half));
-  	   } else if (size > half) {
-  	     root.left = fromPreOrder(inputs.slice(half, size-1));
-  	   }
-  	 }
-  	 return null;
+     var root = {};
+     var size = inputs.length;
+     var half = size / 2;
+     if (size > 0) {
+       root.value = inputs[size-1]; // last item is the root
+       if (size > 1) {
+         root.left = fromPreOrder(inputs.slice(0, half));
+       } else if (size > half) {
+         root.left = fromPreOrder(inputs.slice(half, size-1));
+       }
+     }
+     return null;
   }
   ```
 
@@ -591,17 +647,17 @@
 
   ```javascript
   fromInOrder(inputs) {
-  	 var root = {};
-  	 var size = inputs.length;
-  	 var half = size / 2;
-  	 if (size > 0) {
-  	   root.value = inputs[half]; // middle item is the root
-  	   if (size > 1) {
-  	     root.left = fromInOrder(inputs.slice(0, half));
-  	   } else if (size > half) {
-  	     root.left = fromInOrder(inputs.slice(half+1, size));
-  	   }
-  	 }
-  	 return null;
+     var root = {};
+     var size = inputs.length;
+     var half = size / 2;
+     if (size > 0) {
+       root.value = inputs[half]; // middle item is the root
+       if (size > 1) {
+         root.left = fromInOrder(inputs.slice(0, half));
+       } else if (size > half) {
+         root.left = fromInOrder(inputs.slice(half+1, size));
+       }
+     }
+     return null;
   }
   ```

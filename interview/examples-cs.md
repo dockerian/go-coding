@@ -36,6 +36,28 @@
 - Q: How can you sort the elements of the array in descending order?
 <br/>A: By calling Sort() and then Reverse() methods.
 
+- Q: How can you sort list of a particular type objects?
+<br/>A: Implement `IComparable<T>`, using sort delegate, or `OrderBy`
+
+```csharp
+List<Foo> unsorted;
+unsorted.Sort((x, y) => x.Id.CompareTo(y.Id));
+List<Foo> sortedList = unsorted.OrderBy(o => o.Id).ThenBy(o => o.Name).ToList();
+```
+
+- Q: How to use `SortedSet<T>` ?
+<br/>A: Use `SortedSet<T>` as a heap, or `SortedDictionary<T>` as priority queue
+
+```csharp
+SortedSet<Foo> sortedById = new SortedSet<Foo>(new ByFooId());
+
+public class ByFooId : IComparer<Foo> {
+  public int Compare(x, y) {
+    return x.Id.CompareTo(y.Id)
+  }
+}
+```
+
 - Q: What’s the .NET collection class that allows an element to be accessed using a unique key?
 <br/>A: HashTable.
 

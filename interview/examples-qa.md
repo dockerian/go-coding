@@ -1,5 +1,6 @@
 # Interview Session Examples
 
+<a name="session1"><br /></a>
 ## Session 1
 
 ### Coding/Language
@@ -80,7 +81,7 @@ public interface PathNormalizer {
 ```
 
 
-<br />
+<a name="session2"><br /></a>
 ## Session 2
 
 - Q: When should you use NOLOCK for SQL statements ?
@@ -114,7 +115,7 @@ ListOfListOfString.SelectMany(ll => ll).Distinct().ToList()
 - Q: Have you ever had a situation when you discover missing scenarios/requirements after you started coding? What would you do ?
 
 
-<br />
+<a name="session3"><br /></a>
 ## Session 3
 
 - Q: Explain Polymorphism.
@@ -249,5 +250,66 @@ function countBits(n) {
 **Answer:** TBD
 
 - Q: Give 5 mins summary of your current work and things you are passionate about?
+
+
+<a name="session4"><br /></a>
+## Session 4
+
+- Q: Calculate degrees between clock hands (with or without precise to second).
+
+- Q: Describe when you know the code quality is good enough.
+
+- Q: Design a card game, or a scrabble, or a board game.
+
+- Q: Find first K closest points from a point.
+
+- Q: Find the number of occurrences of the most frequent substring of length L (L>=2) in a string of length N (N<10000).
+
+- Q: Function to return the nth Fibonacci number in the Fibonacci Sequence.
+  - Fibonacci Sequence: 1, 1, 2, 3, 5, 8, 13, 21, 34
+  - Example: N = 6
+  - Return: 8
+
+- Q: Function to reverse the order of words in a string, with reversing the order of the letters in the words.
+  - Input: "The quick brown fox jumped over the lazy dog."
+  - Return: "dog. lazy the over jumped fox brown quick The"
+
+- Q: Function passes a file as an argument that checks a file and excludes duplicative words.
+
+- Q: Given a string, print out all possible variations of upper and lower case.
+
+  **Answer:**
+
+  ```
+  #include <cstdlib>
+  #include <cmath>
+  #include <iostream>
+  using namespace std;
+
+  // Prints combinations of upper/lowercase letters
+  int PrintAllCases(const char *s, int size) {
+    if (!s || size < 1 || size > 31) return 0;
+    int max = pow(2.0, size); // int max = 1 << size;
+
+    for (int i = 0; i < max; i++) {
+      int flag = i;
+      for (int j = 0; j < size; j++) {
+        if (flag & 0x1) {
+          putchar(toupper(s[j]));
+        } else {
+          putchar(tolower(s[j]));
+        }
+        flag >>= 1; // divided by 2
+      }
+      printf("\n");
+    }
+  }
+  ```
+
+- Q: Reverse a linked list at each pair and write test cases.
+
+- Q: Spiral printing of 2D array.
+
+- Q:
 
 <br />
