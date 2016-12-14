@@ -8,10 +8,12 @@ package puzzle
 //    b) or to update first available info at any time before assigned
 func FindAvailableSpot(numbers []int) int {
 	hash := make(map[int]bool)
+	// building a hash, taking additional O(n) space
 	for _, spotID := range numbers {
 		hash[spotID] = true
 	}
 	var n int
+	// taking O(n) time to check against the hash table
 	for {
 		if n < 0 {
 			return -1 // indicate overflow
@@ -21,4 +23,8 @@ func FindAvailableSpot(numbers []int) int {
 		}
 		n++
 	}
+	// if inline operation is allowed (without using extra space),
+	// another algorithm is to
+	// 1) sort the inputs, taking O(n log(n))
+	// 2) go thru in order to find the spot
 }
