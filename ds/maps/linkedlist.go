@@ -65,8 +65,8 @@ func (pList *LinkedListNumber) AddNumber(number uint64) *LinkedListNumber {
 
 // Compare method compares LinkedListNumber objects
 func (pList *LinkedListNumber) Compare(aList *LinkedListNumber) int {
-	s1 := pList.ToString()
-	s2 := aList.ToString()
+	s1 := pList.String()
+	s2 := aList.String()
 
 	if len(s1) > len(s2) {
 		return 1
@@ -89,6 +89,8 @@ func (pList *LinkedListNumber) GetLength() int {
 	return len
 }
 
+// GetMiddle method returns the middle item of LinkedListNumber
+
 // GetNumber method gets integer representation of LinkedListNumber.
 func (pList *LinkedListNumber) GetNumber() (uint64, error) {
 	var n uint64
@@ -110,8 +112,8 @@ func (pList *LinkedListNumber) GetNumber() (uint64, error) {
 	return n, nil
 }
 
-// ToString method
-func (pList *LinkedListNumber) ToString() string {
+// String method
+func (pList *LinkedListNumber) String() string {
 	ptr := pList
 	len := pList.GetLength()
 	str := make([]byte, len)
@@ -124,11 +126,6 @@ func (pList *LinkedListNumber) ToString() string {
 	}
 
 	return string(str)
-}
-
-// string method
-func (pList *LinkedListNumber) string() string {
-	return pList.ToString()
 }
 
 // GetLinkedListNumber converts a positive number to LinkedListNumber.
