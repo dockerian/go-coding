@@ -11,9 +11,93 @@ type Point struct {
 	x, y, z float64
 }
 
-// distanceTo returns distance to other point
-func (p *Point) distanceTo(other *Point) float64 {
+// PointDistance struct
+type PointDistance struct {
+	point    *Point
+	distance float64
+}
+
+// ClosestPoints is a max heap
+// see https://golang.org/pkg/container/heap/
+type ClosestPoints []*PointDistance
+
+// Len implements sort.Interface in heap.Interface
+func (cp ClosestPoints) Len() int {
+	return len(cp)
+}
+
+// Less implements sort.Interface in heap.Interface
+func (cp ClosestPoints) Less(i, j int) bool {
+	return cp[i].distance > cp[j].distance
+}
+
+// Swap implements sort.Interface in heap.Interface
+func (cp ClosestPoints) Swap(i, j int) {
+	cp[i], cp[j] = cp[j], cp[i]
+}
+
+// Peek returns the top item on the heap
+func (cp *ClosestPoints) Peek() interface{} {
+	h := *cp
+	item := h[len(h)-1]
+	return item
+}
+
+// Pop implements help.Interface
+func (cp *ClosestPoints) Pop() interface{} {
+	old := *cp
+	n := len(old)
+	item := old[n-1]
+	*cp = old[0 : n-1]
+	return item
+}
+
+// Push implements help.Interface
+func (cp *ClosestPoints) Push(x interface{}) {
+	item := x.(*PointDistance)
+	*cp = append(*cp, item)
+}
+
+// DistanceTo returns distance to other point
+func (p *Point) DistanceTo(other *Point) float64 {
 	return math.Abs(p.x-other.x) + math.Abs(p.y-other.y) + math.Abs(p.z-other.z)
+}
+
+// GetClosest returns closest k points
+// Give a point/location p and a list of many many other locations
+// calculate K locations that are closest to the point p
+func (p *Point) GetClosest(others []*Point, k int) []*Point {
+	heap := &ClosestPoints{}
+
+	if len(others) >= k {
+		return others
+	}
+
+	for _, other := range others {
+		heapSize := heap.Len()
+		otherDistance := p.DistanceTo(other)
+
+		if heapSize >= k {
+			maxp := heap.Peek().(*PointDistance)
+
+			if maxp.distance > otherDistance {
+				heap.Pop()
+				heap.Push(other)
+			}
+		} else {
+			item := &PointDistance{point: other, distance: otherDistance}
+			heap.Push(item)
+		}
+	}
+
+	// convert heap to []*Point
+	result := make([]*Point, k)
+	for i := 0; i < k; i++ {
+		item := heap.Pop().(*PointDistance)
+		result[i] = item.point
+	}
+
+	return result
 }
 
 // String func for Point
@@ -49,7 +133,7 @@ func findMeetupPoint(points []*Point, cache bool) *Point {
 				}
 			}
 			if !dvisited {
-				distance = s.distanceTo(d)
+				distance = s.DistanceTo(d)
 				if cache {
 					saved[d][s] = distance
 				}

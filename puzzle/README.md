@@ -5,6 +5,7 @@
 - [find adjacent 1s in an integer matrix](matrix.go)
 - [find duplicated number in an array contains n numbers ranging from 0 to n-2](duplicate.go) | [test](duplicate_test.go)
 - [find the best meetup point for all given points](../interview/meetup.go) | [test](../interview/meetup_test.go)
+- [find the closest k points to a given point](../interview/meetup.go)
 - [find the maximum sum of sequence in an integer array](../interview/sequence.go) | [test](../interview/sequence_test.go)
 - [find the median in an integer array](median.go) | [test](median_test.go)
 - [find the first available parking spot](array.go) | [test](array_test.go) | [solution](../pkg/parking)
