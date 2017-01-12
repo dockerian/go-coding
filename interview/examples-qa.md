@@ -88,6 +88,28 @@ public interface PathNormalizer {
 
 - Q: What is a CTE and what is a common use for them ?
 
+**Answer:**
+
+```sql
+;WITH cte AS
+(SELECT ROW_NUMBER()
+        OVER (PARTITION BY col1, col2, col3 ORDER BY rowId) RowNum
+   FROM SomeTable)
+DELETE FROM cte WHERE RowNum > 1
+```
+
+otherwise, the query would be
+
+```sql
+DELETE FROM SomeTable
+  LEFT OUTER JOIN (
+   SELECT MIN(rowId) as rowId, *
+     FROM SomeTable
+    GROUP BY col1, col2, col3 -- any columns to identify unique row
+ ) as KeptRows ON SomeTable.rowId = KeptRows.rowId
+ WHERE KeepRows.rowId IS NULL
+```
+
 - Q: What is the null-conditional operator ("Elvis") operator (?.) e.g. myObj?.member?.submember
 
 - Q: What is JSON? Why is it important? How do you read and write it ?
