@@ -38,6 +38,21 @@ const (
 	MININT64 int64 = ^int64(^uint64(0) >> 1) // ^MAXINT64
 )
 
+// IsSquareRootInteger returns true if square root of num is integer
+func IsSquareRootInteger(num int64) bool {
+	if num < 0 || num == 0 || num == 1 {
+		return num >= 0
+	}
+	var i int64 = 1
+	var half = num / int64(2)
+	for ; i < half; i++ {
+		if i*i == num {
+			return true
+		}
+	}
+	return false
+}
+
 // MaxAndMin returns maximum and minimum integers from v ...int
 func MaxAndMin(v ...int) (int, int) {
 	max, min := MAXINT, MININT

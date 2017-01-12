@@ -62,10 +62,10 @@ func Sqrt(x float64) float64 {
 	}
 
 	const BEGIN, PRECISION = 1.0, Precision
-	var result, temp = BEGIN, float64(0.0)
+	var result = BEGIN
 
 	for {
-		temp = result - ((result*result - x) / (2 * result))
+		temp := result - ((result*result - x) / (2 * result))
 		if diff := math.Abs(result - temp); diff < PRECISION {
 			break
 		} else {

@@ -59,12 +59,12 @@ func Fibos(n int) ([]uint64, error) {
 		return []uint64{}, errors.New("Fibonacci overflow uint64")
 	}
 	sequence := make([]uint64, n+1)
-	a, b, x := uint64(0), uint64(1), uint64(1)
+	var a, b = uint64(0), uint64(1)
 	sequence[0] = a
 	sequence[1] = b
 
 	for i := 2; i <= n; i++ {
-		x = a + b
+		x := a + b
 		sequence[i] = x
 		a, b = b, x
 	}
