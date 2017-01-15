@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	u "github.com/dockerian/go-coding/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,18 +20,27 @@ type MeetupTestCase struct {
 
 // BenchmarkMeetup benchmarks on func findMeetupPoint
 func BenchmarkMeetup(b *testing.B) {
+	u.DebugOff()
+
 	b.Run("findMeetupPoint-without-cache", func(b *testing.B) {
 		b.Logf("Benchmark findMeetupPoint (no cache)\n")
-		benchmarkMeetup(b, false)
+		benchmarkMeetup(b, false, false)
 	})
 
 	b.Run("findMeetupPoint-with-cache", func(b *testing.B) {
 		b.Logf("Benchmark findMeetupPoint (w/ cache)\n")
-		benchmarkMeetup(b, true)
+		benchmarkMeetup(b, true, false)
 	})
+
+	b.Run("findMeetupPoint-by-average", func(b *testing.B) {
+		b.Logf("Benchmark findMeetupPointByMidPoint\n")
+		benchmarkMeetup(b, true, true)
+	})
+
+	u.DebugReset()
 }
 
-func benchmarkMeetup(b *testing.B, cache bool) {
+func benchmarkMeetup(b *testing.B, cache bool, useAvg bool) {
 	var x = 100
 	tests := make([]*Point, 0, x)
 	for i := 0; i < x; i++ {
@@ -42,8 +52,14 @@ func benchmarkMeetup(b *testing.B, cache bool) {
 	}
 
 	b.ResetTimer()
-	for n := 0; n < b.N; n++ {
-		findMeetupPoint(tests, cache)
+	if useAvg {
+		for n := 0; n < b.N; n++ {
+			findMeetupPointByMidPoint(tests)
+		}
+	} else {
+		for n := 0; n < b.N; n++ {
+			findMeetupPoint(tests, cache)
+		}
 	}
 }
 
@@ -72,9 +88,11 @@ func TestMeetup(t *testing.T) {
 		{[]*Point{}, nil},
 	}
 	for index, test := range tests {
-		var val = FindMeetupPoint(test.inputs)
+		var val = findMeetupPoint(test.inputs, true)
 		var msg = fmt.Sprintf("meetup @ %+v for %+v", test.expected, test.inputs)
 		t.Logf("Test %2d: %v\n", index+1, msg)
 		assert.Equal(t, test.expected, val, msg)
+		// var dst = findMeetupPointByMidPoint(test.inputs)
+		// assert.Equal(t, dst, val, msg)
 	}
 }

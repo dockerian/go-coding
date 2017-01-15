@@ -3,7 +3,8 @@ package interview
 import (
 	"fmt"
 	"math"
-	// u "github.com/dockerian/go-coding/utils"
+
+	u "github.com/dockerian/go-coding/utils"
 )
 
 // Point struct represents a location on the map
@@ -110,13 +111,43 @@ func FindMeetupPoint(points []*Point) *Point {
 	return findMeetupPoint(points, true)
 }
 
+// findMeetupPointByMidPoint finds the meetup point by mid point
+func findMeetupPointByMidPoint(points []*Point) *Point {
+	count := len(points)
+	if count == 0 {
+		return nil
+	}
+	var sumX, sumY, sumZ float64
+	for _, s := range points {
+		sumX += s.x
+		sumY += s.y
+		sumZ += s.z
+	}
+	countf := float64(count)
+	midPoint := &Point{x: sumX / countf, y: sumY / countf, z: sumZ / countf}
+	u.Debug("\npoints: %v\n", points)
+	u.Debug("  mid point: %+v\n", midPoint)
+
+	var shortest = math.MaxFloat64
+	var destPoint *Point
+	for _, s := range points {
+		distance := s.DistanceTo(midPoint)
+		u.Debug("  distance to mid point: %+v [%+v]\n", distance, s)
+		if distance < shortest {
+			shortest = distance
+			destPoint = s
+		}
+	}
+	return destPoint
+}
+
 // findMeetupPoint returns the best meetup point for all given points
 func findMeetupPoint(points []*Point, cache bool) *Point {
 	var saved = make(map[*Point]map[*Point]float64)
 	var shortest = math.MaxFloat64
 	var meetup *Point
 
-	// u.Debug("points: %v\n", points)
+	u.Debug("\npoints: %v\n", points)
 	for _, s := range points {
 		var sum float64
 		for _, d := range points {
@@ -140,7 +171,7 @@ func findMeetupPoint(points []*Point, cache bool) *Point {
 				sum += distance
 			}
 		}
-		// u.Debug("  sum = %v, from point %+v\n", sum, s)
+		u.Debug("  sum = %v, distances to point %+v\n", sum, s)
 		if sum < shortest {
 			shortest = sum
 			meetup = s
