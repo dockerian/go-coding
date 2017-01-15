@@ -8,6 +8,9 @@ import (
 // DebugEnv indicates DEBUG = 1|on|true in environment variable (ignoring case)
 var DebugEnv = CheckEnvBoolean("DEBUG", true)
 
+// DebugEnvStore keeps a backup of DebugEnv value
+var DebugEnvStore = DebugEnv
+
 // CheckEnvBoolean checks if an environment variable is set to non-false/non-zero
 func CheckEnvBoolean(name string, ignoreCase bool) bool {
 	for _, item := range os.Environ() {
