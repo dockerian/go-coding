@@ -5,14 +5,12 @@
 ifeq ($(shell uname),Darwin) # Mac OS
 	OS_PLATFORM := darwin
 	OS_PLATFORM_NAME := Mac OS
-else
-	ifeq ($(OS),Windows_NT) # Windows
+else ifeq ($(OS),Windows_NT) # Windows
 		OS_PLATFORM := windows
 		OS_PLATFORM_NAME := Windows
-	else
-		OS_PLATFORM := linux
-		OS_PLATFORM_NAME := Linux
-	endif
+else
+	OS_PLATFORM := linux
+	OS_PLATFORM_NAME := Linux
 endif
 
 # Set build parameters

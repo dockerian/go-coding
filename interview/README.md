@@ -344,7 +344,7 @@
 - collation is defined to specify the sort order in a table. 3 types (case in/sensitive, binary)
 - common table expression (CTE), as a temp query/view
 
-  ```
+  ```sql
   WITH foo_cte AS (
     SELECT a, b FROM [foo_table]
   ) --, bar_cte AS (
@@ -353,15 +353,58 @@
   SELECT * FROM [foo_cte] -- JOIN [bar_cte] ON ...
   ```
 
+- find duplicate rows
+
+  ```sql
+  SELECT col_name, COUNT(*) count FROM table GROUP BY col_name HAVING count > 1
+  SELECT DISTINCT col_name, count(col_name) FROM table GROUP BY col_name
+  ```
+
 - delete duplicate rows
 
-  ```
+  ```sql
   WITH cte_rows AS (
       SELECT ROW_NUMBER()
       OVER (PARTITION BY Col1, Col2 ORDER BY (SELECT 0)) RN
       FROM #MyTable)
   DELETE FROM cte_rows
   WHERE  RN > 1;
+  ```
+  or on MySQL (without `CTE` or `PARTITION BY` clause)
+
+  ```sql
+  -- to keep highest id
+  DELETE t1 FROM table t1, table t2
+   WHERE t1.id < t2.id AND t1.col_name == t2.col_name
+  ```
+  or
+
+  ```sql
+  -- to keep lowest id
+  DELETE t1 FROM table t1, table t2
+   WHERE t1.id < t2.id AND t1.col_name == t2.col_name
+  ```
+  or
+
+  ```sql
+  CREATE TABLE tmp_table LIKE src_table;
+  INSERT INTO tmp_table(id) SELECT MAX(id) as id
+    FROM src_table
+    GROUP BY field1, field2
+    HAVING COUNT(*) > 1
+  DELETE FROM src_table
+    WHERE id IN (SELECT id FROM tmp_table)
+  DROP TABLE tmp_table
+  ```
+  or on other system allows deleting from the same table
+
+  ```sql
+  DELETE FROM src_table src
+    WHERE src.id IN (
+      SELECT MAX(dup.id)
+      FROM src_table as dup
+      GROUP BY dup.field1, dup.field2
+      HAVING COUNT(*) > 1 )
   ```
 
 - difference between clustered and a non-clustered index? (clustered index reorder the row as physically stored, the leaf nodes contain the data pages)
