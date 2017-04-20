@@ -69,7 +69,7 @@ BUILD_DIR := build
 BIN_DIR := $(BUILD_DIR)/bin
 
 
-.PHONY: build build-all clean cmd qb run test fmt lint vet
+.PHONY: build build-all clean cmd qb run test fmt lint list vet
 
 default: cmd
 all: build-all run test
@@ -197,6 +197,9 @@ lint:
 	go get -u github.com/golang/lint/golint
 	golint -set_exit_status puzzle
 	@echo "DONE: [$@]"
+
+list:
+	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs
 
 # http://godoc.org/code.google.com/p/go.tools/cmd/vet
 # go get code.google.com/p/go.tools/cmd/vet

@@ -1,6 +1,7 @@
 # Binary Heap
 
-<br />
+
+<a name="ds"><br/></a>
 ## Data Structure
 
 A binary heap is a heap data struc­ture cre­ated using a binary tree.
@@ -17,7 +18,8 @@ A binary heap is a heap data struc­ture cre­ated using a binary tree.
   - its Right Child is at `[2*i+1]` if available.
   - its Par­ent Node is at `[i/2]` if avail­able.
 
-<br />
+
+<a name="heap"><br/></a>
 ## Heap Operations
 
 ### Insert
@@ -40,5 +42,5 @@ A binary heap is a heap data struc­ture cre­ated using a binary tree.
     - Keep repeat­ing the above step, if node reaches its cor­rect posi­tion, STOP.
 
 
-<br />
+<a name="see"><br/></a>
 See http://algorithms.tutorialhorizon.com/binary-min-max-heap/

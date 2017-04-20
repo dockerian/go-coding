@@ -1,6 +1,6 @@
 # Coding Notes
 
-##[Leetcode](https://leetcode.com/problemset/algorithms/)
+## [Leetcode](https://leetcode.com/problemset/algorithms/)
 
 - Given a binary tree, find its maximum depth (the number of nodes along the longest path from the root node down to the farthest leaf node)
 

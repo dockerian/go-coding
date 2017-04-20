@@ -1,5 +1,6 @@
 # Interview Session Examples
 
+<a name="session1-answers"><br/></a>
 ## Session 1 - [Answers](examples-qa.md#session1)
 
 ### Coding/Language
@@ -80,7 +81,7 @@ public interface PathNormalizer {
 ```
 
 
-<br />
+<a name="session2-answers"><br/></a>
 ## Session 2 - [Answers](examples-qa.md#session2)
 
 - Q: When should you use NOLOCK for SQL statements ?
@@ -108,7 +109,7 @@ public interface PathNormalizer {
 - Q: Have you ever had a situation when you discover missing scenarios/requirements after you started coding? What would you do ?
 
 
-<br />
+<a name="session3-answers"><br/></a>
 ## Session 3 - [Answers](examples-qa.md#session3)
 
 - Q: Explain Polymorphism.
@@ -149,7 +150,7 @@ public interface PathNormalizer {
 - Q: Give 5 mins summary of your current work and things you are passionate about?
 
 
-<br />
+<a name="session4-answers"><br/></a>
 ## Session 4 - [Answers](examples-qa.md#session4)
 
 - Q: Describe when you know the code quality is good enough.

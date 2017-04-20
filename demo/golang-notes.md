@@ -1,10 +1,11 @@
 # Golang Notes
-----------
+
 ## Golang Study Notes
 
 ### Golang Training
 
-**CCIS material**
+<a name="ccis"><br/></a>
+#### CCIS material
 
   - Trainer: Cory LaNou
     - https://angel.co/corylanou
@@ -24,8 +25,8 @@
   - https://sourcegraph.com/
 
 
-<br/>
-**Concurreny in Go**
+<a name="concurreny"><br/></a>
+#### Concurreny in Go
 
   - Channels
 
@@ -45,8 +46,8 @@
   ```
 
 
-<br/>
-**Go testing**
+<a name="testing"><br/></a>
+#### Go testing
 
   - use `-timeout` to timeout the testing
   - failing one test vs stop all tests: `t.Errorf` vs `t.Fatalf`
@@ -69,8 +70,8 @@ func mockServer() *httptest.Server {
   - vet
 
 
-<br/>
-**Go debugging/gdb**
+<a name="debugging"><br/></a>
+#### Go debugging/gdb
 
   - https://github.com/wg/wrk (GUI http://www.graphviz.org/Download.php)
   - Debugging Go with VSCode: https://github.com/Microsoft/vscode-go
@@ -91,8 +92,8 @@ func mockServer() *httptest.Server {
   - dump https://github.com/davecgh/go-spew
 
 
-<br/>
-**Go benchmarking**
+<a name="benchmarking"><br/></a>
+#### Go benchmarking
 
   - example
 
@@ -119,8 +120,8 @@ go tool pprof profiling.test cpu.out
   - live benchmark ?
 
 
-<br/>
-**Go logging**
+<a name="logging"><br/></a>
+#### Go logging
 
   - http://dave.cheney.net/2015/11/05/lets-talk-about-logging
   - https://github.com/op/go-logging - smaller than the other here
@@ -129,8 +130,8 @@ go tool pprof profiling.test cpu.out
   - https://github.com/cloudfoundry/lager
 
 
-<br/>
-**Questions/tips**
+<a name="tips"><br/></a>
+#### Questions/tips
 
   - nested scope ?
   - fmt is pronounced as 'phumpt'
@@ -187,8 +188,8 @@ signal.Notify(sigChan, os.Interrupt)
 ```
 
 
-<br/>
-**Other Topics**
+<a name="others"><br/></a>
+#### Other Topics
 
   - https://github.com/peterh/liner
   - https://github.com/spf13/cobra
@@ -202,15 +203,15 @@ signal.Notify(sigChan, os.Interrupt)
   - Router https://github.com/julienschmidt/httprouter
 
 
-<br/>
-**See also**
+<a name="see"><br/></a>
+#### See also
 
   - https://github.com/dariubs/GoBooks
   - https://github.com/avelino/awesome-go
   - https://www.reddit.com/r/golang/
 
 
-<br/>
+<a name="gophercon"><br/></a>
 ----------
 ----------
 ## Gophercon 2016 Session Notes

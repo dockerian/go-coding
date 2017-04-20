@@ -3,22 +3,24 @@
 This is a project for [Golang](https://golang.org/) exercises.
 
 
+## Project Structure
 
-<br/>
-## Contents
-- [Data structure solutions](ds)
-- [Dev interview: coding solutions](puzzle)
-- [Dev interview: examples](interview)
-- [Go API example](api)
-- [Go CLI example](cli) (TBD)
-- [Online coding examples](demo) | [Golang Notes](demo/golang-notes.md)
-- [Package solutions](pkg)
-- [Utilities](utils)
-- [How to build, test, and run](#build-test-run)
-- [Learning Go](#learning-go)
+  - [Data structure solutions](ds)
+  - [Dev interview: coding solutions](puzzle)
+  - [Dev interview: examples](interview)
+  - [Go API example](api)
+  - [Go CLI example](cli) (TBD)
+  - [Online coding examples](demo) | [Golang Notes](demo/golang-notes.md)
+  - [Package solutions](pkg)
+  - [Utilities](utils)
+  - [How to build, test, and run](#build-test-run)
+  - [Learning Go](#learning-go)
 
 
-<br/>
+<a name="readme"><br/></a>
+## Introduction
+
+<a name="installation"></a>
 ### Installing Go
 
 #### Local Installation
@@ -44,7 +46,7 @@ cd -P $HOME/projects/go-coding
 
 
 
-<br/>
+<a name="using-docker"><br/></a>
 #### Using Docker
 Installing `Go` may not be needed if you choose to use [Docker](#docker). With running a go-coding container, you can clone this repo at any location on your disk, for example `$HOME/projects`, without having to set ```$GOPATH```. And you can still access (e.g. for editing) the source code locally.
 
@@ -59,7 +61,7 @@ To build and run in docker container, see [here](#docker).
 
 
 
-<br/><a name="build-test-run"></a>
+<a name="build-test-run"><br/></a>
 ### Build, test and run
 
 The `Makefile` has included `build`, `test`, `run` targets. For example, to build, simply change to the project directory and run
@@ -75,8 +77,8 @@ make test  # or ./run.sh test
 ```
 
 
-<br/>
-###<a name="docker"></a>Build and run go-coding in Docker container
+<a name="docker"><br/></a>
+### Build and run go-coding in Docker container
 
 **Install Docker Toolbox**  
 

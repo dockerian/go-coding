@@ -1,6 +1,6 @@
 # C&#35; Interview Questions
 
-<br />
+<a name="general"><br/></a>
 ## General Questions
 
 - Q: Does C# support multiple-inheritance?
@@ -77,7 +77,7 @@ Yes.
 <br/>A: Presentation (UI), Business (logic and underlying code) and Data (from storage or other sources).
 
 
-<br />
+<a name="class"><br/></a>
 ## Class Questions
 
 - Q: What is the syntax to inherit from a class in C#?
@@ -116,7 +116,7 @@ To Do: Investigate
 <br/>A: Structs are value-type variables and are thus saved on the stack, additional overhead but faster retrieval.  Another difference is that structs cannot inherit.
 
 
-<br />
+<a name="method"><br/></a>
 ## Method and Property Questions
 
 - Q: What’s the implicit name of the parameter that gets passed into the set method/property of a class?
@@ -138,7 +138,7 @@ To Do: Investigate
 <br/>A: Yes, just place a colon, and then keyword base (parameter list to invoke the appropriate constructor) in the overloaded constructor definition inside the inherited class.
 
 
-<br />
+<a name="event"><br/></a>
 ## Events and Delegates
 
 - Q: What’s a delegate?
@@ -148,7 +148,7 @@ To Do: Investigate
 <br/>A: A delegate that has multiple handlers assigned to it.  Each assigned handler (method) is called.
 
 
-<br />
+<a name="xml"><br/></a>
 ## XML Documentation Questions
 
 - Q: Is XML case-sensitive?
@@ -161,7 +161,7 @@ To Do: Investigate
 <br/>A: Compile it with the /doc switch.
 
 
-<br />
+<a name="debug"><br/></a>
 ## Debugging and Testing Questions
 
 - Q: What debugging tools come with the .NET SDK?
@@ -192,7 +192,7 @@ To Do: Investigate
 <br/>A: Yes.  If you are debugging via Visual Studio.NET, just go to Immediate window.
 
 
-<br />
+<a name="ado"><br/></a>
 ## ADO.NET and Database Questions
 
 - Q: What is the role of the DataReader class in ADO.NET connections?
@@ -229,7 +229,7 @@ To Do: answer better.  The current answer is not entirely correct.
 <br/>A: Multiple processes must agree that they will share the same connection, where every parameter is the same, including the security settings.  The connection string must be identical.
 
 
-<br />
+<a name="assembly"><br/></a>
 ## Assembly Questions
 
 - Q: How is the DLL Hell problem solved in .NET?

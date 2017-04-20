@@ -1,6 +1,6 @@
 # Coding Questions
 
-<br />
+<a name="array"><br /></a>
 ## Array
 - [find adjacent 1s in an integer matrix](matrix.go)
 - [find duplicated number in an array contains n numbers ranging from 0 to n-2](duplicate.go) | [test](duplicate_test.go)
@@ -15,13 +15,13 @@
 - [sum of matrix diagonal items](matrix.go)
 
 
-<br />
+<a name="math"><br /></a>
 ## Mathematics
 - [buying stock at best price](../pkg/stock) | [test](../pkg/stock/stock_test.go)
 - [fibonacci](../ds/mathEx/fibo.go) | [test](../ds/mathEx/fibo_test.go)
 
 
-<br />
+<a name="string"><br /></a>
 ## String
 - [basic regular expression](regex.go) | [test](regex_test.go) | [java](regex.java) | [js](regex.js)
 - [compress/decompress string](../ds/str/str.go) | [test](../ds/str/str_test.go)
@@ -37,7 +37,7 @@
 - [sort array](../ds/str/sort.go) | [test](../ds/str/sort_test.go)
 
 
-<br />
+<a name="others"><br /></a>
 ## Others
 - [chan](../demo/chan.go) | [test](../demo/chan_test.go)
 - [nim game](nimgame.go)

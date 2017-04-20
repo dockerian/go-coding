@@ -34,9 +34,9 @@
 - Q: Three ants are sitting at the three corners of an equilateral triangle. Each ant starts randomly picks a direction and starts to move along the edge of the triangle. What is the probability that none of the ants collide?
 
   ```
-  P(No collision) = 
-  P(All ants go in a clockwise direction) + 
-  P(All ants go in an anti-clockwise direction) 
+  P(No collision) =
+  P(All ants go in a clockwise direction) +
+  P(All ants go in an anti-clockwise direction)
   = 0.5 * 0.5 * 0.5 + 0.5 * 0.5 * 0.5 = 0.25
   ```
 
@@ -57,8 +57,8 @@
 - Q: You have two identical eggs. Standing in front of a 100 floor building, you wonder what is the maximum number of floors from which the egg can be dropped without breaking it. What is the minimum number of tries needed to find out the solution?
 
 
-<br/>
-###See###
+<a name="see"><br/></a>
+### See
 
 - http://ai.stanford.edu/~hdwang/puzzle.html
 
