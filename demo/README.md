@@ -15,4 +15,7 @@ This is a collection of coding examples in Go (golang).
 <a name="others"><br /></a>
 ## Others
 - [boiler plate](foo.go) | [test](foo_test.go)
-- [study notes](golang-notes.md)
+- [dev setup](kb-dev-setup-notes.md)
+- [github workflow](github-workflow.md)
+- [goloang study notes](golang-notes.md)
+- [kb and links](kb-study-notes.md)

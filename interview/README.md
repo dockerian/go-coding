@@ -100,28 +100,28 @@
   - [Google interview](http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html)
   - [Big-O](http://bigocheatsheet.com/)
 
-  | Data Structure | Read (Avg/Worst) | Write       | Space    |
-  | -------------- |:----------------:|:-----------:|:--------:|
-  | Array          | 1 / n            | n           | n        |
-  | Stack / Queue  | n                | 1           | n        |
-  | Linked List    | n                | 1           | n        |
-  | Skip List      | log(n) / n       | log(n) / n  | n log(n) |
-  | Hash Table     | 1 / n            | 1 / n       | n        |
-  | BST / Tree     | log(n) / n       | log(n) / n  | n        |
+    | Data Structure | Read (Avg/Worst) | Write       | Space    |
+    | -------------- |:----------------:|:-----------:|:--------:|
+    | Array          | 1 / n            | n           | n        |
+    | Stack / Queue  | n                | 1           | n        |
+    | Linked List    | n                | 1           | n        |
+    | Skip List      | log(n) / n       | log(n) / n  | n log(n) |
+    | Hash Table     | 1 / n            | 1 / n       | n        |
+    | BST / Tree     | log(n) / n       | log(n) / n  | n        |
 
-  | Algorithm      | Best     | Average  | Worst    | Space    |
-  | -------------- |:--------:|:--------:|:--------:|:--------:|
-  | Bubble-sort    | n        | n^2      | n^2      | 1        |
-  | Bucket-sort    | n+k      | n+k      | n^2      | n        |
-  | Cube-sort      | n        | n log(n) | n log(n) | n        |
-  | Heap-sort      | n log(n) | n log(n) | n log(n) | 1        |
-  | Insertion-sort | n        | n^2      | n^2      | 1        |
-  | Merge-sort     | n log(n) | n log(n) | n log(n) | n        |
-  | Quick-sort     | n log(n) | n log(n) | n^2      | log(n)   |
-  | Radix-sort     | n\*k     | n\*k     | n\*k     | n+k      |
-  | Selection-sort | n^2      | n^2      | n^2      | 1        |
-  | Shell-sort     | n log(n) |n log(n)^2|n log(n)^2| 1        |
-  | Tree-sort      | n log(n) | n log(n) | n^2      | n        |
+    | Algorithm      | Best     | Average  | Worst    | Space    |
+    | -------------- |:--------:|:--------:|:--------:|:--------:|
+    | Bubble-sort    | n        | n^2      | n^2      | 1        |
+    | Bucket-sort    | n+k      | n+k      | n^2      | n        |
+    | Cube-sort      | n        | n log(n) | n log(n) | n        |
+    | Heap-sort      | n log(n) | n log(n) | n log(n) | 1        |
+    | Insertion-sort | n        | n^2      | n^2      | 1        |
+    | Merge-sort     | n log(n) | n log(n) | n log(n) | n        |
+    | Quick-sort     | n log(n) | n log(n) | n^2      | log(n)   |
+    | Radix-sort     | n\*k     | n\*k     | n\*k     | n+k      |
+    | Selection-sort | n^2      | n^2      | n^2      | 1        |
+    | Shell-sort     | n log(n) |n log(n)^2|n log(n)^2| 1        |
+    | Tree-sort      | n log(n) | n log(n) | n^2      | n        |
 
 
 <a name="general"><br /></a>
@@ -142,8 +142,24 @@
 - optimize a memory situation, e.g. millions lines of data needs to be read into a server.
 - parse json and store the result in a csv file
 - string and array manipulations, minesweeper game, LRU Cache, Blackjack game, trees
-- what are the four pillars of Object Oriented Programming?
-- what is different between null and undefined ?
+
+- scale of numbers
+
+  | Number        | Name             | Symbol      | Description |
+  |-------------- |:----------------:|:-----------:|:--------:|
+  | 1,000,000,000,000,000,000,000,000 | yotta | Y | Septillion |
+  | 1,000,000,000,000,000,000,000 | zetta | Z | Sextillion |
+  | 1,000,000,000,000,000,000 | exa | E | Quintillion |
+  | 1,000,000,000,000,000 | peta | P | Quadrillion |
+  | 1,000,000,000,000 | tera | T | Trillion |
+  | 1,000,000,000 | giga | G | Billion |
+  | 1,000,000 | mega | M | Million |
+  | 1,000 | kilo | k | Thousand |
+  | 100 | hecto | h | Hundred |
+  | 10 | deca | da | Ten |
+
+- what are the four pillars of Object Oriented Programming? (Inheritance, Abstraction, Polymorphism, Encapsulation)
+- what is difference between null and undefined ?
 - what is JSON ? how to read and write ? (key-value pair; use stream/text reader/writer to deserialize/serialize)
 - write an elevator controller
 
@@ -407,6 +423,15 @@
       HAVING COUNT(*) > 1 )
   ```
 
+- data types
+  | Type      | B | Minimum Value | Maximum Value | Notes |
+  |---------- |:--|--------------:|--------------:|-------|
+  | TINYINT   | 1 | -128 | 127 | |
+  | SMALLINT  | 2 | -32,768 | 32,767 | 32 K |
+  | MEDIUMINT | 3 | -8,388,608 | 8,388,607 | 8+ millions |
+  | INT       | 4 | -2,147,483,648 | 2,147,483,647 | 2+ billions |
+  | BIGINT    | 8 | -9,223,372,036,854,775,808 | 9,223,372,036,854,775,807 | 9+ quintillion |
+
 - difference between clustered and a non-clustered index? (clustered index reorder the row as physically stored, the leaf nodes contain the data pages)
 - difference between primary key and unique key? (PR constraint is a unique identifier for each row, it creates clustered index and does not allow NULL)
 - difference between `DELETE` and `TRUNCATE` commands?
@@ -419,13 +444,13 @@
   - Lock modes: Intent shared (IS), Intent exclusive (IX), Shared with intent exclusive (SIX), Intent update (IU), Shared intent update (SIU), Update intent exclusive (UIX)
   - see https://technet.microsoft.com/en-us/library/jj856598(v=sql.110).aspx
 
-  | Isolation level  | Dirty read | Nonrepeatable read | Phantom |
-  | ---------------- |:----------:|:------------------:|:-------:|
-  | Read uncommitted | Yes        | Yes                | Yes     |
-  | Read committed   | No         | Yes                | Yes     |
-  | Repeatable read  | No         | No                 | Yes     |
-  | Snapshot         | No         | No                 | No      |
-  | Serializable     | No         | No                 | No      |
+    | Isolation level  | Dirty read | Nonrepeatable read | Phantom |
+    | ---------------- |:----------:|:------------------:|:-------:|
+    | Read uncommitted | Yes        | Yes                | Yes     |
+    | Read committed   | No         | Yes                | Yes     |
+    | Repeatable read  | No         | No                 | Yes     |
+    | Snapshot         | No         | No                 | No      |
+    | Serializable     | No         | No                 | No      |
 
 - explain inner vs outer joins
 - explain normalization vs. denomarlization
@@ -489,12 +514,12 @@
 - give a deck of card, calculate total number of point that is closes to 21. e.g. A,A,J = 12; J,J,A,2 = 23; A,2 = 13
   - game of blackjack, implement a function for blackjack that returns the score of your hand - write code for `getScore()`:
 
-  ```
-  class Hand {
-    List<Card> cards;
-    int getScore( ) { }
-  }
-  ```
+    ```
+    class Hand {
+      List<Card> cards;
+      int getScore( ) { }
+    }
+    ```
 - print out Fibonacci series in MATLAB
 - reverse a number
 
@@ -545,162 +570,162 @@
 - traversal methods
   - breadth-first
 
-  ```javascript
-  //        A(root)
-  //       /      \
-  //      B        C
-  //     /  \       \
-  //    D    E       F
-  //        / \     /
-  //       G   H   I
-  //
-  breadthFirst(root) {
-    var node = root;
-    var nodeList = []; // node list
-    var queue = [];
-    queue.push(node); // push root into queue
-    while (queue.length > 0) {
-      node = queue.shift(); // dequeue the node
-      nodeList.push(node);  // append node to the list
-      if (node.left) queue.push(node.left);
-      if (node.right) queue.push(node.right);
+    ```javascript
+    //        A(root)
+    //       /      \
+    //      B        C
+    //     /  \       \
+    //    D    E       F
+    //        / \     /
+    //       G   H   I
+    //
+    breadthFirst(root) {
+      var node = root;
+      var nodeList = []; // node list
+      var queue = [];
+      queue.push(node); // push root into queue
+      while (queue.length > 0) {
+        node = queue.shift(); // dequeue the node
+        nodeList.push(node);  // append node to the list
+        if (node.left) queue.push(node.left);
+        if (node.right) queue.push(node.right);
+      }
+      return nodeList;
     }
-    return nodeList;
-  }
-  ```
+    ```
 
   - depth-first (pre-order):
       - top-down order
       - e.g. reading hierarchical document in natural oder (chapters/sections/... in a book)
       - e.g. prefix expression tree `"(a+b)*c" => * + a b c` (Polish Notation) in arithmetic parser
 
-  ```javascript
-  //        A(root)
-  //       /      \
-  //      B        G
-  //     /  \       \
-  //    C    D       H
-  //        / \     /
-  //       E   F   I
-  //
-  depthFirstPreOrder(root) {
-    var node = root;
-    var nodeList = [];
-    var stack = [];
-    stack.push(node);
-    while (stack.length > 0) {
-      node = stack.pop(); // pop the node from stack
-      if (node.right) stack.push(node.right);
-      if (node.left) stack.push(node.left);
+    ```javascript
+    //        A(root)
+    //       /      \
+    //      B        G
+    //     /  \       \
+    //    C    D       H
+    //        / \     /
+    //       E   F   I
+    //
+    depthFirstPreOrder(root) {
+      var node = root;
+      var nodeList = [];
+      var stack = [];
+      stack.push(node);
+      while (stack.length > 0) {
+        node = stack.pop(); // pop the node from stack
+        if (node.right) stack.push(node.right);
+        if (node.left) stack.push(node.left);
+      }
+      return nodeList;
     }
-    return nodeList;
-  }
 
-  depthFirstPreOrderRecursive(node, nodeList) {
-    if (node) {
-      nodeList.push(node);
-      depthFirstInOrder(node.left, nodeList);
-      depthFirstInOrder(node.right, nodeList);
+    depthFirstPreOrderRecursive(node, nodeList) {
+      if (node) {
+        nodeList.push(node);
+        depthFirstInOrder(node.left, nodeList);
+        depthFirstInOrder(node.right, nodeList);
+      }
     }
-  }
-  ```
+    ```
 
   - depth-first (in-order)
     - e.g. binary search tree, or infix `(a+b)*c`
 
-  ```javascript
-  //        F(root)
-  //       /      \
-  //      B        G
-  //     /  \       \
-  //    A    D       I
-  //        / \     /
-  //       C   E   H
-  //
-  depthFirstInOrder(node, nodeList) {
-    if (node) {
-      depthFirstInOrder(node.left, nodeList);
-      nodeList.push(node);
-      depthFirstInOrder(node.right, nodeList);
+    ```javascript
+    //        F(root)
+    //       /      \
+    //      B        G
+    //     /  \       \
+    //    A    D       I
+    //        / \     /
+    //       C   E   H
+    //
+    depthFirstInOrder(node, nodeList) {
+      if (node) {
+        depthFirstInOrder(node.left, nodeList);
+        nodeList.push(node);
+        depthFirstInOrder(node.right, nodeList);
+      }
     }
-  }
-  ```
+    ```
   - depth-first (post-order)
     - bottom-up order, visiting all leaves before their parent
     - e.g. postfix expression tree `"(a+b)*c" => a b + c *` (Reverse Polish Notation) in arithmetic parser
 
-  ```javascript
-  //        I(root)
-  //       /      \
-  //      E        H
-  //     /  \       \
-  //    A    D       G
-  //        / \     /
-  //       B   C   F
-  //
-  depthFirstPostOrder(node, nodeList) {
-    if (node) {
-      depthFirstInOrder(node.left, nodeList);
-      depthFirstInOrder(node.right, nodeList);
-      nodeList.push(node);
+    ```javascript
+    //        I(root)
+    //       /      \
+    //      E        H
+    //     /  \       \
+    //    A    D       G
+    //        / \     /
+    //       B   C   F
+    //
+    depthFirstPostOrder(node, nodeList) {
+      if (node) {
+        depthFirstInOrder(node.left, nodeList);
+        depthFirstInOrder(node.right, nodeList);
+        nodeList.push(node);
+      }
     }
-  }
-  ```
+    ```
 
 - tree construction
   - create from pre-order
 
-  ```javascript
-  fromPreOrder(inputs) {
-     var root = {};
-     var size = inputs.length;
-     var half = size / 2 + 1;
-     if (size > 0) {
-       root.value = inputs[0]; // first item is the root
-       if (size > 1) {
-         root.left = fromPreOrder(inputs.slice(1, half));
-       } else if (size > half) {
-         root.left = fromPreOrder(inputs.slice(half, size));
+    ```javascript
+    fromPreOrder(inputs) {
+       var root = {};
+       var size = inputs.length;
+       var half = size / 2 + 1;
+       if (size > 0) {
+         root.value = inputs[0]; // first item is the root
+         if (size > 1) {
+           root.left = fromPreOrder(inputs.slice(1, half));
+         } else if (size > half) {
+           root.left = fromPreOrder(inputs.slice(half, size));
+         }
        }
-     }
-     return null;
-  }
-  ```
+       return null;
+    }
+    ```
 
   - create from post-order
 
-  ```javascript
-  fromPostOrder(inputs) {
-     var root = {};
-     var size = inputs.length;
-     var half = size / 2;
-     if (size > 0) {
-       root.value = inputs[size-1]; // last item is the root
-       if (size > 1) {
-         root.left = fromPreOrder(inputs.slice(0, half));
-       } else if (size > half) {
-         root.left = fromPreOrder(inputs.slice(half, size-1));
+    ```javascript
+    fromPostOrder(inputs) {
+       var root = {};
+       var size = inputs.length;
+       var half = size / 2;
+       if (size > 0) {
+         root.value = inputs[size-1]; // last item is the root
+         if (size > 1) {
+           root.left = fromPreOrder(inputs.slice(0, half));
+         } else if (size > half) {
+           root.left = fromPreOrder(inputs.slice(half, size-1));
+         }
        }
-     }
-     return null;
-  }
-  ```
+       return null;
+    }
+    ```
 
   - create from in-order
 
-  ```javascript
-  fromInOrder(inputs) {
-     var root = {};
-     var size = inputs.length;
-     var half = size / 2;
-     if (size > 0) {
-       root.value = inputs[half]; // middle item is the root
-       if (size > 1) {
-         root.left = fromInOrder(inputs.slice(0, half));
-       } else if (size > half) {
-         root.left = fromInOrder(inputs.slice(half+1, size));
+    ```javascript
+    fromInOrder(inputs) {
+       var root = {};
+       var size = inputs.length;
+       var half = size / 2;
+       if (size > 0) {
+         root.value = inputs[half]; // middle item is the root
+         if (size > 1) {
+           root.left = fromInOrder(inputs.slice(0, half));
+         } else if (size > half) {
+           root.left = fromInOrder(inputs.slice(half+1, size));
+         }
        }
-     }
-     return null;
-  }
-  ```
+       return null;
+    }
+    ```
