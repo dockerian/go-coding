@@ -1,4 +1,4 @@
-// +build all ds str test
+// +build all ds str test benchmark
 
 package str
 

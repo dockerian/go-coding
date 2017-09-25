@@ -1,4 +1,4 @@
-// +build all interview map meetup graph test
+// +build all interview map meetup graph test benchmark
 
 package interview
 

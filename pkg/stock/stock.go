@@ -25,7 +25,7 @@ const (
 type Stock struct {
 	id        int
 	stack     int     // always = STACKSIZE
-	stackDiff float64 // increasing price for each more stack
+	stackDiff float64 // increasing price for each one more stack
 	price     float64
 	active    bool
 	amount    int

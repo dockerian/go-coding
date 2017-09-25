@@ -14,10 +14,10 @@ import (
 
 var (
 	activeRate      = 80 // percentage of active stocks
-	discountRate    = 60
+	discountRate    = 60 // maximum discount rate
 	exchangeNumbers = 10
 	stockNumbers    = 10
-	stackShift      = 2.0
+	stackShift      = 1.0
 	maxAmount       = 1000
 	minAmount       = 100
 )
@@ -82,8 +82,8 @@ func buildStockMarket() *Market {
 			rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
 			amt := rnd.Intn(maxAmount) + (maxAmount - minAmount)
 			num := rnd.Intn(100)
-			val := rnd.Float64()                    // random range between [0.0, 1.0)
-			dta := rnd.Float64()*(stackShift-1) + 1 // random shift for stackDiff
+			val := rnd.Float64()                // random range between [0.0, 1.0)
+			dta := rnd.Float64()*stackShift + 1 // random shift for stackDiff
 			dis := 1 - rnd.Intn(100)/discountRate
 
 			stocks[n] = &Stock{
