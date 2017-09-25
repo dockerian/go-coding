@@ -1,5 +1,4 @@
 .git
 build
 coverage
-Godeps
 logs

@@ -13,8 +13,8 @@
     - interview https://medium.com/@IndianGuru/interview-gopher-cory-lanou-ded55150020b#.uobpqkpa2
   - wifi: dedicatedccis3/kirkland3; ccis1/washington
   - slack
-	  - https://gophersinvite.herokuapp.com (invite)
-	  - https://gophers.slack.com/messages/training (channel)
+    - https://gophersinvite.herokuapp.com (invite)
+    - https://gophers.slack.com/messages/training (channel)
   - go playground: http://play.golang.org
   - main material: http://github.com/ardanlabs/gotrainings
   - awecome collection: [awesome-go](https://github.com/avelino/awesome-go)
@@ -30,20 +30,22 @@
 
   - Channels
 
-  ```go
-  const MaxOutstanding = 5
-  var semaphore = make(chan int, MaxOutstanding)
-  func Serve(queue chan *Request) {
-      for req := range queue {
-          semaphore <- 1
-          // goroutine with `req` parameter to create a closure
-          go func(req *Request) {
-              process(req)
-              <-semaphore
-          }(req)
-      }
-  }
-  ```
+    ```go
+    const MaxOutstanding = 5
+    var semaphore = make(chan int, MaxOutstanding)
+    func Serve(queue chan *Request) {
+        for req := range queue {
+            semaphore <- 1
+            // goroutine with `req` parameter to create a closure
+            go func(req *Request) {
+                process(req)
+                <-semaphore
+            }(req)
+        }
+    }
+    ```
+  - Design recipe: Don't use shared data to communicate, use communication to share data
+
 
 
 <a name="testing"><br/></a>
@@ -53,17 +55,17 @@
   - failing one test vs stop all tests: `t.Errorf` vs `t.Fatalf`
   - mock http server https://golang.org/pkg/net/http/httptest/
 
-```
-func mockServer() *httptest.Server {
-	f := func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(200)
-		w.Header().Set("Content-Type", "application/xml")
-		fmt.Fprintln(w, feed)
-	}
+    ```
+    func mockServer() *httptest.Server {
+      f := func(w http.ResponseWriter, r *http.Request) {
+        w.WriteHeader(200)
+        w.Header().Set("Content-Type", "application/xml")
+        fmt.Fprintln(w, feed)
+      }
 
-	return httptest.NewServer(http.HandlerFunc(f))
-}
-```
+      return httptest.NewServer(http.HandlerFunc(f))
+    }
+    ```
   - http testing https://golang.org/pkg/net/http/httptest/
   - https://github.com/cespare/reflex
   - benchmark benchstat
@@ -86,9 +88,10 @@ func mockServer() *httptest.Server {
   - ALERT! Be sure to use standard .plist markup with the file modification. Otherwise osx won't start next time you reboot. This happened to me. Solution to this is to reboot with recovery option (Cmd-R) and modifying the file with vi to match the standard.
   - Error from debug console in Lite-IDE --> "Unable to find Mach task port for process-id 12383: (os/kern) protection failure (0x2). (please check gdb is codesigned - see taskgated(8)". This error came even though I had codesigned gdb 7.6 with the exact steps of your instructions. Now I can reproduce the error by unloading the /System/Library/LaunchDaemons/com.apple.taskgated.plist, deleting the -p switch and reloading taskgated. My Mac OS is same as yours. The problem has to do with codesigning, but I can't figure out in what way.
   - memory tracing https://github.com/ardanlabs/gotraining/tree/master/topics/memory_trace
-  ```
-  http.ListenAndServe(":6060", nil)
-  ```
+
+    ```
+    http.ListenAndServe(":6060", nil)
+    ```
   - dump https://github.com/davecgh/go-spew
 
 
@@ -97,26 +100,26 @@ func mockServer() *httptest.Server {
 
   - example
 
-```
-var fa int // suppress go optimization
-// BenchmarkFib provides performance numbers for the fibonacci function.
-func BenchmarkFib(b *testing.B) {
-var a int
+    ```
+    var fa int // suppress go optimization
+    // BenchmarkFib provides performance numbers for the fibonacci function.
+    func BenchmarkFib(b *testing.B) {
+    var a int
 
-for i := 0; i < b.N; i++ {
-	a = fib(1e5)
-}
+    for i := 0; i < b.N; i++ {
+      a = fib(1e5)
+    }
 
-fa = a
-}
-```
+    fa = a
+    }
+    ```
   - using `go test`
 
-```
-go test -run none -bench
-go test -run none -bench . -cpuprofile cpu.out -benchtime 3s -benchmem
-go tool pprof profiling.test cpu.out
-```
+    ```
+    go test -run none -bench
+    go test -run none -bench . -cpuprofile cpu.out -benchtime 3s -benchmem
+    go tool pprof profiling.test cpu.out
+    ```
   - live benchmark ?
 
 
@@ -149,10 +152,10 @@ go tool pprof profiling.test cpu.out
   - use `[]byte()` to gain performance
   - variadic var must be the last one (caution ... operator)
 
-	```
-	func takeVariadic(foo int, users ...user) {}
-	takeVariadic(users...)
-	```
+    ```
+    func takeVariadic(foo int, users ...user) {}
+    takeVariadic(users...)
+    ```
 
   - map order is not guaranteed
   - receiver: value vs pointer (attention to the signature)
@@ -181,11 +184,11 @@ go tool pprof profiling.test cpu.out
   - overloading http://changelog.ca/log/2015/01/30/golang
   - chan to use
 
-```go
-sigChan := make(chan os.Signal, 1)
-signal.Notify(sigChan, os.Interrupt)
-<-sigChan
-```
+    ```go
+    sigChan := make(chan os.Signal, 1)
+    signal.Notify(sigChan, os.Interrupt)
+    <-sigChan
+    ```
 
 
 <a name="others"><br/></a>
@@ -240,12 +243,20 @@ signal.Notify(sigChan, os.Interrupt)
   * Pointers
     - nil receivers are useful, when defining functions with pointer receivers, use the pointer receiver value of `nil` to implement some default behavior in unintialized cases (note: `nil` pointer is allowed to call a pointer receiver)
   * Slices
+    - For empty slice, prefer `nil` slice (`var s []int`) over zero-length slice (`s := []int{}`)
+
+      ```
+      // both result in 0 from cap and len functions
+      var nil_slice []string // nil_slice == nil, encoding JSON object to `null`
+      zb_slice := []string{} // zb_slice != nil, encoding JSON object `[]`
+      ```
+
     - A `nil` slice can still be appended to, a slice does not have to be preallocated with `make([]type)` to start appending
 
-	```
-	var s int[] // len(s) == 0, cap(s) == 0, s == nil, s is "[]"
-	s = append(s, 1)
-	```
+      ```
+      var s []int // len(s) == 0, cap(s) == 0, s == nil, s is "[]"
+      s = append(s, 1)
+      ```
     - Reallocation to grow the size of a slice is usually fast enough so that preallocation is not always necessary
   * Maps
     - When a map is required for reading (not writing) nil is a valid empty map
@@ -407,13 +418,17 @@ signal.Notify(sigChan, os.Interrupt)
     - Minimizing memory alloc is usually first priority
     - Avoid creating an API that forces memory allocations, e.g.:
       - forces an alloc since the function returns a byte array
-      ```
-      func Encrypt(... ) []byte
-      ```
+
+        ```
+        func Encrypt(... ) []byte
+        ```
+
       - does not force an alloc and puts responsibility of allocating a `Writer` on the caller
-      ```
-      func WriteTo(Writer... )
-      ```
+
+        ```
+        func WriteTo(Writer... )
+        ```
+
   * Don’t vendor other libraries in a library
     - Try to depend on only `stdlib` and no third party libraries
 

@@ -1,0 +1,5 @@
+*.yaml linguist-language=YAML
+**/README.md linguist-documentation
+app/**/client/* linguist-generated=true
+app/**/server/* linguist-generated=true
+vendor/* linguist-vendored

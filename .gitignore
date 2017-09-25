@@ -13,6 +13,7 @@
 *.so
 *.suo
 *.swp
+*.tee
 *.test
 *.tst
 go-coding
@@ -52,11 +53,11 @@ Thumbs.db
 *.sublime-workspace
 
 # Folders
-vendor
 bin
 build
 dist
 logs
+vendor
 npm_modules
 obj
 public
