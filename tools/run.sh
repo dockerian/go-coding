@@ -91,9 +91,9 @@ function main() {
     -e BUILD_ARTIFACT
     -e BUILD_NUMBER
     -e BINARY
-    -e BUILD_OS="${BUILD_OS}"
+    -e BUILD_OS="${BUILD_OS:-linux}"
     -e BUILD_MASTER_VERSION
-    -e BUILD_VERSION
+    -e BUILD_VERSION="${BUILD_VERSION:-1.0}"
     -e BUILDS_DIR
     -e LOCAL_USER_ID=${LOCAL_USER_ID:-$(id -u)}
     -e LOCAL_GROUP_ID=${LOCAL_GROUP_ID:-$(id -g)}
@@ -105,13 +105,16 @@ function main() {
     -e MYSQL_USERNAME
     -e S3_BUCKET
     -e S3_PREFIX
-    -e TEST_COVERAGES="${TEST_COVERAGES}"
-    -e TEST_VERBOSE=${TEST_VERBOSE}
     -e TEST_DIR
-    -e TEST_MATCH="${TEST_MATCH}"
-    -e TEST_TAGS
+    -e TEST_BENCH
+    -e TEST_COVER_MODE
+    -e TEST_COVERAGES="${TEST_COVERAGES}"
+    -e TEST_MATCH="${TEST_MATCH:-.}"
+    -e TEST_TAGS="${TEST_TAGS:-all}"
+    -e TEST_VERBOSE=${TEST_VERBOSE}
     -e VERBOSE
     -v "${PWD}":${SOURCE_PATH}
+    -v "${HOME}/.ssh":/root/.ssh
     ${DOCKER_IMAG} "
 
   echo -e "\nRunning 'make ${MAKE_ARGS}' in docker container"

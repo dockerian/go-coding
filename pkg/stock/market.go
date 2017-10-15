@@ -1,3 +1,4 @@
+// Package stock :: market.go
 package stock
 
 import (

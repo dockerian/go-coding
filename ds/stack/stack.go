@@ -1,6 +1,5 @@
-// stack implementations
+// Package stack :: stack.go - stack implementations
 // see https://gist.github.com/bemasher/1777766
-
 package stack
 
 // Element struct

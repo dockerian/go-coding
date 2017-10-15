@@ -1,3 +1,4 @@
+// Package puzzle :: integer.go
 package puzzle
 
 // Find2ndLargest returns the second largest in an array

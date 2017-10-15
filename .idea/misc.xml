@@ -7,5 +7,5 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_3" default="false" project-jdk-name="Go 1.7.1" project-jdk-type="Go SDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_3" default="false" project-jdk-name="Go 1.9" project-jdk-type="Go SDK" />
 </project>

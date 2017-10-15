@@ -1,3 +1,4 @@
+// Package puzzle :: duplicate.go
 package puzzle
 
 import (

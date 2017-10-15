@@ -1,3 +1,4 @@
+// Package trie :: runeTrie.go
 package trie
 
 import (

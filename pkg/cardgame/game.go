@@ -1,3 +1,4 @@
+// Package cardgame :: game.go
 package cardgame
 
 // Game struct

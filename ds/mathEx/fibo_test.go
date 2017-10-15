@@ -21,8 +21,8 @@ func TestFibo(t *testing.T) {
 		msg := fmt.Sprintf("expecting Fib(%v) = %v", n, expected)
 		t.Logf("Test %2d: %v\n", n, msg)
 		if err1 != nil {
-			assert.Equal(t, "Fibonacci overflow uint64", err1.Error())
-			assert.Equal(t, "Fibonacci overflow uint64", err2.Error())
+			assert.Equal(t, "fibonacci overflow uint64", err1.Error())
+			assert.Equal(t, "fibonacci overflow uint64", err2.Error())
 		} else {
 			for i := 0; i <= n; i++ {
 				assert.Equal(t, Fibonacci[i], seq[i], msg)

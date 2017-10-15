@@ -1,3 +1,4 @@
+// Package str :: runes.go
 package str
 
 // Runes type represents array of runes, aka `[]rune`

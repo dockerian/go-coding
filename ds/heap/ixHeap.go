@@ -1,3 +1,4 @@
+// Package heap :: ixHeap.go
 package heap
 
 import (
@@ -123,7 +124,7 @@ func (h *IxHeap) PeekMax() (int, error) {
 	if h.position > 0 {
 		return h.heap[h.position], nil
 	}
-	return math.MinInt32, fmt.Errorf("Empty heap")
+	return math.MinInt32, fmt.Errorf("empty heap")
 }
 
 // PeekMin func
@@ -131,7 +132,7 @@ func (h *IxHeap) PeekMin() (int, error) {
 	if h.position > 0 {
 		return h.heap[1], nil
 	}
-	return math.MaxInt32, fmt.Errorf("Empty heap")
+	return math.MaxInt32, fmt.Errorf("empty heap")
 }
 
 // String func

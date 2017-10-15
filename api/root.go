@@ -1,3 +1,4 @@
+// Package api :: root.go
 package api
 
 import (

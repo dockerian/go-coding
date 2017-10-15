@@ -1,5 +1,6 @@
 // +build all demo sync singleton
 
+// Package demo :: singleton.go
 package demo
 
 import (

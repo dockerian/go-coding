@@ -1,3 +1,4 @@
+// Package stock :: byStock.go
 package stock
 
 import "sort"

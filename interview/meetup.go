@@ -1,3 +1,4 @@
+// Package interview :: meetup.go
 package interview
 
 import (

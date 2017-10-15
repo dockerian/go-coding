@@ -2,9 +2,21 @@
 
 
 [[projects]]
+  name = "github.com/aws/aws-sdk-go"
+  packages = ["aws","aws/awserr","aws/awsutil","aws/client","aws/client/metadata","aws/corehandlers","aws/credentials","aws/credentials/ec2rolecreds","aws/credentials/endpointcreds","aws/credentials/stscreds","aws/defaults","aws/ec2metadata","aws/endpoints","aws/request","aws/session","aws/signer/v4","internal/shareddefaults","private/protocol","private/protocol/json/jsonutil","private/protocol/jsonrpc","private/protocol/query","private/protocol/query/queryutil","private/protocol/rest","private/protocol/xml/xmlutil","service/kms","service/sts"]
+  revision = "6538303c6cc5d32ff3189285305b6357929d5c9b"
+  version = "v1.12.11"
+
+[[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   revision = "5215b55f46b2b919f50a1df0eaa5886afe4e3b3d"
+
+[[projects]]
+  name = "github.com/go-ini/ini"
+  packages = ["."]
+  revision = "5b3e00af70a9484542169a976dcab8d03e601a17"
+  version = "v1.30.0"
 
 [[projects]]
   name = "github.com/gorilla/context"
@@ -16,6 +28,11 @@
   name = "github.com/gorilla/mux"
   packages = ["."]
   revision = "757bef944d0f21880861c2dd9c871ca543023cba"
+
+[[projects]]
+  name = "github.com/jmespath/go-jmespath"
+  packages = ["."]
+  revision = "0b12d6b5"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
@@ -33,9 +50,15 @@
   packages = ["internal/gen","internal/triegen","internal/ucd","transform","unicode/cldr","unicode/norm"]
   revision = "5a42fa2464759cbb7ee0af9de00b54d69f09a29c"
 
+[[projects]]
+  branch = "v2"
+  name = "gopkg.in/yaml.v2"
+  packages = ["."]
+  revision = "eb3733d160e74a9c7e442f435eb3bea458e1d19f"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b8998759908f426c5fc172b80c5630dce64e2fb125a9a630daf1cbd91f827f1f"
+  inputs-digest = "ff7bb0c594b1b2618b0170acc0045e0b5111c6f6ff02233ec9d67c1b2b35b8b2"
   solver-name = "gps-cdcl"
   solver-version = 1

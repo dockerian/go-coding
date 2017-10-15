@@ -1,3 +1,4 @@
+// Package trie :: trie.go
 package trie
 
 import (

@@ -1,5 +1,6 @@
 // +build all interview map justify string test
 
+// Package interview :: justify.go
 package interview
 
 //----------------------------

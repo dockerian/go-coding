@@ -1,3 +1,4 @@
+// Package main :: main.go
 package main
 
 import (
@@ -17,6 +18,7 @@ var (
 	`
 )
 
+// main function
 func main() {
 	var arg string
 	if len(os.Args) > 1 {

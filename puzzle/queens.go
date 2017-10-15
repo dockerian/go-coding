@@ -1,3 +1,4 @@
+// Package puzzle :: queens.go
 package puzzle
 
 // Queens type

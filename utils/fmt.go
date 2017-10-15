@@ -1,3 +1,4 @@
+// Package utils :: fmt.go - extended fmt functions
 package utils
 
 import "strings"

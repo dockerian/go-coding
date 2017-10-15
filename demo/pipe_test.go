@@ -1,4 +1,4 @@
-// +build skip demo pipe stream test benchmark
+// +build all demo pipe stream test benchmark
 
 package demo
 

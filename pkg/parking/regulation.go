@@ -1,3 +1,4 @@
+// Package parking :: regulation.go
 package parking
 
 import "math"

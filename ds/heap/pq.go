@@ -1,3 +1,4 @@
+// Package heap :: pq.go
 package heap
 
 import "container/heap"

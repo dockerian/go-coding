@@ -1,3 +1,4 @@
+// Package puzzle :: string.go
 package puzzle
 
 import (
@@ -12,7 +13,6 @@ func CheckMatchedPair(s, begin, close string) (bool, error) {
 	matchCount := 0
 	beginCount, closeCount := 0, 0
 	beginLen, closeLen, sz := len(begin), len(close), len(s)
-	var okay = true
 	var err error
 
 	for i := 0; i < sz; i++ {
@@ -27,7 +27,7 @@ func CheckMatchedPair(s, begin, close string) (bool, error) {
 		}
 	}
 
-	okay = beginCount == matchCount && beginCount == closeCount
+	okay := beginCount == matchCount && beginCount == closeCount
 
 	u.Debug("begin/close: '%s' [%d] and '%s' [%d] in '%s' [%d] - matched %v\n", begin, beginCount, close, closeCount, s, sz, matchCount)
 
@@ -35,9 +35,9 @@ func CheckMatchedPair(s, begin, close string) (bool, error) {
 		msg := fmt.Sprintf("begin/close: '%s' [%d] and '%s' [%d]",
 			begin, beginCount, close, closeCount)
 		if beginCount == closeCount {
-			err = fmt.Errorf("Paired but misplaced %s", msg)
+			err = fmt.Errorf("paired but misplaced %s", msg)
 		} else {
-			err = fmt.Errorf("Unproperly paired %s", msg)
+			err = fmt.Errorf("unproperly paired %s", msg)
 		}
 	}
 

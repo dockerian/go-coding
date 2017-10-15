@@ -1,3 +1,4 @@
+// Package demo :: pipe.go
 package demo
 
 // demonstrate io.Pipe to avoid unnecessary buffering and memory allocations

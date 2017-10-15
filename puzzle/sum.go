@@ -1,3 +1,4 @@
+// Package puzzle :: sum.go
 package puzzle
 
 import (

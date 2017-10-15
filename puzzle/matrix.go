@@ -1,3 +1,4 @@
+// Package puzzle :: matrix.go
 package puzzle
 
 import (

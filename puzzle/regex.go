@@ -1,3 +1,4 @@
+// Package puzzle :: regex.go
 package puzzle
 
 import (

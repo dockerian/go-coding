@@ -1,3 +1,4 @@
+// Package demo :: chan.go
 package demo
 
 import (

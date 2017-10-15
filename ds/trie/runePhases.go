@@ -1,3 +1,4 @@
+// Package trie :: runePhases.go
 package trie
 
 import "strings"

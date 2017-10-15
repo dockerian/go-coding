@@ -1,3 +1,4 @@
+// Package demo :: foo.go
 package demo
 
 import (

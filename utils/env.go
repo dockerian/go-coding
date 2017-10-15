@@ -1,3 +1,4 @@
+// Package utils :: config.go - extended os env functions
 package utils
 
 import (

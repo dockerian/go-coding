@@ -1,3 +1,4 @@
+// Package mathEx :: math.go
 package mathEx
 
 const (

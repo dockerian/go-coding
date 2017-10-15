@@ -1,3 +1,4 @@
+// Package puzzle :: eval.go
 package puzzle
 
 // parse and evaluate mathematical expressions
@@ -112,14 +113,14 @@ func evaluate(op, a, b string) (float64, error) {
 	}
 	fa, err1 := strconv.ParseFloat(a, 64)
 	if err1 != nil {
-		return result, fmt.Errorf("Cannot parse '%v' to float64: %v", a, err1)
+		return result, fmt.Errorf("cannot parse '%v' to float64: %v", a, err1)
 	}
 	fb, err2 := strconv.ParseFloat(b, 64)
 	if err2 != nil {
-		return result, fmt.Errorf("Cannot parse '%v' to float64: %v", b, err2)
+		return result, fmt.Errorf("cannot parse '%v' to float64: %v", b, err2)
 	}
 	if _, ok := operatorPriority[op]; !ok {
-		return result, fmt.Errorf("Unknown operator '%v'", op)
+		return result, fmt.Errorf("unknown operator '%v'", op)
 	}
 
 	switch op {

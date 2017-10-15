@@ -1,3 +1,4 @@
+// Package mathEx :: integer.go
 package mathEx
 
 import (
@@ -63,14 +64,14 @@ func ParseInt64(s string) (int64, error) {
 			if ival >= icut ||
 				(ival == icut-1) &&
 					(sign == -1 && digit > imod+1 || sign == 1 && digit > imod) {
-				perr = fmt.Errorf("Overflow: %s [range: %d, %d]",
+				perr = fmt.Errorf("overflow: %s [range: %d, %d]",
 					s, math.MinInt64, math.MaxInt64)
 				return ival, perr
 			}
 			init = false
 			ival = n
 		} else {
-			perr = fmt.Errorf("Invalid digit: '%c' in '%s'", s[i], s)
+			perr = fmt.Errorf("invalid digit: '%c' in '%s'", s[i], s)
 			return ival, perr
 		}
 	}

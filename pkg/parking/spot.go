@@ -1,3 +1,4 @@
+// Package parking :: spot.go
 package parking
 
 // Spot struct

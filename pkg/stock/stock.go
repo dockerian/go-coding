@@ -1,3 +1,4 @@
+// Package stock :: stock.go
 package stock
 
 import (

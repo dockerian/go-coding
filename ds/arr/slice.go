@@ -1,3 +1,4 @@
+// Package arr :: slice.go
 package arr
 
 // InsertIntoSlice inserts the value into the slice at the specified index,

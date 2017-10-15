@@ -1,3 +1,4 @@
+// Package str :: palindrome.go
 package str
 
 import (

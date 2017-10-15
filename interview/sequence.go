@@ -1,3 +1,4 @@
+// Package interview :: sequence.go
 package interview
 
 import (

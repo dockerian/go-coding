@@ -1,3 +1,4 @@
+// Package puzzle :: nimgame.go
 package puzzle
 
 // canWinNimGame checks who (opponent or I) will win the Nim game.

@@ -1,3 +1,4 @@
+// Package stock :: exchange.go
 package stock
 
 import "fmt"

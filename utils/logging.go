@@ -1,3 +1,4 @@
+// Package utils :: logging.go
 package utils
 
 import (

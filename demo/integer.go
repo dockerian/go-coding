@@ -1,3 +1,4 @@
+// Package demo :: integer.go
 package demo
 
 import "strings"

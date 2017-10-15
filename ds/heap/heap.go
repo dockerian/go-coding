@@ -1,3 +1,4 @@
+// Package heap :: heap.go
 package heap
 
 import "container/heap"

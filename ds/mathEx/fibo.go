@@ -1,3 +1,4 @@
+// Package mathEx :: fibo.go
 package mathEx
 
 import "errors"
@@ -37,7 +38,7 @@ func Fibo(n int) (uint64, error) {
 		return uint64(0), nil
 	}
 	if n > 93 {
-		return 0, errors.New("Fibonacci overflow uint64")
+		return 0, errors.New("fibonacci overflow uint64")
 	}
 	a, b, x := uint64(0), uint64(1), uint64(1)
 	for i := 2; i <= n; i++ {
@@ -56,7 +57,7 @@ func Fibos(n int) ([]uint64, error) {
 		return []uint64{0}, nil
 	}
 	if n > 93 {
-		return []uint64{}, errors.New("Fibonacci overflow uint64")
+		return []uint64{}, errors.New("fibonacci overflow uint64")
 	}
 	sequence := make([]uint64, n+1)
 	var a, b = uint64(0), uint64(1)

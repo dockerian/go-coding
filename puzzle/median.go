@@ -1,3 +1,4 @@
+// Package puzzle :: median.go
 package puzzle
 
 import (

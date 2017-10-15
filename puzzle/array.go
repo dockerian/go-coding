@@ -1,3 +1,4 @@
+// Package puzzle :: array.go
 package puzzle
 
 // FindAvailableSpot returns first available spot from

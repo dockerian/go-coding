@@ -1,3 +1,4 @@
+// Package maps :: linkedlist.go
 package maps
 
 import (

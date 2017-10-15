@@ -1,3 +1,4 @@
+// Package str :: reverse.go
 package str
 
 import (

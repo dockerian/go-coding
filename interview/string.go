@@ -1,3 +1,4 @@
+// Package interview :: string.go
 package interview
 
 import (

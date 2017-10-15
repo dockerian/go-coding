@@ -56,51 +56,70 @@ else
 endif
 
 # Set build parameters
-BINARY ?= go-coding
+BINARY ?= $(PROJECT)
+BUILDS_DIR := builds
 BUILD_OS ?= $(OS_PLATFORM)
 BUILD_VERSION ?= $(shell cat release/tag)
 BUILD_MASTER_VERSION ?= 0
 BUILD_PREFIX := $(BINARY)-$(BUILD_VERSION)
 ALL_PACKAGES := $(shell go list ./...|grep -v /vendor/)
-PROJECT_PACKAGE := github.com/$(GITHUB_CORP)/$(GITHUB_REPO)
+PROJECT_PACKAGE := $(subst $(GOPATH)/src/, , $(PWD))
 CMD_PACKAGE := $(PROJECT_PACKAGE)/cli/cmd
 SOURCE_PATH := $(GOPATH)/src/github.com/$(GITHUB_CORP)/$(PROJECT)
-SYSTOOLS := awk egrep find go grep rm sort tee xargs zip
+SYSTOOLS := awk egrep find go grep jq rm sort tee xargs zip
 MAKE_RUN := tools/run.sh
 
-# Set testing parameters
-TEST_MATCH ?= .
-ifndef TEST_TAGS
-	TEST_TAGS := all
-endif
+DEBUG ?= 1
 
-TEST_COVERAGES ?= 50
-TEST_COVERMODE := set
+
+# Set testing parameters
+GOMAXPROCS ?= 4
 TEST_COVERFUNC := cover-func.out
 TEST_COVER_ALL := cover-all.out
 TEST_COVER_OUT := cover.out
-ifdef TEST_DIR
-	TEST_PROFILE := -covermode=$(TEST_COVERMODE) -coverprofile=$(TEST_COVER_ALL) ./$(TEST_DIR)
-	TEST_PACKAGE := $(PROJECT_PACKAGE)/$(TEST_DIR)
-else
-	TEST_PROFILE := -covermode=$(TEST_COVERMODE)
+
+ifeq ("$(TEST_COVER_MODE)","")
+	TEST_COVER_MODE = set
+endif
+ifeq ("$(TEST_COVERAGES)","")
+	TEST_COVERAGES = 65
 endif
 
-ifeq ($(DEBUG),1)
+TEST_MATCH ?= .
+TEST_TAGS ?= all
+ifneq ("$(TEST_TAGS)","all")
+	TEST_COVERAGES := 10
+endif
+
+ifneq ("$(TEST_BENCH)","")
+	TEST_BENCH := -bench=$(TEST_MATCH)
+endif
+
+ifneq ("$(TEST_DIR)","")
+	TEST_PROFILE := -covermode=$(TEST_COVER_MODE) -coverprofile=$(TEST_COVER_ALL) ./$(TEST_DIR)
+	TEST_PACKAGE := $(PROJECT_PACKAGE)/$(TEST_DIR)
+else
+	TEST_PROFILE := -covermode=$(TEST_COVER_MODE)
+	TEST_PACKAGE := ""
+endif
+
+ifeq ("$(DEBUG)","1")
 	TEST_VERBOSE := -v
 endif
 ifneq ($(TEST_VERBOSE)$(VERBOSE),)
 	TEST_VERBOSE := -v
 endif
 
-TEST_ARGS := $(TEST_VERBOSE) -bench=$(TEST_MATCH) -run=$(TEST_MATCH) -tags=$(TEST_TAGS) $(TEST_PROFILE)
+TEST_ARGS := -cpu=$(GOMAXPROCS) $(TEST_BENCH) $(TEST_VERBOSE) -run=$(TEST_MATCH) -tags=$(TEST_TAGS) $(TEST_PROFILE)
 TEST_LOGS := tests.log
 
 # Set the -ldflags option for go build, interpolate the variable values
 LDFLAGS := -ldflags "-X '$(PROJECT_PACKAGE).buildVersion=$(BUILD_VERSION)'"
 
+# Set linter level, higher is looser (golint default is 0.8)
+LINTER_LEVEL=0.0
+
 # Set variables for distribution
-BUILDS_DIR := build
 BIN_DIR := $(BUILDS_DIR)/bin
 DIST_ARCH := amd64
 DIST_DIR := dist
@@ -108,8 +127,8 @@ DIST_DOWNLOADS := $(DIST_DIR)/downloads
 DIST_UPDATES := $(DIST_DIR)/v$(BUILD_MASTER_VERSION)
 DIST_VER := $(DIST_UPDATES)/$(BUILD_VERSION)
 DIST_PREFIX := $(DIST_DOWNLOADS)/$(BUILD_PREFIX)
-GO_SELF_UPDATE_INPUTS := $(SOURCE_PATH)/build/updates
-GO_SELF_UPDATE_PUBLIC := $(SOURCE_PATH)/public
+GO_SELF_UPDATE_INPUTS := $(PWD)/build/updates
+GO_SELF_UPDATE_PUBLIC := $(PWD)/public
 
 # Set codegen variables
 # default codegen language
@@ -147,7 +166,7 @@ build-only:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" BUILD_OS=$(BUILD_OS) \
-	GITHUB_CORP=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
+	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
@@ -170,7 +189,7 @@ build-all-only:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" BUILD_OS=$(BUILD_OS) \
-	GITHUB_CORP=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
+	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
@@ -219,7 +238,7 @@ check-tools:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" \
-	GITHUB_CORP=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
+	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
@@ -232,29 +251,31 @@ endif
 	@echo "- DONE: $@"
 
 
-clean clean-cache:
+clean-cache clean:
 	@echo ""
 	@echo "-----------------------------------------------------------------------"
 	@echo "Cleaning build ..."
 	find . -name '.DS_Store' -type f -delete
 	find . -name \*.bak -type f -delete
 	find . -name \*.log -type f -delete
+	find . -name \*.out -type f -delete
+	@echo ""
+	@echo "Cleaning up codegen and $(SWAGGER_WTAG) ..."
 	for ver in $(CODEGEN_VERS); do \
 	rm -rf \
 		$(CODEGEN_PATH)/$$ver/client \
 		$(CODEGEN_PATH)/$$ver/server \
 		$(CODEGEN_PATH)/$$ver/spec; \
 	done
-	@echo "Cleaning up $(SWAGGER_WTAG) ..."
 	docker container rm -f -v $(SWAGGER_WTAG) || true
+	@echo ""
+	@echo "Cleaning up cache and coverage data ..."
 	rm -rf .cache
 	rm -rf .vscode
+	find . -name cover\*.out -type f -delete
 	rm -rf ./$(BIN_DIR)
 	rm -rf ./$(BUILDS_DIR)
-	rm -rf ./cover*.out
-	rm -rf ./coverage.txt
 	rm -rf ./$(DIST_DIR)
-	rm -rf ./$(TEST_COVER_ALL)
 	rm -rf ./$(TEST_COVER_OUT)
 	rm -rf ./$(TEST_LOGS)
 	@echo ""
@@ -320,7 +341,7 @@ ifeq ("$(DOCKER_DENV)","")
 	# not in a docker container yet
 	@echo `date +%Y-%m-%d:%H:%M:%S` "Start bash in container '$(DOCKER_IMAG)'"
 	PROJECT_DIR="$(PWD)" \
-	GITHUB_CORP=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
+	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) cmd
 else
@@ -355,7 +376,7 @@ fmt-only:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" \
-	GITHUB_CORP=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
+	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
@@ -369,15 +390,15 @@ godep:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" \
-	GITHUB_CORP=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
+	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
-	go get -u github.com/tools/godep
-	go get -u github.com/golang/dep/cmd/dep
+	# go get -u github.com/tools/godep
+	# go get -u github.com/golang/dep/cmd/dep
 	@echo "Saving go dependency packages to Godeps ..."
 	godep save ./...
-	dep ensure
+	# dep ensure
 endif
 	@echo ""
 	@echo "- DONE: $@"
@@ -408,13 +429,13 @@ lint-only:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" \
-	GITHUB_CORP=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
+	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
 	@echo "Check coding style ..."
 	# go get -u github.com/golang/lint/golint
-	golint -set_exit_status
+	golint -min_confidence $(LINTER_LEVEL) -set_exit_status $(ALL_PACKAGES)
 endif
 	@echo ""
 	@echo "- DONE: $@"
@@ -427,7 +448,7 @@ qb:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" BUILD_OS=$(BUILD_OS) \
-	GITHUB_CORP=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
+	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
@@ -442,7 +463,7 @@ run:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" \
-	GITHUB_CORP=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
+	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
@@ -523,29 +544,30 @@ test-coverage cover: test show-coverage
 
 
 # test targets
-test: check-tools godep fmt-only lint-only vet-only test-only
+test: check-tools fmt-only lint-only vet-only test-only
 	@echo ""
 	@echo "- DONE: $@"
 
 test-only:
 	@echo ""
 ifndef DONT_RUN_DOCKER
-	PROJECT_DIR="$(PWD)" \
-	GITHUB_CORP=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
-	DEBUG=$(DEBUG) TEST_MATCH=$(TEST_MATCH) TEST_COVERAGES=$(TEST_COVERAGES) \
+	PROJECT_DIR="$(PWD)" DEBUG=$(DEBUG) \
+	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
+	TEST_DIR=$(TEST_DIR) TEST_MATCH=$(TEST_MATCH) TEST_BENCH=$(TEST_BENCH) \
+	TEST_COVER_MODE=$(TEST_COVER_MODE) TEST_COVERAGES=$(TEST_COVERAGES) TEST_TAGS=$(TEST_TAGS) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
+	# godep restore && go version
 	@echo "......................................................................."
-	@echo "Running tests ... [tags: $(TEST_TAGS)]"
+	@echo "Running tests ... [tags: $(TEST_TAGS)] $(TEST_COVERAGES) %"
 	@echo "go test $(TEST_PACKAGE) $(TEST_ARGS)"
 ifdef TEST_DIR
 	go test $(TEST_PACKAGE) $(TEST_ARGS) 2>&1 | tee ./$(TEST_LOGS)
 	go tool cover -func="$(TEST_COVER_ALL)" > "$(TEST_COVERFUNC)"
 else
 	PROJECT_DIR="$(PWD)" \
-	COVER_MODE="$(TEST_COVERMODE)" \
-	COVERAGE_THRESHOLDS="$(TEST_COVERAGES)" \
+	COVER_MODE="$(TEST_COVER_MODE)" \
 	COVER_ALL_OUT="$(TEST_COVER_ALL)" \
 	TEST_ARGS="$(TEST_ARGS)" TEST_LOGS="$(TEST_LOGS)" \
 	tools/check_coverage.sh $(TEST_COVERAGES) "$(TEST_COVERFUNC)" --test
@@ -553,7 +575,7 @@ endif
 	@echo ""
 	@echo "Checking test coverage thresholds [$(TEST_COVERAGES) %] ..."
 	PROJECT_DIR="$(PWD)" \
-	COVERAGE_THRESHOLDS="$(TEST_COVERAGES)" \
+	COVER_MODE="$(TEST_COVER_MODE)" \
 	COVER_ALL_OUT="$(TEST_COVER_ALL)" \
 	tools/check_coverage.sh $(TEST_COVERAGES) "$(TEST_COVERFUNC)" --pass
 endif
@@ -569,7 +591,7 @@ vet-only:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" \
-	GITHUB_CORP=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
+	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else

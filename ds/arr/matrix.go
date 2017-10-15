@@ -1,3 +1,4 @@
+// Package arr :: matrix.go
 package arr
 
 import (

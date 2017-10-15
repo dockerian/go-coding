@@ -1,3 +1,4 @@
+// Package trie :: nodeStack.go
 package trie
 
 import (

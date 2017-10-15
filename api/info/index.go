@@ -1,3 +1,4 @@
+// Package info :: index.go
 package info
 
 import (

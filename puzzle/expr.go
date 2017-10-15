@@ -1,3 +1,4 @@
+// Package puzzle :: expr.go
 package puzzle
 
 // CheckExpression checks if an expression has proper openings and closings of

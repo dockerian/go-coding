@@ -1,3 +1,4 @@
+// Package str :: sort.go
 package str
 
 import (

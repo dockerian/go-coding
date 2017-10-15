@@ -1,3 +1,4 @@
+// Package stack :: str.go - a string stack
 package stack
 
 import "fmt"

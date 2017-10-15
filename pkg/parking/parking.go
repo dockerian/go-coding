@@ -1,3 +1,4 @@
+// Package parking :: parking.go
 package parking
 
 import (

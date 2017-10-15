@@ -1,3 +1,4 @@
+// Package utils :: interface.go
 package utils
 
 // GetTernary returns a if condition is true; otherwise returns b

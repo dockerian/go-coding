@@ -55,6 +55,10 @@ function main() {
 
   cd -P "${PROJECT_DIR}" && pwd >/dev/null
 
+  if [[ ! "${COVER_MODE}" =~ (set|count|atomic) ]]; then
+    COVER_MODE=set
+  fi
+
   if [[ "${RUN_ALL_TESTS}" =~ (1|true|yes) ]]; then RUN_ALL_TESTS="true"; fi
   if [[ "${NO_THRESHOLDS}" =~ (1|true|yes) ]]; then NO_THRESHOLDS="true"; fi
 
@@ -76,13 +80,17 @@ function run_all_tests() {
   echo "mode: ${COVER_MODE}" > "${COVER_ALL_OUT}"
 
   if [[ -s "${COVER_ALL_OUT}" ]]; then
+    touch "${pkg_out}"
     for pkg in $(go list ./...); do
       echo "Run: go test ${TEST_ARGS} --coverprofile=${pkg_out} ${pkg}"
       go test ${TEST_ARGS} --coverprofile="${pkg_out}" ${pkg} 2>&1|tee "${TEST_LOGS}"
+      if [[ "$?" != "0" ]]; then
+        log_error "go test ${pkg}"
+      fi
       tail -n +2 "${pkg_out}" >> "${COVER_ALL_OUT}"
       echo ""
     done
-    go tool cover -func="${COVER_ALL_OUT}" > "${COVER_FUNC}"
+    go tool cover -func="${COVER_ALL_OUT}"|tee "${COVER_FUNC}"
   fi
 }
 
@@ -110,7 +118,7 @@ function check() {
   fi
 
   # setting 1 if percentage >= thresholds; otherwise 0
-  PASS="$(awk 'BEGIN {print ("'${COVERAGE_PERCENTAGE}'" >= "'$COVERAGE_THRESHOLDS'")}')"
+  PASS=$(awk "BEGIN {print (${COVERAGE_PERCENTAGE} >= ${COVERAGE_THRESHOLDS})}")
 
   if [[ "${PASS}" != "1" ]]; then
     log_error "Coverage: ${COVERAGE_PERCENTAGE} % is below ${COVERAGE_THRESHOLDS} %"

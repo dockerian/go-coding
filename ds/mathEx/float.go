@@ -1,3 +1,4 @@
+// Package mathEx :: float.go
 package mathEx
 
 import (

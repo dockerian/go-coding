@@ -1,3 +1,4 @@
+// Package heap :: minIntHeap.go
 package heap
 
 import "container/heap"

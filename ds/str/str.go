@@ -1,3 +1,4 @@
+// Package str :: str.go
 package str
 
 import "strconv"
