@@ -1,0 +1,175 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "vVjKGGjPXWm1JLqjt99BNAHg/00=",
+			"path": "github.com/dockerian/go-coding",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "ZS2NcGjcFZCtiNFBbiYpsg1tIJo=",
+			"path": "github.com/dockerian/go-coding/api",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "fvk1sHyUc+jujwWYmNEL3eHXdnk=",
+			"path": "github.com/dockerian/go-coding/api/info",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "/TkQaD8rdsqJK2YH69RLywKWhxo=",
+			"path": "github.com/dockerian/go-coding/demo",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "KhfLpksXXiNYPo+NK2ZHgt8lW6s=",
+			"path": "github.com/dockerian/go-coding/ds",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "Pp+sZC3JF5OhXQQU6UAo2Xa6ySA=",
+			"path": "github.com/dockerian/go-coding/ds/arr",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "do+hMH5RM0OfRNofo+IomUUwYtQ=",
+			"path": "github.com/dockerian/go-coding/ds/exp",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "ycC7gBuBcd0hg9+HIbVSG159H30=",
+			"path": "github.com/dockerian/go-coding/ds/heap",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "WAlDNRjjXsgDQ1ChW10qS1zScuk=",
+			"path": "github.com/dockerian/go-coding/ds/maps",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "Hq8hkdraR2R696HrGxccQ2IK02M=",
+			"path": "github.com/dockerian/go-coding/ds/mathEx",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "6cFTG6qB7sUjCXjknjq11NAIj2U=",
+			"path": "github.com/dockerian/go-coding/ds/queue",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "CBHzw2WOs4FUZRHpyLWSa2HsCok=",
+			"path": "github.com/dockerian/go-coding/ds/stack",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "8HTJ0x33Dp8SYKcPbevYGbYaws8=",
+			"path": "github.com/dockerian/go-coding/ds/str",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "aCFqMqwpJ0hU2+/HjJnaA11G0wQ=",
+			"path": "github.com/dockerian/go-coding/ds/tree",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "6keiLUfng7s3IQJAv8zSaVqnbRU=",
+			"path": "github.com/dockerian/go-coding/ds/trie",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "SFgsZoTNsY786lzQPzOimBis6C4=",
+			"path": "github.com/dockerian/go-coding/ds/zip",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "qprjmi3hnurE2zx2QnDjJYbT9zo=",
+			"path": "github.com/dockerian/go-coding/github",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "kwnP8AtPWcBcMYzUWleGgRvu1Po=",
+			"path": "github.com/dockerian/go-coding/interview",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "LGBDppBMFLWt8nYylcKIyn6nB9w=",
+			"path": "github.com/dockerian/go-coding/pkg/cardgame",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "zLJyqJ/KzwBytn74A0wrtE6zkTA=",
+			"path": "github.com/dockerian/go-coding/pkg/parking",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "egcB09Nrd8qiBppCZ9lrCWDPV5U=",
+			"path": "github.com/dockerian/go-coding/pkg/stock",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "La2AS3gLNHE6yO4IQWg+2w0VUiE=",
+			"path": "github.com/dockerian/go-coding/pkg/str",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "M23IiwaLAWtxvH1mZHtOFtY/fU0=",
+			"path": "github.com/dockerian/go-coding/puzzle",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "DTY+JUq9lWQajMC42v6DjJYSfi4=",
+			"path": "github.com/dockerian/go-coding/utils",
+			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
+			"revisionTime": "2017-09-25T02:40:20Z"
+		},
+		{
+			"checksumSHA1": "K0crHygPTP42i1nLKWphSlvOQJw=",
+			"path": "github.com/stretchr/objx",
+			"revision": "1a9d0bb9f541897e62256577b352fdbc1fb4fd94",
+			"revisionTime": "2015-09-28T12:21:52Z"
+		},
+		{
+			"checksumSHA1": "8bP6iLolDGDRKAnx89Qb/OatWDE=",
+			"path": "golang.org/x/tools/go/ast/astutil",
+			"revision": "e531a2a1c15f94033f6fa87666caeb19a688175f",
+			"revisionTime": "2017-09-14T20:19:24Z"
+		},
+		{
+			"checksumSHA1": "AnXFEvmaJ7w2Q7hWPcLUmCbPgq0=",
+			"path": "golang.org/x/tools/go/buildutil",
+			"revision": "e531a2a1c15f94033f6fa87666caeb19a688175f",
+			"revisionTime": "2017-09-14T20:19:24Z"
+		},
+		{
+			"checksumSHA1": "ZpAR2KupZto/mWf9zu5e6IKDWt0=",
+			"path": "golang.org/x/tools/go/loader",
+			"revision": "e531a2a1c15f94033f6fa87666caeb19a688175f",
+			"revisionTime": "2017-09-14T20:19:24Z"
+		}
+	],
+	"rootPath": "github.com/dockerian/go-coding"
+}

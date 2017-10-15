@@ -53,11 +53,12 @@ Thumbs.db
 *.sublime-workspace
 
 # Folders
+!vendor/vendor.json
+vendor/**
 bin
 build
 dist
 logs
-vendor
 npm_modules
 obj
 public

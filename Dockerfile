@@ -34,11 +34,13 @@ RUN apt-get update \
 #  && rm /usr/local/bin/gosu.asc
 # COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
 
-RUN go get -u github.com/tools/godep \
- && go get -u github.com/golang/dep/cmd/dep \
- && go get -u github.com/golang/lint/golint \
+RUN go get -u github.com/golang/lint/golint \
  && go get -u github.com/sanbornm/go-selfupdate \
- && go get -u github.com/ory/go-acc
+ && go get -u github.com/ory/go-acc \
+ && go get -u github.com/golang/dep/cmd/dep \
+ && go get -u github.com/tools/godep \
+ && go get -u github.com/Masterminds/glide \
+ && go get -u github.com/kardianos/govendor
 
 #
 # downloading the latest go-coding source code so that it allows to

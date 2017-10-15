@@ -154,8 +154,6 @@ else
 	@echo "......................................................................."
 	@echo "Building: '$(BINARY)' ... [BUILD_OS = $(BUILD_OS)]"
 	go get -u
-	go get -u github.com/tools/godep
-	godep restore
 
 	GOARCH=$(DIST_ARCH) GOOS=$(BUILD_OS) go build $(LDFLAGS) -o $(BIN_DIR)/$(BUILD_OS)/$(BINARY) main.go
 
@@ -179,8 +177,6 @@ else
 	@echo "......................................................................."
 	@echo "Building $(BINARY) for all platforms..."
 	go get -u
-	go get -u github.com/tools/godep
-	godep restore
 	go get -t github.com/sanbornm/go-selfupdate
 	go install github.com/sanbornm/go-selfupdate
 
@@ -380,7 +376,7 @@ else
 	go get -u github.com/tools/godep
 	go get -u github.com/golang/dep/cmd/dep
 	@echo "Saving go dependency packages to Godeps ..."
-	# godep save ./...
+	godep save ./...
 	dep ensure
 endif
 	@echo ""
@@ -540,7 +536,6 @@ ifndef DONT_RUN_DOCKER
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
-	# godep restore && go version
 	@echo "......................................................................."
 	@echo "Running tests ... [tags: $(TEST_TAGS)]"
 	@echo "go test $(TEST_PACKAGE) $(TEST_ARGS)"
