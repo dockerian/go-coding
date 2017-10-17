@@ -38,9 +38,9 @@ RUN go get -u github.com/golang/lint/golint \
  && go get -u github.com/sanbornm/go-selfupdate \
  && go get -u github.com/ory/go-acc \
  && go get -u github.com/golang/dep/cmd/dep \
- && go get -u github.com/tools/godep \
  && go get -u github.com/Masterminds/glide \
- && go get -u github.com/kardianos/govendor
+ && go get -u github.com/kardianos/govendor \
+ && go get -u github.com/tools/godep
 
 #
 # downloading the latest go-coding source code so that it allows to

@@ -1,5 +1,5 @@
 # Makefile for go-coding
-.PHONY: all build build-all clean cmd default docker qb run test fmt lint list vet
+.PHONY: all build build-all clean cmd default docker dep depend godep qb run test fmt lint list vet
 
 # Set project variables
 PROJECT := go-coding
@@ -62,7 +62,7 @@ BUILD_OS ?= $(OS_PLATFORM)
 BUILD_VERSION ?= $(shell cat release/tag)
 BUILD_MASTER_VERSION ?= 0
 BUILD_PREFIX := $(BINARY)-$(BUILD_VERSION)
-ALL_PACKAGES := $(shell go list ./...|grep -v /vendor/)
+ALL_PACKAGES := $(shell go list ./... 2>/dev/null|grep -v -E '/v[0-9]+/client|/v[0-9]+/server|/vendor/')
 PROJECT_PACKAGE := $(subst $(GOPATH)/src/, , $(PWD))
 CMD_PACKAGE := $(PROJECT_PACKAGE)/cli/cmd
 SOURCE_PATH := $(GOPATH)/src/github.com/$(GITHUB_CORP)/$(PROJECT)
@@ -334,6 +334,46 @@ endif
 	@echo "- DONE: codegen [$@]"
 
 
+# dependencies
+dep depend godep:
+	@echo ""
+	@echo "Installing go lib and package managers ..."
+	go get -u -f github.com/golang/lint/golint
+	go get -u -f github.com/golang/dep/cmd/dep
+	go get -u -f github.com/Masterminds/glide
+	go get -u -f github.com/kardianos/govendor
+	go get -u -f github.com/tools/godep
+	@echo ""
+	@echo "Saving go dependency packages to Godeps ..."
+	godep save -t ./... || true
+	@echo ""
+ifeq ("$(DOCKER_DENV)","")  # assume not in docker container
+	@echo "CAUTION: this is restoring to $$GOPATH [$(GOPATH)]"
+endif
+	godep restore
+	@echo ""
+	@echo "- DONE: $@"
+
+dep-status:
+	@echo ""
+ifeq ("$(DOCKER_DENV)","")  # NOT inside docker container
+	@echo "--- Opening dep status ---"
+ifeq ($(OS), Windows_NT) # Windows
+	choco install graphviz.portable
+	dep status -dot | dot -T png -o status.png; start status.png
+else ifeq ($(shell uname),Darwin) # Mac OS
+	brew install graphviz
+	dep status -dot | dot -T png | open -f -a /Applications/Preview.app
+else
+	sudo apt-get install graphviz
+	dep status -dot | dot -T png | display
+endif
+else
+	@echo ""
+	@echo "Cannot show dep status in the container."
+endif
+
+
 # docker targets
 docker cmd: docker_build.tee
 	@echo ""
@@ -385,42 +425,6 @@ else
 endif
 	@echo ""
 	@echo "- DONE: $@"
-
-godep:
-	@echo ""
-ifndef DONT_RUN_DOCKER
-	PROJECT_DIR="$(PWD)" \
-	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
-	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
-	$(MAKE_RUN) $@
-else
-	# go get -u github.com/tools/godep
-	# go get -u github.com/golang/dep/cmd/dep
-	@echo "Saving go dependency packages to Godeps ..."
-	godep save ./...
-	# dep ensure
-endif
-	@echo ""
-	@echo "- DONE: $@"
-
-godep-status:
-	@echo ""
-ifeq ("$(DOCKER_DENV)","")  # NOT inside docker container
-	@echo "--- Opening dep status ---"
-ifeq ($(OS), Windows_NT) # Windows
-	choco install graphviz.portable
-	dep status -dot | dot -T png -o status.png; start status.png
-else ifeq ($(shell uname),Darwin) # Mac OS
-	brew install graphviz
-	dep status -dot | dot -T png | open -f -a /Applications/Preview.app
-else
-	sudo apt-get install graphviz
-	dep status -dot | dot -T png | display
-endif
-else
-	@echo ""
-	@echo "Cannot show dep status in the container."
-endif
 
 
 lint: check-tools lint-only
@@ -558,7 +562,6 @@ ifndef DONT_RUN_DOCKER
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
-	# godep restore && go version
 	@echo "......................................................................."
 	@echo "Running tests ... [tags: $(TEST_TAGS)] $(TEST_COVERAGES) %"
 	@echo "go test $(TEST_PACKAGE) $(TEST_ARGS)"
