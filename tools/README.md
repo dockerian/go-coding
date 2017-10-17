@@ -103,35 +103,66 @@ This is a set of tools and scripts for `go-coding` project.
 
 #### Local Installation
 
-  See https://www.goinggo.net/2016/05/installing-go-and-your-workspace.html
+  - See https://www.goinggo.net/2016/05/installing-go-and-your-workspace.html
+  - See https://git-scm.com/ for git installation instructions
 
-  After installed `go` and set `$GOPATH` (which typically is `$HOME/go`)
+  After installed `go`, set `$GOPATH` (which typically is `$HOME/go`)
+  and optionally `$GOROOT` (usually `/usr/local/go`) in `$PATH`
 
-  ```
-  mkdir -p $GOPATH/src/github.com/dockerian
-  cd $GOPATH/src/github.com/dockerian
-  git clone https://github.com/dockerian/go-coding.git
-  cd go-coding
-  ```
+    ```
+    export GOPATH=$HOME/go
+    export GOROOT=/usr/local/go
+    export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
-  *NOTE:* This assumes you have Git installed.  If you don’t, you can find the installation instructions here: https://git-scm.com/
+    mkdir -p $GOPATH/src/github.com/dockerian
+    cd $GOPATH/src/github.com/dockerian
+    git clone git@github.com:dockerian/go-coding.git
+    cd go-coding
+    ```
 
-  Optionally create a soft link (as shortcut) in `$HOME/projects`
+  For a developer with GitHub account, e.g. "cyberdev", working on fork -
 
-  ```
-  ln -s $GOPATH/src/github.com/dockerian/go-coding $HOME/projects/go-coding
-  cd -P $HOME/projects/go-coding
-  ```
+    ```
+    mkdir -p $GOPATH/src/github.com/dockerian
+    cd $GOPATH/src/github.com/dockerian
+    git clone git@github.com:cyberdev/go-coding.git
+    cd go-coding
+    git remote add upstream git@github.com:dockerian/go-coding.git
+    git fetch --all -v
+    ```
+
+  Optionally create a soft link (as shortcut) in a project folder, e.g. `$HOME/gh`
+
+    ```
+    ln -s $GOPATH/src/github.com/dockerian/go-coding $HOME/gh/go-coding
+    cd $HOME/gh/go-coding
+    cd -P .  # on docker host
+    ```
 
   **IMPORTANT NOTES**:
-  `$GOPATH/src/github.com` may contain both `origin` (forked by, e.g. cyberdev)
+
+  * `$GOPATH/src/github.com` may contain both `origin` (forked by, e.g. cyberdev)
   and `upstream` (the repo forked from, e.g. dockerian)
-    - $GOPATH/src/github.com/dockerian/cyberint-sng-api
-    - $GOPATH/src/github.com/cyberdev/cyberint-sng-api
+    - $GOPATH/src/github.com/dockerian/go-coding
+    - $GOPATH/src/github.com/cyberdev/go-coding
+
+  However, in order to use [godep](#godep) (and some other go packages manager),
+  any github fork should be cloned/checked-out to its upstream, e.g. dockerian,
+  path under `$GOPATH/src/github.com`.
+
+  * Running go test and/or build requires current path (`$PWD`) under `$GOPATH`.
+    - Use `cd -P .` if the project is a soft link to the repository path
+    - Add the following script, e.g. to `./.bashrc`, as a helper function
+
+    ```
+    function goto() {
+      cd $(find $GOPATH/src -type d -name "$1" 2>/dev/null | head -n 1); pwd
+    }
+    ```
 
 
-<a name="godep"><br /></a>
-### Golang dependency management
+<a name="godep"></a>
+## Golang Dependency Management
 
   Since `vendor` support in go 1.6, there are many existing 3rd-party tools
   can help to manage package dependencies. Here are some references:
@@ -177,14 +208,16 @@ This is a set of tools and scripts for `go-coding` project.
       ```
       dep ensure -update
       godep update
-      glide update
+      glide update  # update to glide.lock
+      govendor update +external
       ```
 
   - Sync/Downloading packages per packages list to `./vendor`
 
       ```
+      dep ensure
       glide install
-      govendor sync
+      govendor sync +external
       ```
 
   - Downloading packages to `./vendor`
@@ -192,8 +225,9 @@ This is a set of tools and scripts for `go-coding` project.
       ```
       godep get
       glide get
-      govendor fetch  # govendor get: to both ./vendor and $GOPATH
-                      # govendor add or update: add/update from $GOPATH to ./vendor
+      govendor fetch  # +external: updating to ./vendor only
+                      # govendor get: to both ./vendor and $GOPATH to ./vendor
+                      # govendor add or update: add/update from $GOPATH
       ```
 
   - Removing a package dependency
