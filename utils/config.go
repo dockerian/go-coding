@@ -20,8 +20,10 @@ var (
 	_configParser ConfigParserFunc = yaml.Unmarshal
 	// _reader is a ConfigReaderFunc
 	_configReader ConfigReaderFunc = ioutil.ReadFile
+	// _decryptFunc is a decrypt function to return decrypted key value
+	_decryptFunc DecryptFunc = DecryptKeyTextByKMS
 	// configs use config file path mapping to a Config struct
-	configs = map[string]Config{}
+	configs = map[string]Config{"": Config{}}
 	// syncMtx is a private lock used by GetConfig
 	syncMtx = &sync.Mutex{}
 )
@@ -38,21 +40,31 @@ type ConfigParserFunc func([]byte, interface{}) error
 // ConfigReaderFunc is a generic reader function
 type ConfigReaderFunc func(string) ([]byte, error)
 
+// DecryptFunc is a generic decrypt function
+type DecryptFunc func(string, string) string
+
 /*******************************************************************************
  * Config methods
  *******************************************************************************
  */
 
 // Get gets string value of the key in os.Environ() or Config.settings
-func (c Config) Get(key string) string {
+// or using defaultValues[0] if provided; otherwise return ""
+func (c Config) Get(key string, defaultValues ...string) string {
 	keyValue := ""
+	if len(defaultValues) > 0 {
+		keyValue = defaultValues[0]
+	}
 	keyUpper := strings.ToUpper(strings.Replace(key, ".", "_", -1))
 	if enVal := os.Getenv(keyUpper); enVal != "" {
 		keyValue = enVal
 	} else if settingValue, okay := c.settings[key]; okay {
 		keyValue = settingValue
 	}
-	return DecryptKeyTextByKMS(key, keyValue)
+	if keyValue != "" {
+		return DecryptKeyTextByKMS(key, keyValue)
+	}
+	return keyValue
 }
 
 // GetBool gets boolean value of the key, or defaultValues[0], or false
@@ -90,8 +102,6 @@ func (c Config) GetInt32(key string, defaultValues ...int32) int32 {
 
 // GetInt64 gets int64 value of the key, or defaultValues[0], or 0
 func (c Config) GetInt64(key string, defaultValues ...int64) int64 {
-	//var defaultValue int64
-	//fmt.Printf("parsing key=%s, val=%s ... (def: %d)\n", key, c.Get(key), defaultValue)
 	if v, err := strconv.ParseInt(c.Get(key), 10, 64); err == nil {
 		return v
 	}
@@ -176,12 +186,13 @@ func GetConfig(file string) *Config {
 		if config, okay := configs[fullpath]; okay {
 			return &config
 		}
-		if _, err := os.Stat(file); !os.IsNotExist(err) {
-			if newConfigRef := newConfig(fullpath); newConfigRef != nil {
-				configs[fullpath] = *newConfigRef
-				return newConfigRef
-			}
+		if newConfigRef := newConfig(fullpath); newConfigRef != nil {
+			configs[fullpath] = *newConfigRef
+			return newConfigRef
 		}
+	}
+	if config, ok := configs[""]; ok {
+		return &config
 	}
 	return nil
 }

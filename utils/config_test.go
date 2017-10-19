@@ -1,6 +1,6 @@
 // +build all utils config
 
-// Package utils: utils/config_test.go
+// Package utils :: config_test.go
 package utils
 
 import (
@@ -18,6 +18,13 @@ var (
 		f, _ := os.Open(_configFile)
 		defer f.Close()
 		return ioutil.ReadAll(f)
+	}
+	_configGetTests = map[string]string{
+		"some.non.exist.var":   "default value",
+		"more.environment.var": "another test for default value",
+		"TEST_CASE.1":          "test case 1 name",
+		"123_TEST_NAME":        "digital leading env var",
+		"env var with space":   "environment variable name with space?",
 	}
 	_configGetBoolTests = []ConfigGetBoolTestCase{
 		{keyValue: "False", expected: false},
@@ -184,6 +191,11 @@ type ConfigGetUint64TestCase struct {
 	vDefault uint64
 }
 
+// doMockDecrypt mocks _decryptFunc
+func doMockDecrypt(key, value string) string {
+	return value
+}
+
 // doTestConfigGetFunc tests Config getter functions
 func doTestConfigGetFunc(t *testing.T, testKey string, testCases []ConfigGetFuncTestCase, getFunc ConfigGetFunc) {
 	config := &Config{testKey, make(map[string]string)}
@@ -191,10 +203,48 @@ func doTestConfigGetFunc(t *testing.T, testKey string, testCases []ConfigGetFunc
 	for index, test := range testCases {
 		config.settings[testKey] = test.keyValue
 		result := getFunc(testKey, test.vDefault)
-		msg := fmt.Sprintf("config[%s]: %s (default: %d) --> %d (actual: %d)",
+		msg := fmt.Sprintf("config[%v]: %v (default: %v) --> %v (actual: %v)",
 			testKey, test.keyValue, test.vDefault, test.expected, result)
 		t.Logf("Test %2d: %v\n", index+1, msg)
 		assert.Equal(t, test.expected, result, msg)
+	}
+}
+
+// doTestCleanup clean up for all tests
+func doTestCleanup() {
+	_decryptFunc = DecryptKeyTextByKMS
+}
+
+// doTestSetup prepares for all tests
+func doTestSetup() {
+	_decryptFunc = doMockDecrypt
+}
+
+// TestMain runs each test with setup and shutdown
+func TestMain(m *testing.M) {
+	doTestSetup()
+	defer doTestCleanup()
+	code := m.Run()
+	os.Exit(code)
+}
+
+// TestCongigGet tests func Config.Get
+func TestConfigGet(t *testing.T) {
+	config := Config{}
+	tindex := 1
+	for key, val := range _configGetTests {
+		t.Logf("Test %2d: %v => '' or default value: '%v'\n", tindex, key, val)
+		os.Unsetenv(key)
+		result1 := config.Get(key)
+		reason1 := fmt.Sprintf("unset env: %s --> '' (actual: %s)\nos.Environ:%s\n",
+			key, result1, os.Environ())
+		assert.Equal(t, "", result1, reason1)
+
+		result2 := config.Get(key, val)
+		reason2 := fmt.Sprintf("unset env: %s --> default value: %s (actual: %s)",
+			key, val, result2)
+		assert.Equal(t, val, result2, reason2)
+		tindex++
 	}
 }
 
@@ -236,7 +286,7 @@ func TestConfigGetInt64(t *testing.T) {
 	for index, test := range _configGetInt64Tests {
 		config.settings[mapkey] = test.keyValue
 		result := config.GetInt64(mapkey, test.vDefault)
-		msg := fmt.Sprintf("config[%s]: %s (default: %d) --> %d (actual: %d)",
+		msg := fmt.Sprintf("config[%s]: %s (default: %v) --> %v (actual: %v)",
 			mapkey, test.keyValue, test.vDefault, test.expected, result)
 		t.Logf("Test %2d: %v\n", index+1, msg)
 		assert.Equal(t, test.expected, result, msg)
@@ -244,7 +294,7 @@ func TestConfigGetInt64(t *testing.T) {
 
 	config.settings[mapkey] = "FFFF"
 	result := config.GetInt64(mapkey) // no default value
-	assert.Equal(t, result, int64(0))
+	assert.Equal(t, int64(0), result)
 }
 
 // TestConfigGetUint32 tests func Config.GetUint32
@@ -270,7 +320,7 @@ func TestConfigGetUint64(t *testing.T) {
 	for index, test := range _configGetUint64Tests {
 		config.settings[mapkey] = test.keyValue
 		result := config.GetUint64(mapkey, test.vDefault)
-		msg := fmt.Sprintf("config[%s]: %s (default: %d) --> %d (actual: %d)",
+		msg := fmt.Sprintf("config[%s]: %s (default: %v) --> %v (actual: %v)",
 			mapkey, test.keyValue, test.vDefault, test.expected, result)
 		t.Logf("Test %2d: %v\n", index+1, msg)
 		assert.Equal(t, test.expected, result, msg)
@@ -278,7 +328,7 @@ func TestConfigGetUint64(t *testing.T) {
 
 	config.settings[mapkey] = "ABCD"
 	result := config.GetUint64(mapkey) // no default value
-	assert.Equal(t, result, uint64(0))
+	assert.Equal(t, uint64(0), result)
 }
 
 // TestGetConfig tests func Config.GetConfig
@@ -289,7 +339,7 @@ func TestGetConfig(t *testing.T) {
 		result := config.Get(test.key)
 		msg := fmt.Sprintf("config[%s] == %s", test.key, test.val)
 		t.Logf("Test %2d: %v\n", index+1, msg)
-		assert.Equal(t, test.val, result, msg)
+		assert.Equal(t, result, test.val, msg)
 	}
 
 	anotherConfig := GetConfig(_configFile)
@@ -299,11 +349,18 @@ func TestGetConfig(t *testing.T) {
 	envVal := "This should not be set"
 	os.Setenv(envKey, envVal)
 	result := config.Get(envKey)
-	assert.Equal(t, result, envVal)
+	assert.Equal(t, envVal, result)
 
 	t.Logf("Testing: nil config\n")
-	nilConfig := GetConfig("../../../non-exist/path/to/config")
+	emptyConfig := GetConfig("../../../non-exist/path/to/config")
+	assert.Equal(t, &Config{}, emptyConfig)
+	assert.NotNil(t, emptyConfig)
+
+	configsCopy := configs
+	configs = map[string]Config{}
+	nilConfig := GetConfig("/does not exist config.yaml")
 	assert.Nil(t, nilConfig)
+	configs = configsCopy
 
 	newConfig := newConfig("../../../non-exist/path/to/config")
 	assert.Nil(t, newConfig)
