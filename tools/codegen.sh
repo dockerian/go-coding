@@ -13,6 +13,7 @@
 #   SWAGGER_SPEC  - e.g. v1, or use CODEGEN_PATH, e.g. app/v1
 #   SWAGGER_YAML  - path to swagger.yaml
 #
+#   DELETE_JAR    - boolean flag to delete codegen jar (default: yes)
 #   USE_DOCKER    - boolean flag to enable/disable using docker
 #
 # Note: codegen-cli docker image has no version tags, e.g. 2.2.3,
@@ -26,9 +27,9 @@ script_path="${script_base}/tools/${script_file}"
 CODEGEN_BIN=swagger-codegen
 CODEGEN_CLI=swagger-codegen-cli
 CODEGEN_MVN=http://central.maven.org/maven2/io/swagger/swagger-codegen-cli
-CODEGEN_VER=${CODEGEN_VER:-2.2.3}
-CODEGEN_URL=${CODEGEN_MVN}/${CODEGEN_VER}/${CODEGEN_CLI}-${CODEGEN_VER}.jar
-CODEGEN_JAR=${CODEGEN_CLI}.jar
+CODEGEN_VER="${CODEGEN_VER:-2.2.3}"
+CODEGEN_URL="${CODEGEN_MVN}/${CODEGEN_VER}/${CODEGEN_CLI}-${CODEGEN_VER}.jar"
+CODEGEN_JAR="${CODEGEN_CLI}.jar"
 
 CODEGEN_IMAG="swaggerapi/swagger-codegen-cli:latest"
 CODEGEN_LANG="${CODEGEN_LANG:-go}"
@@ -39,6 +40,8 @@ CODEGEN_CONF="${CODEGEN_CONF:-${CODEGEN_PATH}/swagger.config}"
 SWAGGER_YAML="${SWAGGER_YAML:-${CODEGEN_PATH}/swagger.yaml}"
 PACKAGE_NAME="${PACKAGE_NAME:-${CODEGEN_TYPE}}"
 
+# set flag to delete downloaded codegen jar file
+DELETE_JAR="${DELETE_JAR:-yes}"
 # set flag to enable/disable using docker container
 USE_DOCKER="${USE_DOCKER:-true}"
 
@@ -48,6 +51,12 @@ function main() {
   shopt -s nocasematch
   if [[ "$@" =~ (help|-h|/h|-\?|/\?) ]]; then
     usage; return
+  fi
+  if [[ "$@" =~ (keep-jar) ]]; then
+    DELETE_JAR="no"
+  fi
+  if [[ "${DELETE_JAR}" =~ (1|enabled|on|true|yes) ]]; then
+    DELETE_JAR="yes"
   fi
   if [[ "${USE_DOCKER}" =~ (0|disable|off|false|no) ]]; then
     echo "Using docker container is disabled."
@@ -128,18 +137,19 @@ function codegen_cli() {
   echo ""
   cd -P "${script_base}"
   if [[ ! -x "${cli}" ]]; then
-    echo "Downloading ${CODEGEN_JAR}"
-    echo "       from ${CODEGEN_URL}"
-    echo ""
-    wget ${CODEGEN_URL} -O "${CODEGEN_JAR}"
-
     if [[ ! -e "${CODEGEN_JAR}" ]]; then
-      log_error "Unable to download '${CODEGEN_JAR}': ${CODEGEN_URL}"
+      echo "Downloading ${CODEGEN_JAR}"
+      echo "       from ${CODEGEN_URL}"
+      echo ""
+      wget ${CODEGEN_URL} -O "${CODEGEN_JAR}"
+
+      if [[ ! -e "${CODEGEN_JAR}" ]]; then
+        log_error "Unable to download '${CODEGEN_JAR}': ${CODEGEN_URL}"
+      fi
     fi
-    cli="java -jar ${CODEGEN_CLI}.jar"
-  else
-    echo "Using ${cli}"
+    cli="java -jar ${CODEGEN_JAR}"
   fi
+  echo "Using ${cli}"
 
   local tmp="${CODEGEN_CONF}"
   echo "Configuring package name to '${CODEGEN_TYPE}'"
@@ -156,7 +166,9 @@ function codegen_cli() {
   $cmd
 
   check_return_code $? "${CODEGEN_CLI}"
-  rm -rf "${CODEGEN_JAR}"
+  if [[ "${DELETE_JAR}" == "yes" ]]; then
+    rm -rf "${CODEGEN_JAR}"
+  fi
   rm -rf "${tmp}"
   echo ""
 }

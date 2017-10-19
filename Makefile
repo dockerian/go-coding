@@ -66,7 +66,7 @@ ALL_PACKAGES := $(shell go list ./... 2>/dev/null|grep -v -E '/v[0-9]+/client|/v
 PROJECT_PACKAGE := $(subst $(GOPATH)/src/, , $(PWD))
 CMD_PACKAGE := $(PROJECT_PACKAGE)/cli/cmd
 SOURCE_PATH := $(GOPATH)/src/github.com/$(GITHUB_CORP)/$(PROJECT)
-SYSTOOLS := awk egrep find go grep jq rm sort tee xargs zip
+SYSTOOLS := awk egrep find git go grep jq rm sort tee xargs zip
 MAKE_RUN := tools/run.sh
 
 DEBUG ?= 1
@@ -142,7 +142,7 @@ CODEGEN_PATH ?= api
 # codegen bash script
 MAKE_CODEGEN := ./tools/codegen.sh
 # swagger.yaml folder
-SWAGGER_PATH := api
+SWAGGER_PATH := api/doc
 # docker image for codegen cli
 SWAGGER_IMAG := swaggerapi/swagger-codegen-cli
 # docker container port for swagger ui
@@ -260,12 +260,9 @@ clean-cache clean:
 	find . -name \*.log -type f -delete
 	find . -name \*.out -type f -delete
 	@echo ""
-	@echo "Cleaning up codegen and $(SWAGGER_WTAG) ..."
+	@echo "Cleaning up codegen spec and $(SWAGGER_WTAG) ..."
 	for ver in $(CODEGEN_VERS); do \
-	rm -rf \
-		$(CODEGEN_PATH)/$$ver/client \
-		$(CODEGEN_PATH)/$$ver/server \
-		$(CODEGEN_PATH)/$$ver/spec; \
+	rm -rf $(SWAGGER_PATH)/$$ver/spec; \
 	done
 	docker container rm -f -v $(SWAGGER_WTAG) || true
 	@echo ""
@@ -283,8 +280,14 @@ clean-cache clean:
 
 clean-all: clean-cache
 	@echo ""
+	@echo "Cleaning up codegen client and server ..."
+	for ver in $(CODEGEN_VERS); do \
+	rm -rf "$(CODEGEN_PATH)/$$ver/client" "$(CODEGEN_PATH)/$$ver/server"; \
+	done
+	@echo ""
 ifeq ("$(DOCKER_DENV)","")
 	# not in a docker container
+	@echo "Cleaning up docker container and image ..."
 	docker rm -f \
 		$(shell docker ps -a|grep $(DOCKER_IMAG)|awk '{print $1}') \
 		2>/dev/null || true
@@ -306,23 +309,21 @@ codegen: $(CODEGEN_SPEC)
 $(CODEGEN_VERS):
 	@echo ""
 	$(eval SWAGGER_YAML = $(SWAGGER_PATH)/$@/swagger.yaml)
-	$(eval SWAGGER_JSON = $(CODEGEN_PATH)/$@/spec/swagger.json)
+	$(eval SWAGGER_JSON = $(SWAGGER_PATH)/$@/spec/swagger.json)
 ifeq ("$(DOCKER_DENV)","")
 	@echo "Checking api spec '$(SWAGGER_YAML)' ..."
 	@stat "$(SWAGGER_YAML)" 1>/dev/null  # api spec does not exist yet
-	$(eval OUT_GOCLIENT = $(CODEGEN_PATH)/$@/client)
-	$(eval OUT_GOSERVER = $(CODEGEN_PATH)/$@/server)
-	$(eval OUT_API_SPEC = $(CODEGEN_PATH)/$@/spec)
-	@echo "Cleaning generated $(CODEGEN_LANG) code in $(OUT_GOCLIENT) and $(OUT_GOSERVER)"
-	@rm -rf "$(OUT_GOCLIENT)" "$(OUT_GOSERVER)" "$(OUT_API_SPEC)"
+	$(eval OUT_API_SPEC = $(SWAGGER_PATH)/$@/spec)
+	@echo "Cleaning generated $(CODEGEN_LANG) code in $(OUT_GOSERVER)"
+	@rm -rf "$(OUT_API_SPEC)"
 	@echo ""
 	@echo "Execute:"
-	CODEGEN_PATH=$(CODEGEN_PATH)/$@ CODEGEN_LANG=swagger CODEGEN_TYPE=spec \
-	SWAGGER_YAML=$(SWAGGER_YAML) USE_DOCKER=false $(MAKE_CODEGEN)
+	CODEGEN_PATH=$(SWAGGER_PATH)/$@ CODEGEN_LANG=swagger CODEGEN_TYPE=spec \
+	SWAGGER_YAML=$(SWAGGER_YAML) USE_DOCKER=false $(MAKE_CODEGEN) --keep-jar
 	@echo ""
 	@echo "Execute:"
 	CODEGEN_PATH=$(CODEGEN_PATH)/$@ CODEGEN_LANG=$(CODEGEN_LANG) CODEGEN_TYPE=client \
-	SWAGGER_YAML=$(SWAGGER_YAML) USE_DOCKER=false $(MAKE_CODEGEN)
+	SWAGGER_YAML=$(SWAGGER_YAML) USE_DOCKER=false $(MAKE_CODEGEN) --keep-jar
 	@echo ""
 	@echo "Execute:"
 	CODEGEN_PATH=$(CODEGEN_PATH)/$@ CODEGEN_LANG=$(CODEGEN_LANG)-server CODEGEN_TYPE=server \
@@ -344,13 +345,18 @@ dep depend godep:
 	go get -u -f github.com/kardianos/govendor
 	go get -u -f github.com/tools/godep
 	@echo ""
-	@echo "Saving go dependency packages to Godeps ..."
+	@echo "Saving go dependency packages info ..."
+	dep ensure || true
 	godep save -t ./... || true
+	govendor add +external || true
+	git checkout -- vendor/vendor.json 2>/dev/null || true
+	govendor sync +external || true
 	@echo ""
-ifeq ("$(DOCKER_DENV)","")  # assume not in docker container
+ifneq ("$(DOCKER_DENV)","")  # assume in docker container
 	@echo "CAUTION: this is restoring to $$GOPATH [$(GOPATH)]"
-endif
 	godep restore
+endif
+	tools/check_packages.sh --vendor
 	@echo ""
 	@echo "- DONE: $@"
 
@@ -421,7 +427,7 @@ ifndef DONT_RUN_DOCKER
 	$(MAKE_RUN) $@
 else
 	@echo "Formatting code ..."
-	go fmt ./...
+	go fmt $(ALL_PACKAGES) || true
 endif
 	@echo ""
 	@echo "- DONE: $@"
@@ -482,10 +488,11 @@ show-env:
 	@echo ""
 	@env | sort
 	@echo "......................................................................."
-	@echo "OS Platform: $(OS_PLATFORM_NAME) [$(BUILD_OS)]"
+	@echo "OS Platform: "$(OS_PLATFORM_NAME)
 	@echo "-----------------------------------------------------------------------"
-	@echo "GOPATH = $(GOPATH)"
-	@echo "GOROOT = $(GOROOT) [$(shell go version)]"
+	@echo "   PWD = $(PWD)"
+	@echo "GOPATH = $(GOPATH) [$(shell go version)]"
+	@echo "GOROOT = $(GOROOT)"
 	@echo " SHELL = $(SHELL)"
 	@echo ""
 
@@ -558,23 +565,28 @@ ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" DEBUG=$(DEBUG) \
 	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	TEST_DIR=$(TEST_DIR) TEST_MATCH=$(TEST_MATCH) TEST_BENCH=$(TEST_BENCH) \
-	TEST_COVER_MODE=$(TEST_COVER_MODE) TEST_COVERAGES=$(TEST_COVERAGES) TEST_TAGS=$(TEST_TAGS) \
+	TEST_COVER_MODE=$(TEST_COVER_MODE) TEST_COVERAGES=$(TEST_COVERAGES) \
+	ALL_PACKAGES="$(ALL_PACKAGES)" TEST_TAGS=$(TEST_TAGS) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
-	$(MAKE_RUN) $@
+	$(MAKE_RUN) dep $@
 else
+	@rm -rf ./$(TEST_LOGS)
 	@echo "......................................................................."
 	@echo "Running tests ... [tags: $(TEST_TAGS)] $(TEST_COVERAGES) %"
 	@echo "go test $(TEST_PACKAGE) $(TEST_ARGS)"
 ifdef TEST_DIR
 	go test $(TEST_PACKAGE) $(TEST_ARGS) 2>&1 | tee ./$(TEST_LOGS)
-	go tool cover -func="$(TEST_COVER_ALL)" > "$(TEST_COVERFUNC)"
+	go tool cover -func="$(TEST_COVER_ALL)" | tee "$(TEST_COVERFUNC)"
 else
 	PROJECT_DIR="$(PWD)" \
+	ALL_PACKAGES="$(ALL_PACKAGES)" \
 	COVER_MODE="$(TEST_COVER_MODE)" \
 	COVER_ALL_OUT="$(TEST_COVER_ALL)" \
 	TEST_ARGS="$(TEST_ARGS)" TEST_LOGS="$(TEST_LOGS)" \
 	tools/check_coverage.sh $(TEST_COVERAGES) "$(TEST_COVERFUNC)" --test
 endif
+	@echo ""
+	TEST_LOGS="$(TEST_LOGS)" tools/check_tests.sh
 	@echo ""
 	@echo "Checking test coverage thresholds [$(TEST_COVERAGES) %] ..."
 	PROJECT_DIR="$(PWD)" \
@@ -599,7 +611,7 @@ ifndef DONT_RUN_DOCKER
 	$(MAKE_RUN) $@
 else
 	@echo "Check go code correctness ..."
-	go vet ./...
+	go vet $(ALL_PACKAGES) || true
 endif
 	@echo ""
 	@echo "- DONE: $@"

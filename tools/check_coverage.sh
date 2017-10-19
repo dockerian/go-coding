@@ -16,6 +16,7 @@
 #     COVER_MODE           go test cover mode
 #     NO_THRESHOLDS        bypass thresholds check, default: false
 #     RUN_ALL_TESTS        run all tests before check, default: true
+#     ALL_PACKAGES         specified packages for test coverage
 #     COVERAGE_PERCENTAGE  reported cover percent if missing $2
 #     COVERAGE_THRESHOLDS  code coverage thresholds, default 90
 #     COVER_ALL_OUT        coverage profile output, default: cover.out
@@ -53,11 +54,10 @@ function main() {
     usage; return
   fi
 
-  cd -P "${PROJECT_DIR}" && pwd >/dev/null
+  cd -P "${PROJECT_DIR}" && echo "PWD: ${PWD:-$(pwd)}"
 
-  if [[ ! "${COVER_MODE}" =~ (set|count|atomic) ]]; then
-    COVER_MODE=set
-  fi
+  PACKAGES="$(go list ./... 2>/dev/null|grep -v -E '/v[0-9]+/client|/v[0-9]+/server|/vendor/'||true)"
+  ALL_PACKAGES="${ALL_PACKAGES:-${PACKAGES}}"
 
   if [[ "${RUN_ALL_TESTS}" =~ (1|true|yes) ]]; then RUN_ALL_TESTS="true"; fi
   if [[ "${NO_THRESHOLDS}" =~ (1|true|yes) ]]; then NO_THRESHOLDS="true"; fi
@@ -79,18 +79,17 @@ function run_all_tests() {
   echo "mode: ${COVER_MODE}"
   echo "mode: ${COVER_MODE}" > "${COVER_ALL_OUT}"
 
+  log_trace "Generating coverage profile, mode = ${COVER_MODE}"
   if [[ -s "${COVER_ALL_OUT}" ]]; then
     touch "${pkg_out}"
-    for pkg in $(go list ./...); do
+    for pkg in ${ALL_PACKAGES}; do
       echo "Run: go test ${TEST_ARGS} --coverprofile=${pkg_out} ${pkg}"
-      go test ${TEST_ARGS} --coverprofile="${pkg_out}" ${pkg} 2>&1|tee "${TEST_LOGS}"
-      if [[ "$?" != "0" ]]; then
-        log_error "go test ${pkg}"
-      fi
+      go test ${TEST_ARGS} --coverprofile="${pkg_out}" ${pkg} 2>&1|tee -a "${TEST_LOGS}"
+      check_return_code $?
       tail -n +2 "${pkg_out}" >> "${COVER_ALL_OUT}"
       echo ""
     done
-    go tool cover -func="${COVER_ALL_OUT}"|tee "${COVER_FUNC}"
+    go tool cover -func="${COVER_ALL_OUT}" | tee "${COVER_FUNC}"
   fi
 }
 
@@ -125,6 +124,19 @@ function check() {
   fi
   echo ""
   echo "- PASS: ${COVERAGE_PERCENTAGE} % >= ${COVERAGE_THRESHOLDS} % (thresholds)"
+}
+
+# check_return_code(): checks exit code from last command
+function check_return_code() {
+  local return_code="${1:-0}"
+  local action_name="${2:-go test}"
+
+  if [[ "${return_code}" != "0" ]]; then
+    log_fatal "${action_name} [code: ${return_code}]" ${return_code}
+  else
+    echo "Success: ${action_name}"
+    echo ""
+  fi
 }
 
 
