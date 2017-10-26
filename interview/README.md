@@ -624,8 +624,8 @@
     depthFirstPreOrderRecursive(node, nodeList) {
       if (node) {
         nodeList.push(node);
-        depthFirstInOrder(node.left, nodeList);
-        depthFirstInOrder(node.right, nodeList);
+        depthFirstPreOrderRecursive(node.left, nodeList);
+        depthFirstPreOrderRecursive(node.right, nodeList);
       }
     }
     ```
@@ -665,8 +665,8 @@
     //
     depthFirstPostOrder(node, nodeList) {
       if (node) {
-        depthFirstInOrder(node.left, nodeList);
-        depthFirstInOrder(node.right, nodeList);
+        depthFirstPostOrder(node.left, nodeList);
+        depthFirstPostOrder(node.right, nodeList);
         nodeList.push(node);
       }
     }
