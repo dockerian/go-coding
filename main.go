@@ -26,7 +26,7 @@ func main() {
 	}
 	switch arg {
 	case "api":
-		api.Index()
+		apimain.App()
 
 	case "cli":
 		fallthrough

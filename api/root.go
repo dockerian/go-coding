@@ -1,5 +1,5 @@
-// Package api :: root.go
-package api
+// Package apimain :: root.go
+package apimain
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/dockerian/go-coding/api/info"
+	"github.com/dockerian/shuati/api"
 	"github.com/gorilla/mux"
 )
 
@@ -37,8 +38,8 @@ type Route struct {
 // Routes struct is an array of Route
 type Routes []Route
 
-// Index is api root entry pointer
-func Index() {
+// Root is api root entry pointer
+func Root() {
 	// handleRequests()
 	// or
 	router, port := rootRouter(RootRoutes)
@@ -67,7 +68,7 @@ func rootRouter(routes []Route) (*mux.Router, string) {
 	// or
 	for _, route := range routes {
 		var handler http.Handler
-		handler = Logger(route.Handler, route.Name)
+		handler = api.Logger(route.Handler, route.Name)
 		router.
 			Path(route.Pattern).
 			Methods(route.Method).

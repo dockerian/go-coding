@@ -1,10 +1,51 @@
-// Package utils :: config.go - extended os env functions
+// Package utils :: env.go - extended os env functions
 package utils
 
 import (
 	"os"
 	"strings"
 )
+
+// Env struct stores application-wide configuration
+type Env map[string]interface{}
+
+// Delete removes a key and the mapping value
+func (env Env) Delete(key string) {
+	delete(env, key)
+}
+
+// Get returns string for the mapping value by the key
+func (env Env) Get(key string) string {
+	if val := env.GetValue(key); val != nil {
+		if strValue, ok := val.(string); ok {
+			return strValue
+		}
+	}
+	return ""
+}
+
+// GetInt returns int for the mapping value by the key
+func (env Env) GetInt(key string) int {
+	if val := env.GetValue(key); val != nil {
+		if intValue, ok := val.(int); ok {
+			return intValue
+		}
+	}
+	return 0
+}
+
+// GetValue returns the mapping value by the key
+func (env Env) GetValue(key string) interface{} {
+	if val, ok := env[key]; ok {
+		return val
+	}
+	return nil
+}
+
+// Set overwrite the mapping value by the key
+func (env Env) Set(key string, value interface{}) {
+	env[key] = value
+}
 
 // DebugEnv indicates DEBUG = 1|on|true in environment variable (ignoring case)
 var DebugEnv = CheckEnvBoolean("DEBUG", true)

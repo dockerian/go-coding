@@ -1,6 +1,6 @@
 // +build all api http test
 
-package api
+package apimain
 
 // see
 // - https://nathanleclaire.com/blog/2015/10/10/interfaces-and-composition-for-effective-unit-testing-in-golang/
@@ -80,7 +80,7 @@ func TestRootRouter(t *testing.T) {
 
 		reader = strings.NewReader("")
 		url := fmt.Sprintf("http://localhost/%v", test.path)
-		req, err := http.NewRequest("GET", url, reader)
+		req, _ := http.NewRequest("GET", url, reader)
 		rec := httptest.NewRecorder()
 		route.ServeHTTP(rec, req)
 

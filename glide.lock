@@ -1,0 +1,116 @@
+hash: 1046b0613a3b77645f8103fbc30463a33df8b6f74953b506baa85115acd59386
+updated: 2017-10-29T11:29:07.402265334-07:00
+imports:
+- name: github.com/aws/aws-sdk-go
+  version: 867e2302da0d2b7fa459f79831e6eb733f7941bf
+  subpackages:
+  - aws
+  - aws/awserr
+  - aws/awsutil
+  - aws/client
+  - aws/client/metadata
+  - aws/corehandlers
+  - aws/credentials
+  - aws/credentials/ec2rolecreds
+  - aws/credentials/endpointcreds
+  - aws/credentials/stscreds
+  - aws/defaults
+  - aws/ec2metadata
+  - aws/endpoints
+  - aws/request
+  - aws/session
+  - aws/signer/v4
+  - internal/shareddefaults
+  - private/protocol
+  - private/protocol/json/jsonutil
+  - private/protocol/jsonrpc
+  - private/protocol/query
+  - private/protocol/query/queryutil
+  - private/protocol/rest
+  - private/protocol/xml/xmlutil
+  - service/kms
+  - service/sts
+- name: github.com/davecgh/go-spew
+  version: 5215b55f46b2b919f50a1df0eaa5886afe4e3b3d
+  subpackages:
+  - spew
+- name: github.com/go-ini/ini
+  version: c787282c39ac1fc618827141a1f762240def08a3
+- name: github.com/gorilla/context
+  version: aed02d124ae4a0e94fea4541c8effd05bf0c8296
+- name: github.com/gorilla/mux
+  version: 757bef944d0f21880861c2dd9c871ca543023cba
+- name: github.com/jmespath/go-jmespath
+  version: bd40a432e4c76585ef6b72d3fd96fb9b6dc7b68d
+- name: github.com/pmezard/go-difflib
+  version: 792786c7400a136282c1664665ae0a8db921c6c2
+  subpackages:
+  - difflib
+- name: github.com/stretchr/objx
+  version: 1a9d0bb9f541897e62256577b352fdbc1fb4fd94
+- name: github.com/stretchr/testify
+  version: d77da356e56a7428ad25149ca77381849a6a5232
+  subpackages:
+  - assert
+  - http
+  - mock
+  - require
+  - suite
+- name: golang.org/x/text
+  version: 5a42fa2464759cbb7ee0af9de00b54d69f09a29c
+  subpackages:
+  - cases
+  - cmd/gotext
+  - collate
+  - collate/build
+  - collate/tools/colcmp
+  - currency
+  - encoding
+  - encoding/charmap
+  - encoding/htmlindex
+  - encoding/ianaindex
+  - encoding/internal
+  - encoding/internal/identifier
+  - encoding/japanese
+  - encoding/korean
+  - encoding/simplifiedchinese
+  - encoding/traditionalchinese
+  - encoding/unicode
+  - encoding/unicode/utf32
+  - internal
+  - internal/colltab
+  - internal/export/idna
+  - internal/format
+  - internal/format/plural
+  - internal/gen
+  - internal/number
+  - internal/stringset
+  - internal/tag
+  - internal/testtext
+  - internal/triegen
+  - internal/ucd
+  - internal/utf8internal
+  - language
+  - language/display
+  - message
+  - runes
+  - search
+  - secure
+  - secure/bidirule
+  - secure/precis
+  - transform
+  - unicode
+  - unicode/bidi
+  - unicode/cldr
+  - unicode/norm
+  - unicode/rangetable
+  - width
+- name: golang.org/x/tools
+  version: e531a2a1c15f94033f6fa87666caeb19a688175f
+  subpackages:
+  - go/ast/astutil
+  - go/buildutil
+  - go/loader
+- name: gopkg.in/yaml.v2
+  version: eb3733d160e74a9c7e442f435eb3bea458e1d19f
+testImports: []

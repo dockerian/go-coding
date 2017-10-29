@@ -12,6 +12,29 @@ import (
 )
 
 var (
+	// defines the spec of how to search prefix and replace with proxyURL
+	_replaceProxyTestCases = []ReplaceProxyTestCase{
+		{"", "", "local:9001", ""},
+		{"", "/redirect/", "local:9001", ""},
+		{"", "/redirect/path", "local:9001", ""},
+		{"host:80", "", "local:9001", "host:80"},
+		{"host:80/test", "", "local:9001", "host:80/test"},
+		{"host:80/test", "/redir/", "local:9001", "host:80/test"},
+		{"host:80/redirpath", "/redir", "local:9001", "host:80/redirpath"},
+		{"host:80/redirpath", "/redir/", "local:9001", "host:80/redirpath"},
+		{"host:80/test/path", "/redir/", "local:9001", "host:80/test/path"},
+		{"host:80/test/redir", "/redir", "local:9001", "local:9001"},
+		{"host:80/test/redir", "/redir/", "local:9001", "local:9001"},
+		{"host:80/redir", "/redir", "local:9001", "local:9001"},
+		{"host:80/redir", "/redir/", "local:9001", "local:9001"},
+		{"host:80/redir/", "/redir", "local:9001", "local:9001/"},
+		{"host:80/redir/", "/redir/", "local:9001", "local:9001/"},
+		{"host:80/redir/path", "/redir/", "local:9001", "local:9001/path"},
+		{"host:80/redir/path/", "/redir/", "local:9001", "local:9001/path/"},
+		{"host:80/redir/path/", "/redir", "local:9001", "local:9001/path/"},
+		{},
+	}
+	// defines the spec of how to search string in a list
 	_stringInTestCases = []StringInTestCase{
 		{"", []string{""}, false, false},
 		{"", []string{"a", "b"}, false, false},
@@ -24,11 +47,29 @@ var (
 	}
 )
 
+// ReplaceProxyTestCaae struct
+type ReplaceProxyTestCase struct {
+	originalURL string
+	prefix      string
+	proxyURL    string
+	expected    string
+}
+
 type StringInTestCase struct {
 	search               string
 	stringList           []string
 	expectedOnIgnoreCase bool
 	expected             bool
+}
+
+func TestReplaceProxyURL(t *testing.T) {
+	for index, test := range _replaceProxyTestCases {
+		result := ReplaceProxyURL(test.originalURL, test.prefix, test.proxyURL)
+		msg := fmt.Sprintf("search: '%s' in %v --> result: %v (expected: %v) - proxyURL: %v",
+			test.prefix, test.originalURL, result, test.expected, test.proxyURL)
+		t.Logf("Test %2d: %v\n", index+1, msg)
+		assert.Equal(t, test.expected, result, msg)
+	}
 }
 
 // TestStringIn tests common.StringIn function

@@ -41,9 +41,27 @@
   version = "v1.0.0"
 
 [[projects]]
+  name = "github.com/russross/blackfriday"
+  packages = ["."]
+  revision = "6d1ef893fcb01b4f50cb6e57ed7df3e2e627b6b2"
+  version = "v1.5-7-g6d1ef89"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/shurcooL/sanitized_anchor_name"
+  packages = ["."]
+  revision = "86672fcb3f950f35f2e675df2240550f2a50762f"
+
+[[projects]]
   name = "github.com/stretchr/testify"
   packages = ["assert"]
   revision = "d77da356e56a7428ad25149ca77381849a6a5232"
+
+[[projects]]
+  name = "github.com/urfave/negroni"
+  packages = ["."]
+  revision = "079cf0c7a6b0145ebcf4103ec90380370cd89917"
+  version = "v0.2.0-159-g079cf0c"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -59,6 +77,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ff7bb0c594b1b2618b0170acc0045e0b5111c6f6ff02233ec9d67c1b2b35b8b2"
+  inputs-digest = "1e241179b25371df0379385d9f3fde5c4b8602c2d5b7c10f40e12077ce05bc54"
   solver-name = "gps-cdcl"
   solver-version = 1

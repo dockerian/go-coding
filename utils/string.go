@@ -15,6 +15,24 @@ func GetSliceAtIndex(input string, index int) string {
 	return input[index : index+1]
 }
 
+// ReplaceProxyURL searches prefix in url and replaces with proxyURL
+func ReplaceProxyURL(url, prefix, proxyURL string) string {
+	if prefix == "" || url == "" {
+		return url
+	}
+	prefix = strings.TrimRight(prefix, "/")
+	pos := strings.Index(url, prefix)
+	posNext := pos + len(prefix)
+	okToReplace := pos >= 0 && len(url) > posNext && url[posNext] == '/' || strings.HasSuffix(url, prefix)
+
+	if okToReplace {
+		substURL := proxyURL + url[posNext:]
+		return substURL
+	}
+
+	return url
+}
+
 // ShiftSlice returns slice by shift index
 func ShiftSlice(input string, shift int) string {
 	if len(input) > shift {
