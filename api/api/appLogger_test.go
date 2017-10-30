@@ -92,6 +92,6 @@ func TestAppLoggerResponseWriter(t *testing.T) {
 
 // TestNewLogger tests func api.NewLogger
 func TestNewLogger(t *testing.T) {
-	test := NewLogger()
+	test := NewLogger("prefix")
 	assert.NotNil(t, test.ALogger)
 }

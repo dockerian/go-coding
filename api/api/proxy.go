@@ -17,7 +17,9 @@ import (
 )
 
 var (
-	bodyReadAll             = ioutil.ReadAll
+	// bodyReadAll is a reader function for response body
+	bodyReadAll = ioutil.ReadAll
+	// proxyClient is an http client
 	proxyClient ProxyClient = &http.Client{}
 )
 

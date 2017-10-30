@@ -1,4 +1,4 @@
-// Package api :: markdown.go
+// Package api :: markdown.go - a Markdown handler
 package api
 
 import (

@@ -1,4 +1,6 @@
 // Package api :: appHandler.go
+// api.AppHandler declares an extended http.Handler with configuration data
+// and error (see api.AppError).
 package api
 
 import (

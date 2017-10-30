@@ -58,8 +58,8 @@ func NewAppServer() *AppServer {
 	app := AppServer{
 		Env:     env,
 		Doc:     doc,
-		Handler: negroni.New(),   // can initiate multiple negroni.Handler
-		Logger:  api.NewLogger(), // *negroni.Logger is a negroni.Handler
+		Handler: negroni.New(),     // can initiate multiple negroni.Handler
+		Logger:  api.NewLogger(""), // *negroni.Logger is a negroni.Handler
 		Router:  api.NewRouter(env, routeConfigs),
 	}
 

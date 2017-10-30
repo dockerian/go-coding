@@ -1,4 +1,7 @@
 // Package api :: appError.go
+// api.Error interface wraps error with http status.
+// api.AppError composes error and http status code for http handler without
+// accessing to header in http.ResponseWriter.
 package api
 
 import (
