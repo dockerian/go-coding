@@ -1,4 +1,4 @@
-// +build all common pkg cfg env
+// +build all common utils cfg env
 
 // Package utils :: env_test.go
 package utils
