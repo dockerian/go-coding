@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
-	"github.com/dockerian/go-coding/utils"
+	"github.com/dockerian/go-coding/pkg/cfg"
 )
 
 const (
@@ -27,13 +28,20 @@ var (
 )
 
 // GetConfig returns an application configuration
-func GetConfig() *utils.Config {
+func GetConfig() *cfg.Config {
 	pwd, _ := os.Getwd()
-	return utils.GetConfig(filepath.Join(pwd, "config.yaml"))
+	return cfg.GetConfig(filepath.Join(pwd, "config.yaml"))
 }
 
-// NewAppEnv constructs an utils.Env for the application
-func NewAppEnv() utils.Env {
+// NewAppContext constructs an cfg.Context for the application
+func NewAppContext() *cfg.Context {
+	return &cfg.Context{
+		Env: NewAppEnv(),
+	}
+}
+
+// NewAppEnv constructs an cfg.Env for the application
+func NewAppEnv() *cfg.Env {
 	pwd, _ := os.Getwd()
 	configHost := config.Get("api.host")
 	configPort := config.Get("api.port", "8001")
@@ -41,7 +49,7 @@ func NewAppEnv() utils.Env {
 	appName := config.Get("api.name", "Go API")
 	appVersion := config.Get("api.version", "1.0.0")
 
-	env := utils.Env{
+	env := cfg.Env{
 		"appName":     appName,
 		"author":      "Dockerian Seattle",
 		"copyright":   "(C) 2016 Dockerian",
@@ -61,5 +69,11 @@ func NewAppEnv() utils.Env {
 		"testURL":     testURL,
 	}
 
-	return env
+	// map os environment variables to key/value pairs
+	for _, envSet := range os.Environ() {
+		pair := strings.Split(envSet, "=")
+		env.Set(pair[0], pair[1])
+	}
+
+	return &env
 }

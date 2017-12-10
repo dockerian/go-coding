@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dockerian/go-coding/utils"
+	"github.com/dockerian/go-coding/pkg/str"
 )
 
 var (
@@ -25,7 +25,7 @@ func RedirectHandler(prefix, redirectURL string) http.Handler {
 // Redirect forwards call by prefix path to redirected url
 func Redirect(prefix, redirectURL string, w http.ResponseWriter, r *http.Request) error {
 	requestURL := r.URL.String()
-	forwardURL := utils.ReplaceProxyURL(requestURL, prefix, redirectURL)
+	forwardURL := str.ReplaceProxyURL(requestURL, prefix, redirectURL)
 	if forwardURL == "" {
 		msg := fmt.Sprintf("cannot match prefix '%s' in '%s'", prefix, r.URL)
 		log.Printf("[redirect] err: %s", msg)

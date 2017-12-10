@@ -13,7 +13,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dockerian/go-coding/utils"
+	"github.com/dockerian/go-coding/pkg/str"
 )
 
 var (
@@ -34,10 +34,10 @@ type ProxyRoute struct {
 	RedirectURL string
 }
 
-// Proxy forwards call with prefix to redirected url
+// Proxy generates new request with prefix path to redirected url
 func Proxy(prefix, redirectURL string, w http.ResponseWriter, r *http.Request) error {
 	// log.Printf("[proxy] parsing '%s' in '%s'", prefix, r.URL)
-	restURL := utils.ReplaceProxyURL(r.URL.String(), prefix, redirectURL)
+	restURL := str.ReplaceProxyURL(r.URL.String(), prefix, redirectURL)
 	if restURL == "" {
 		msg := fmt.Sprintf("cannot match prefix '%s' in '%s'", prefix, r.URL)
 		log.Printf("[proxy] err: %s", msg)
@@ -45,7 +45,6 @@ func Proxy(prefix, redirectURL string, w http.ResponseWriter, r *http.Request) e
 		return errors.New(msg)
 	}
 	log.Printf("[proxy] %s (%s) => %+v\n", prefix, r.URL, restURL)
-
 	proxyReq, err := http.NewRequest(r.Method, restURL, r.Body)
 	// clone copying header, not just a shallow copy proxyReq.Header = req.Header
 	proxyReq.Header = make(http.Header)
@@ -56,7 +55,6 @@ func Proxy(prefix, redirectURL string, w http.ResponseWriter, r *http.Request) e
 	// set "accept-encoding" to prevent from g-zipped content by browser client
 	proxyReq.Header.Set("Accept-Encoding", "gzip;q=0,deflate;q=0")
 	proxyReq.Header.Set("X-Forwarded-For", r.RemoteAddr)
-	proxyReq.Body = r.Body
 
 	resp, err := proxyClient.Do(proxyReq)
 	if err != nil {

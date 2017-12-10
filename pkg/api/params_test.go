@@ -24,6 +24,8 @@ func TestNewParams(t *testing.T) {
 	assert.Equal(t, 12345, num)
 	assert.Nil(t, err)
 
+	assert.True(t, params.HasKey("key"))
+	assert.False(t, params.HasKey("foo"))
 	val := params.GetValue("foo", "bar")
 	assert.Equal(t, "bar", val)
 }
@@ -38,7 +40,7 @@ func TestParamsGetDateRange(t *testing.T) {
 		"2009-11-29T04:44:04-04:00",
 		"",
 	}
-	query := "q=name1&q=name2&dt=2017-11-30,xx&time="
+	query := "q=name1&q=name2&dt=2017-11-30,xx&range=2017-08-10,now&time="
 	for _, str := range slice {
 		query += "," + str
 		log.Printf("[test] parsing '%s'\n", str)
@@ -63,6 +65,12 @@ func TestParamsGetDateRange(t *testing.T) {
 	dtValues, err := param.GetDateRange("dt")
 	assert.Equal(t, datesRangeBegin, dtValues)
 
+	rangeValues, err := param.GetDateRange("range")
+	// t.Logf("parsed range: %v\n", rangeValues)
+	assert.NotNil(t, rangeValues)
+	assert.NotEqual(t, []time.Time{}, rangeValues)
+	assert.Nil(t, err)
+
 	nilValues, err := param.GetDateRange("date")
 	assert.Equal(t, "empty value", err.Error())
 	assert.Nil(t, nilValues)
@@ -78,7 +86,7 @@ func TestParamsGetDateValues(t *testing.T) {
 		"2009-11-29T04:44:04-04:00",
 		"",
 	}
-	query := "q=name1&q=name2&dt=2017-11-30"
+	query := "q=name1&q=name2&dt=2017-11-30&range=2017-08-10,now"
 	for _, str := range slice {
 		query += "&time=" + str
 		log.Printf("[test] parsing '%s'\n", str)
@@ -102,6 +110,10 @@ func TestParamsGetDateValues(t *testing.T) {
 
 	dtValues, err := param.GetDateValues("dt")
 	assert.Equal(t, datesOneItem, dtValues)
+
+	emptyValue, err := param.GetDateValues("range")
+	assert.Nil(t, emptyValue)
+	assert.NotNil(t, err)
 
 	nilValues, err := param.GetDateValues("date")
 	assert.Equal(t, "empty value", err.Error())
@@ -168,7 +180,7 @@ func TestParamsGetValue(t *testing.T) {
 	assert.Equal(t, "", p1.GetValue("foo"))
 	assert.Equal(t, "contextValue", p1.GetValue("contextKey"))
 	assert.Equal(t, "v1", p1.GetValue("key"))
-	assert.Equal(t, nil, p1.GetBody(""))
+	assert.Equal(t, []uint8([]byte(nil)), p1.GetBody(""))
 
 	num1, _ := p1.GetInt("num1")
 	assert.Equal(t, 100, num1)

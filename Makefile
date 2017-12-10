@@ -64,6 +64,7 @@ BUILD_MASTER_VERSION ?= 0
 BUILD_PREFIX := $(BINARY)-$(BUILD_VERSION)
 ALL_PACKAGES := $(shell go list ./... 2>/dev/null|grep -v -E '/v[0-9]+/client|/v[0-9]+/server|/vendor/')
 PROJECT_PACKAGE := $(subst $(GOPATH)/src/, , $(PWD))
+DOC_PACKAGES := api pkg/api pkg/cfg pkg/orm pkg/str utils
 CMD_PACKAGE := $(PROJECT_PACKAGE)/cli/cmd
 SOURCE_PATH := $(GOPATH)/src/github.com/$(GITHUB_CORP)/$(PROJECT)
 SYSTOOLS := awk egrep find git go grep jq rm sort tee xargs zip
@@ -378,6 +379,12 @@ else
 	@echo ""
 	@echo "Cannot show dep status in the container."
 endif
+
+
+doc:
+	@echo "--- Generating markdown documents ..."
+	$(foreach path,$(DOC_PACKAGES),\
+	$(shell cd $(path) && godocdown > README.md))
 
 
 # docker targets

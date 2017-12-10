@@ -16,8 +16,8 @@ func TestAppError(t *testing.T) {
 	statusCode := http.StatusBadRequest
 	statusText := http.StatusText(statusCode)
 	var err Error = AppError{
-		errors.New(statusText),
-		statusCode,
+		Err:        errors.New(statusText),
+		StatusCode: statusCode,
 	}
 
 	appErr, ok := err.(AppError)

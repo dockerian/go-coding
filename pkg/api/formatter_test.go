@@ -5,6 +5,7 @@ package api
 
 import (
 	"bytes"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -43,10 +44,12 @@ func TestGetJSONEncoder(t *testing.T) {
 // TestWriteError tests func api.WriteError
 func TestWriteError(t *testing.T) {
 	reqInfo := "GET /app/error/path"
+	msg := fmt.Sprintf("%s - %s", reqInfo, "404 not found")
 	rec := httptest.NewRecorder()
 	code := http.StatusNotFound
-	WriteError(rec, code, reqInfo, "404 not found", "")
+	err := WriteError(rec, code, msg)
 	assert.Equal(t, code, rec.Code)
+	assert.NotNil(t, err)
 }
 
 // TestWriteJSON tests func api.WriteJSON

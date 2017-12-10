@@ -7,7 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dockerian/go-coding/api/api"
+	"github.com/dockerian/go-coding/pkg/api"
+	"github.com/dockerian/go-coding/utils"
 	"github.com/jinzhu/gorm"
 	// golint should ignore the following blank import
 	_ "github.com/jinzhu/gorm/dialects/mysql" // required by gorm
@@ -118,7 +119,7 @@ func GetOrderClauseByParams(db *gorm.DB, params *api.Params, orderKey string) *g
 	orders := params.GetValues(orderKey)
 	for _, order := range orders {
 		if order != "" {
-			db = db.Order(order)
+			db = db.Order(utils.ToSnake(order))
 		}
 	}
 	return db

@@ -7,20 +7,24 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/dockerian/go-coding/utils"
+	"github.com/dockerian/go-coding/pkg/cfg"
 	"github.com/stretchr/testify/assert"
 )
 
 // MockHandler implements AppHandler
-func MockHandler(env utils.Env, w http.ResponseWriter, r *http.Request) error {
+func MockHandler(ctx cfg.Context, w http.ResponseWriter, r *http.Request) error {
+	env := *ctx.Env
 	env["test"] = "response"
 	return nil
 }
 
 // TestNewRouter tests func api.NewRouter
 func TestNewRouter(t *testing.T) {
-	env := utils.Env{
+	env := cfg.Env{
 		"test": "result",
+	}
+	ctx := cfg.Context{
+		Env: &env,
 	}
 	routeConfigs := RouteConfigs{
 		{
@@ -28,7 +32,7 @@ func TestNewRouter(t *testing.T) {
 			ProxyRoute{"/prefix", "http://redirect"},
 		},
 	}
-	router := NewRouter(env, routeConfigs)
+	router := NewRouter(ctx, routeConfigs)
 	// t.Logf("router: %+v\n", router)
 	assert.NotNil(t, router)
 	assert.NotNil(t, router.Get("Mock"))

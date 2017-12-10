@@ -3,7 +3,7 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 	"io"
 	"log"
 	"net/http"
@@ -17,17 +17,25 @@ func GetJSONEncoder(w io.Writer, indent string) *json.Encoder {
 	return encoder
 }
 
-// WriteError writes status code and ApiError
-func WriteError(w http.ResponseWriter, code int, apiInfo, message, trace string) {
-	w.WriteHeader(code)
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	log.Printf("[status] %d: %s - %s\n", code, apiInfo, message)
-	apiError := AppError{
-		Err:        fmt.Errorf("%d | %s | %s | %s", code, apiInfo, message, trace),
+// WriteError writes status code and returns Error
+func WriteError(w http.ResponseWriter, code int, message string) Error {
+	appError := AppError{
+		Err:        errors.New(message),
 		StatusCode: code,
 	}
+	return WriteAppError(w, &appError)
+}
+
+// WriteAppError writes status code and returns Error
+func WriteAppError(w http.ResponseWriter, apiError Error) Error {
+	code := apiError.Status()
+	errorMessage := apiError.Error()
+	w.WriteHeader(code)
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	log.Printf("[status] %d: %s\n", code, errorMessage)
 	encoder := GetJSONEncoder(w, "  ")
 	encoder.Encode(apiError)
+	return apiError
 }
 
 // WriteJSON writes status code and response data

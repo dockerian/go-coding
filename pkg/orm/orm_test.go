@@ -7,7 +7,7 @@ package orm
 import (
 	"testing"
 
-	"github.com/dockerian/go-coding/api/api"
+	"github.com/dockerian/go-coding/pkg/api"
 	"github.com/jinzhu/gorm"
 	"github.com/stretchr/testify/assert"
 )

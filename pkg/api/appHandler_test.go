@@ -12,11 +12,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/dockerian/go-coding/utils"
+	"github.com/dockerian/go-coding/pkg/cfg"
 	"github.com/stretchr/testify/assert"
 )
-
-// TestAppHandler tests func api.AppHandler
 
 // TestAppHandler tests func api.AppHandler
 func TestAppHandler(t *testing.T) {
@@ -38,10 +36,10 @@ func TestAppHandler(t *testing.T) {
 		},
 		{
 			"test2", "result2", "new2", AppError{
-				errors.New(http.StatusText(http.StatusBadRequest)),
-				http.StatusBadRequest,
+				Err:        errors.New(http.StatusText(http.StatusBadRequest)),
+				StatusCode: http.StatusBadRequest,
 			},
-			"Bad Request", http.StatusBadRequest,
+			"", http.StatusBadRequest,
 		},
 		{
 			"test3", "result3", "new3",
@@ -51,13 +49,17 @@ func TestAppHandler(t *testing.T) {
 	}
 
 	for idx, test := range tests {
-		env := utils.Env{
+		env := cfg.Env{
 			test.envKey: test.envOldText,
 		}
+		ctx := cfg.Context{
+			Env: &env,
+		}
 		appHandler := &AppHandler{
-			env,
-			func(e utils.Env, w http.ResponseWriter, r *http.Request) error {
-				e.Set(test.envKey, test.envNewText)
+			ctx,
+			func(ctx cfg.Context, w http.ResponseWriter, r *http.Request) error {
+				env := ctx.Env
+				env.Set(test.envKey, test.envNewText)
 				w.WriteHeader(test.httpStatus)
 				w.Header().Set("Content-Type", "application/json")
 				if test.handlerError == nil {

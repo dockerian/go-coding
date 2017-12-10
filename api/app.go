@@ -9,5 +9,5 @@ import (
 func App() {
 	app := NewAppServer()
 
-	log.Fatal(ListenAndServe(app.Server, app.Env))
+	log.Fatal(ListenAndServe(app.Server, app.Ctx))
 }

@@ -5,16 +5,7 @@
 package api
 
 import (
-	"errors"
 	"net/http"
-)
-
-var (
-	// EncodeError is for json.NewEncoder().Encode() failure
-	EncodeError = AppError{
-		errors.New("encoder error"),
-		http.StatusInternalServerError,
-	}
 )
 
 // Error represents a handler error to provide
@@ -26,7 +17,9 @@ type Error interface {
 
 // AppError represents an error with an associated HTTP status code.
 type AppError struct {
-	Err        error
+	// Err inherits standard error interface
+	Err error
+	// StatusCode is http status code
 	StatusCode int
 }
 

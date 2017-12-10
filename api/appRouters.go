@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/dockerian/go-coding/api/api"
-	"github.com/dockerian/go-coding/utils"
+	"github.com/dockerian/go-coding/pkg/api"
+	"github.com/dockerian/go-coding/pkg/cfg"
 )
 
 var (
@@ -40,7 +40,8 @@ var (
 )
 
 // Info handles /info path
-func Info(env utils.Env, w http.ResponseWriter, r *http.Request) error {
+func Info(ctx cfg.Context, w http.ResponseWriter, r *http.Request) error {
+	env := ctx.Env
 	data := struct {
 		Name        string
 		AppAddress  string
@@ -67,7 +68,7 @@ func Info(env utils.Env, w http.ResponseWriter, r *http.Request) error {
 }
 
 // Index handles the root of api path
-func Index(env utils.Env, w http.ResponseWriter, r *http.Request) error {
-	Info(env, w, r)
+func Index(ctx cfg.Context, w http.ResponseWriter, r *http.Request) error {
+	Info(ctx, w, r)
 	return nil
 }

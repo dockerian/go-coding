@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
+	"io/ioutil"
 	"log"
 	"math"
 	"net/http"
@@ -30,7 +30,7 @@ type BodyParams map[string]interface{}
 // Params struct contains key/value pairs from URL path, request body, and query string
 type Params struct {
 	Form url.Values
-	Body io.ReadCloser
+	Body []byte
 	Path string
 	Post BodyParams
 	Vars map[string]string
@@ -41,10 +41,13 @@ func NewParams(r *http.Request) *Params {
 	r.ParseForm()
 
 	var bodyParams = BodyParams{}
+	var bytes []byte
 	if r.Body != nil {
-		decoder := json.NewDecoder(r.Body)
+		bytes, _ = ioutil.ReadAll(r.Body)
 		defer r.Body.Close()
-		decoder.Decode(&bodyParams)
+		if len(bytes) > 0 {
+			_ = json.Unmarshal(bytes, &bodyParams)
+		}
 	}
 
 	pathVars := muxVars(r)
@@ -54,7 +57,7 @@ func NewParams(r *http.Request) *Params {
 	// log.Printf("request.PostForm: %+v\n", r.Form)
 	// log.Printf("mux.Vars: %+v\n", pathVars)
 	return &Params{
-		Body: r.Body,
+		Body: bytes,
 		Form: r.Form,
 		Path: fmt.Sprintf("%s%s", r.Host, r.RequestURI),
 		Post: bodyParams,
@@ -78,11 +81,12 @@ func (params *Params) GetDateRange(key string) ([]time.Time, error) {
 	var dateValues []time.Time
 	for _, str := range params.GetValues(key) {
 		for _, strValue := range strings.Split(str, ",") {
-			if len(strValue) < 4 {
+			if strValue != "now" && len(strValue) < 4 {
 				continue
 			}
+			// log.Println("[params] parsing date in range:", strValue)
 			if dateValue, err := dateparse.ParseAny(strValue); err == nil {
-				log.Printf("[params] adding '%s':'%s' as '%+v'\n", key, str, dateValue)
+				log.Printf("[params] adding '%s':'%s' as '%+v'\n", key, strValue, dateValue)
 				dateValues = append(dateValues, dateValue)
 			}
 		}
@@ -99,6 +103,7 @@ func (params *Params) GetDateValues(key string) ([]time.Time, error) {
 	var dateValues []time.Time
 	strValues := params.GetValues(key)
 	for _, str := range strValues {
+		// log.Println("[params] parsing date value:", str)
 		if date, err := dateparse.ParseAny(str); err == nil {
 			log.Printf("[params] parsed '%s':'%s' to '%+v'\n", key, str, date)
 			dateValues = append(dateValues, date)
@@ -185,4 +190,16 @@ func (params *Params) GetValues(key string) []string {
 		return []string{varValue}
 	}
 	return []string{""}
+}
+
+// HasKey returns true if the params has the key; otherwise, return false
+func (params *Params) HasKey(key string) bool {
+	if _, hasFormKey := params.Form[key]; !hasFormKey {
+		if _, hasPostKey := params.Post[key]; !hasPostKey {
+			if _, hasVarsKey := params.Vars[key]; !hasVarsKey {
+				return false
+			}
+		}
+	}
+	return true
 }
