@@ -604,6 +604,10 @@
       brew install python # to replace built-in python installation
       pip install --upgrade setuptools
       pip install ipython
+      sudo easy_install pip
+      sudo pip install ipython[all]
+      sudo pip uninstall pyzmq
+      sudo pip install pyzmq
       ```
 
     - unit test ?
@@ -654,6 +658,7 @@
     - [Omni* Apps](https://www.omnigroup.com/more)
     - [Onyx](http://www.titanium.free.fr/onyx.html) - Titanium system unitils
     - Rar Extrator
+    - [QuickLook for Webp](https://github.com/emin/WebPQuickLook)
     - [RealVNC](https://www.realvnc.com/)
     - [Spectacle](https://www.spectacleapp.com/) - keyboard shortcuts
     - [Snip](http://snip.qq.com/)
@@ -714,7 +719,14 @@
     * Concourse/VirtualBox/Vagrant
     * [GitHub Desktop](https://desktop.github.com/)
     * [Graphviz](http://www.graphviz.org/Download.php)
+    * ipython
     * [Java](http://www.oracle.com/technetwork/java)
+    * Java decompilers
+      - http://jd.benow.ca/
+      - http://www.brouhaha.com/~eric/software/mocha/
+      - https://github.com/Storyyeller/Krakatau
+      - http://www.benf.org/other/cfr/
+      - http://www.neshkov.com/
     * [jq](https://stedolan.github.io/jq/download/)
     * [SourceTree](https://www.sourcetreeapp.com/)
     * [GitHub Desktop](https://desktop.github.com/)
@@ -743,6 +755,7 @@
     - [ExifTool](http://www.sno.phy.queensu.ca/~phil/exiftool/install.html)
     - [GIMP](https://www.gimp.org/downloads/)
     - [Pixlr](https://pixlr.com/desktop)
+    - [QuickLook for Webp](https://github.com/emin/WebPQuickLook)
     - [XnViewMP](http://www.xnview.com/)
   * Movie Editors
     - http://filmora.wondershare.com/video-editor/free-video-editing-software-mac.html

@@ -3,6 +3,24 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "Klt5w62Sqnwud0JkWcukVAvLqrQ=",
+			"path": "github.com/apcera/termtables",
+			"revision": "bcbc5dc54055d14996b256d348fb75cc6debe282",
+			"revisionTime": "2017-04-05T18:45:38Z"
+		},
+		{
+			"checksumSHA1": "JfmyBJYl7SWqOgxAzhTtVkdjVxY=",
+			"path": "github.com/apcera/termtables/term",
+			"revision": "bcbc5dc54055d14996b256d348fb75cc6debe282",
+			"revisionTime": "2017-04-05T18:45:38Z"
+		},
+		{
+			"checksumSHA1": "w0tKAADAfc6jNZR/sSqjSXsw3Hg=",
+			"path": "github.com/denisenkom/go-mssqldb",
+			"revision": "88555645b640cc621e32f8693d7586a1aa1575f4",
+			"revisionTime": "2017-10-06T17:24:03Z"
+		},
+		{
 			"checksumSHA1": "vVjKGGjPXWm1JLqjt99BNAHg/00=",
 			"path": "github.com/dockerian/go-coding",
 			"revision": "2a5f47e037118412179a90af2a3ad172f9412a49",
@@ -147,28 +165,107 @@
 			"revisionTime": "2017-09-25T02:40:20Z"
 		},
 		{
+			"checksumSHA1": "wZRCHCpQwBCetn/sALj5Dl23hLE=",
+			"path": "github.com/gucumber/gucumber",
+			"revision": "0d2e1ce2e4a01273005d4b5a12bd10cbe69503c7",
+			"revisionTime": "2017-10-16T18:04:28Z"
+		},
+		{
+			"checksumSHA1": "mTDYFrIKPm7wgUXfB9UEvCxk2Rw=",
+			"path": "github.com/gucumber/gucumber/gherkin",
+			"revision": "0d2e1ce2e4a01273005d4b5a12bd10cbe69503c7",
+			"revisionTime": "2017-10-16T18:04:28Z"
+		},
+		{
+			"checksumSHA1": "QK3MNUdQwUBuznCHZcPijU/3DyI=",
+			"path": "github.com/lib/pq",
+			"revision": "4dd446efc17690bc53e154025146f73203b18309",
+			"revisionTime": "2016-06-23T22:06:37Z"
+		},
+		{
+			"checksumSHA1": "jaCQF1par6Jl8g+V2Cgp0n/0wSc=",
+			"path": "github.com/lib/pq/hstore",
+			"revision": "4dd446efc17690bc53e154025146f73203b18309",
+			"revisionTime": "2016-06-23T22:06:37Z"
+		},
+		{
+			"checksumSHA1": "xppHi82MLqVx1eyQmbhTesAEjx8=",
+			"path": "github.com/lib/pq/oid",
+			"revision": "4dd446efc17690bc53e154025146f73203b18309",
+			"revisionTime": "2016-06-23T22:06:37Z"
+		},
+		{
+			"checksumSHA1": "6qqfQXR4hHYzmy6x6OqIKCp3fFg=",
+			"origin": "github.com/apcera/termtables/vendor/github.com/mattn/go-runewidth",
+			"path": "github.com/mattn/go-runewidth",
+			"revision": "bcbc5dc54055d14996b256d348fb75cc6debe282",
+			"revisionTime": "2017-04-05T18:45:38Z"
+		},
+		{
+			"checksumSHA1": "zKDmGyNRpAeeTGXwzKEvy+UY/QQ=",
+			"path": "github.com/mattn/go-sqlite3",
+			"revision": "d5ffb5c0cca8778699a929b236766f4a7af674e8",
+			"revisionTime": "2017-11-22T00:24:37Z"
+		},
+		{
+			"checksumSHA1": "rJab1YdNhQooDiBWNnt7TLWPyBU=",
+			"path": "github.com/pkg/errors",
+			"revision": "f15c970de5b76fac0b59abb32d62c17cc7bed265",
+			"revisionTime": "2017-10-18T19:55:50Z"
+		},
+		{
+			"checksumSHA1": "v5CCEZdC63TIkIL8TUeURBcZzNc=",
+			"path": "github.com/shiena/ansicolor",
+			"revision": "a422bbe96644373c5753384a59d678f7d261ff10",
+			"revisionTime": "2015-11-19T15:19:21Z"
+		},
+		{
 			"checksumSHA1": "K0crHygPTP42i1nLKWphSlvOQJw=",
 			"path": "github.com/stretchr/objx",
 			"revision": "1a9d0bb9f541897e62256577b352fdbc1fb4fd94",
 			"revisionTime": "2015-09-28T12:21:52Z"
 		},
 		{
+			"checksumSHA1": "MCeXr2RNeiG1XG6V+er1OR0qyeo=",
+			"path": "golang.org/x/crypto/md4",
+			"revision": "811831de4c4dd03a0b8737233af3b36852386373",
+			"revisionTime": "2016-06-21T01:10:02Z"
+		},
+		{
+			"checksumSHA1": "GtamqiJoL7PGHsN454AoffBFMa8=",
+			"path": "golang.org/x/net/context",
+			"revision": "9dfe39835686865bff950a07b394c12a98ddc811",
+			"revisionTime": "2017-11-15T06:26:45Z"
+		},
+		{
+			"checksumSHA1": "2t6c6F2y4b/PEV04TOHpQxh/xLc=",
+			"path": "golang.org/x/net/html",
+			"revision": "9dfe39835686865bff950a07b394c12a98ddc811",
+			"revisionTime": "2017-11-15T06:26:45Z"
+		},
+		{
+			"checksumSHA1": "iWvOOLdDxvI4AVX6px6/HYBPeaQ=",
+			"path": "golang.org/x/net/html/atom",
+			"revision": "9dfe39835686865bff950a07b394c12a98ddc811",
+			"revisionTime": "2017-11-15T06:26:45Z"
+		},
+		{
 			"checksumSHA1": "8bP6iLolDGDRKAnx89Qb/OatWDE=",
 			"path": "golang.org/x/tools/go/ast/astutil",
-			"revision": "e531a2a1c15f94033f6fa87666caeb19a688175f",
-			"revisionTime": "2017-09-14T20:19:24Z"
+			"revision": "9c477bae194915bfd4bc8c314e90e28b9ec1c831",
+			"revisionTime": "2017-11-10T17:05:31Z"
 		},
 		{
 			"checksumSHA1": "AnXFEvmaJ7w2Q7hWPcLUmCbPgq0=",
 			"path": "golang.org/x/tools/go/buildutil",
-			"revision": "e531a2a1c15f94033f6fa87666caeb19a688175f",
-			"revisionTime": "2017-09-14T20:19:24Z"
+			"revision": "9c477bae194915bfd4bc8c314e90e28b9ec1c831",
+			"revisionTime": "2017-11-10T17:05:31Z"
 		},
 		{
 			"checksumSHA1": "ZpAR2KupZto/mWf9zu5e6IKDWt0=",
 			"path": "golang.org/x/tools/go/loader",
-			"revision": "e531a2a1c15f94033f6fa87666caeb19a688175f",
-			"revisionTime": "2017-09-14T20:19:24Z"
+			"revision": "9c477bae194915bfd4bc8c314e90e28b9ec1c831",
+			"revisionTime": "2017-11-10T17:05:31Z"
 		}
 	],
 	"rootPath": "github.com/dockerian/go-coding"

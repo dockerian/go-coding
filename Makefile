@@ -64,7 +64,7 @@ BUILD_MASTER_VERSION ?= 0
 BUILD_PREFIX := $(BINARY)-$(BUILD_VERSION)
 ALL_PACKAGES := $(shell go list ./... 2>/dev/null|grep -v -E '/v[0-9]+/client|/v[0-9]+/server|/vendor/')
 PROJECT_PACKAGE := $(subst $(GOPATH)/src/, , $(PWD))
-DOC_PACKAGES := api pkg/api pkg/cfg pkg/orm pkg/str utils
+DOC_PACKAGES := api pkg/api pkg/cfg pkg/msg pkg/orm pkg/str pkg/zip utils
 CMD_PACKAGE := $(PROJECT_PACKAGE)/cli/cmd
 SOURCE_PATH := $(GOPATH)/src/github.com/$(GITHUB_CORP)/$(PROJECT)
 SYSTOOLS := awk egrep find git go grep jq rm sort tee xargs zip
@@ -76,11 +76,11 @@ DEBUG ?= 1
 # Set testing parameters
 GOMAXPROCS ?= 4
 TEST_COVERFUNC := cover-func.out
-TEST_COVER_ALL := cover-all.out
+TEST_COVER_ALL := coverage.txt
 TEST_COVER_OUT := cover.out
 
 ifeq ("$(TEST_COVER_MODE)","")
-	TEST_COVER_MODE = set
+	TEST_COVER_MODE = atomic
 endif
 ifeq ("$(TEST_COVERAGES)","")
 	TEST_COVERAGES = 65
@@ -270,6 +270,7 @@ clean-cache clean:
 	@echo "Cleaning up cache and coverage data ..."
 	rm -rf .cache
 	rm -rf .vscode
+	rm -rf converage.txt
 	find . -name cover\*.out -type f -delete
 	rm -rf ./$(BIN_DIR)
 	rm -rf ./$(BUILDS_DIR)

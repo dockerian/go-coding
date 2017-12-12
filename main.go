@@ -18,6 +18,10 @@ var (
 	`
 )
 
+func test() {
+	fmt.Println("\n--- this is a test ---")
+}
+
 // main function
 func main() {
 	var arg string
@@ -28,8 +32,12 @@ func main() {
 	case "api":
 		apimain.App()
 
+	case "test":
+		test()
+
 	case "cli":
 		fallthrough
+
 	default:
 		fmt.Println(help)
 	}

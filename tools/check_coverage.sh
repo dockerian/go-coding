@@ -19,7 +19,7 @@
 #     ALL_PACKAGES         specified packages for test coverage
 #     COVERAGE_PERCENTAGE  reported cover percent if missing $2
 #     COVERAGE_THRESHOLDS  code coverage thresholds, default 90
-#     COVER_ALL_OUT        coverage profile output, default: cover.out
+#     COVER_ALL_OUT        coverage profile output, default: coverage.txt
 #     PROJECT_DIR          project root path
 #
 # Exit code:
@@ -41,7 +41,7 @@ COVERAGE_PERCENTAGE="${2:-${COVERAGE_PERCENTAGE:-0}}"
 COVERAGE_THRESHOLDS="${1:-${COVERAGE_THRESHOLDS:-90}}"
 COVER_ALL_OUT="${COVER_ALL_OUT:-${PROJECT_DIR}/cover.out}"
 COVER_FUNC="${COVER_FUNC:-${PROJECT_DIR}/cover-func.out}"
-COVER_MODE="${COVER_MODE:-set}"
+COVER_MODE="${COVER_MODE:-atomic}"
 
 TEST_ARGS="${TEST_ARGS}"
 TEST_LOGS="${TEST_LOGS:-${PROJECT_DIR}/tests.log}"

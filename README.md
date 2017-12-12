@@ -2,17 +2,22 @@
 
 This is a project for [Golang](https://golang.org/) exercises.
 
+[![Code Coverage](https://codecov.io/gh/dockerian/go-coding/branch/master/graph/badge.svg)](https://codecov.io/gh/dockerian/go-coding)
+[![GoDoc](https://godoc.org/github.com/dockerian/go-coding?status.svg)](http://godoc.org/github.com/dockerian/go-coding)
+[![Build Status](https://travis-ci.org/dockerian/go-coding.svg?branch=master)](https://travis-ci.org/dockerian/go-coding)
+[![Go ReportCard](https://goreportcard.com/badge/dockerian/go-coding)](https://goreportcard.com/report/dockerian/go-coding)
+
 
 ## Project Structure
 
-  - [Data structure solutions](ds)
-  - [Dev interview: coding solutions](puzzle)
-  - [Dev interview: examples](interview)
-  - [Go API example](api)
+  - [Data structure solutions](ds/README.md)
+  - [Dev interview: coding solutions](puzzle/README.md)
+  - [Dev interview: examples](interview/README.md)
+  - [Go API example](api/README.md)
   - [Go CLI example](cli) (TBD)
-  - [Online coding examples](demo) | [Golang Notes](demo/golang-notes.md)
-  - [Package solutions](pkg)
-  - [Utilities](utils)
+  - [Online coding examples](demo/README.md) | [Golang Notes](demo/golang-notes.md)
+  - [Package solutions](pkg/README.md)
+  - [Utilities](utils/README.md)
   - [How to build, test, and run](#build-test-run)
   - [Learning Go](#learning-go)
 
@@ -52,6 +57,15 @@ or to run tests
   make test  # or ./run.sh test
   ```
 
+<a name="godoc"><br/></a>
+### Documentation
+
+This project uses [godocdown](https://github.com/robertkrimen/godocdown)
+and `$(DOC_PACKAGES)` in `Makefile` to generate documentations for some library packages
+
+  ```
+  make doc
+  ```
 
 
 
@@ -59,3 +73,11 @@ or to run tests
 ### Learning Go
 - [awesome-go](https://github.com/avelino/awesome-go)
 - [go books](https://github.com/dariubs/GoBooks)
+
+
+<p><br/></p>
+
+[![Code Coverage](https://codecov.io/gh/dockerian/go-coding/branch/master/graph/badge.svg)](https://codecov.io/gh/dockerian/go-coding)
+[![GoDoc](https://godoc.org/github.com/dockerian/go-coding?status.svg)](http://godoc.org/github.com/dockerian/go-coding)
+[![Build Status](https://travis-ci.org/dockerian/go-coding.svg?branch=master)](https://travis-ci.org/dockerian/go-coding)
+[![Go ReportCard](https://goreportcard.com/badge/dockerian/go-coding)](https://goreportcard.com/report/dockerian/go-coding)

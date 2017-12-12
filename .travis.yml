@@ -1,0 +1,17 @@
+language: go
+
+go:
+  - 1.9.x
+  - tip
+
+before_install:
+  - go get -t -v ./...
+
+script:
+  - go test -v -run=. -tags=all -race -coverprofile=coverage.txt -covermode=atomic
+  - make test # generating coverage.txt with mode: atomic
+
+after_success:
+  - export CODECOV_TOKEN=7ccc9443-b2b6-49ca-8377-d42b586a4576 # jasonzhuyx
+  - export CODECOV_TOKEN=0df2ae71-f984-406a-971e-f08aca4d9805 # dockeria
+  - bash <(curl -s https://codecov.io/bash) -t 3e7e4614-fdf5-4882-986b-387da990f060
