@@ -138,6 +138,13 @@ func WriteJSON(w http.ResponseWriter, code int, data interface{})
 ```
 WriteJSON writes status code and response data
 
+#### func  WriteZIP
+
+```go
+func WriteZIP(w http.ResponseWriter, data []byte, filename string)
+```
+WriteZIP writes a zip from buffer
+
 #### type AppError
 
 ```go

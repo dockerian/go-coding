@@ -4,6 +4,7 @@ package api
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -44,4 +45,15 @@ func WriteJSON(w http.ResponseWriter, code int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	encoder := GetJSONEncoder(w, "  ")
 	encoder.Encode(data)
+}
+
+// WriteZIP writes a zip from buffer
+func WriteZIP(w http.ResponseWriter, data []byte, filename string) {
+	// w.WriteHeader(http.StatusOK)
+	attachment := fmt.Sprintf("attachment; filename=\"%s\"", filename)
+	log.Println("[zip] Content-Disposition:", attachment)
+	w.Header().Set("Content-Transfer-Encoding", "binary")
+	w.Header().Set("Content-Type", "application/zip")
+	w.Header().Set("Content-Disposition", attachment)
+	w.Write(data)
 }

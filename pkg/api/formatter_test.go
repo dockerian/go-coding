@@ -60,3 +60,12 @@ func TestWriteJSON(t *testing.T) {
 	WriteJSON(rec, code, data)
 	assert.Equal(t, code, rec.Code)
 }
+
+// TestWriteZIP tests func api.WriteZIP
+func TestWriteZIP(t *testing.T) {
+	rec := httptest.NewRecorder()
+	code := http.StatusOK
+	data := []byte("zip data")
+	WriteZIP(rec, data, "file.zip")
+	assert.Equal(t, code, rec.Code)
+}

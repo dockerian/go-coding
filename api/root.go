@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/dockerian/go-coding/api/info"
-	"github.com/dockerian/shuati/api"
+	"github.com/dockerian/go-coding/pkg/api"
 	"github.com/gorilla/mux"
 )
 
@@ -68,7 +68,7 @@ func rootRouter(routes []Route) (*mux.Router, string) {
 	// or
 	for _, route := range routes {
 		var handler http.Handler
-		handler = api.Logger(route.Handler, route.Name)
+		handler = api.AppLogger(route.Handler, route.Name)
 		router.
 			Path(route.Pattern).
 			Methods(route.Method).
