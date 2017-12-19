@@ -22,10 +22,10 @@ func ExamplesTest() {
 	}
 
 	sources := []*zip.Source{
-		&zip.Source{
+		{
 			Reader: strings.NewReader("attachment test 1"), Name: "test1.txt",
 		},
-		&zip.Source{
+		{
 			Reader: strings.NewReader("attachment test 2"), Name: "test2.txt",
 		},
 	}

@@ -354,7 +354,7 @@ ToCamel converts a string to camel case format
 ```go
 func ToHexString(x uint64, delimiter string) string
 ```
-ToHexString converts uint64 x to zero-padding hexidecimal representation
+ToHexString converts uint64 x to zero-padding hexadecimal representation
 
 #### func  ToJSON
 

@@ -25,9 +25,9 @@ var (
 		"more attachment":  "bW9yZSBhdHRhY2htZW50",
 	}
 	recipients = map[string][]string{
-		"to":  []string{"to1@t.com", "to2@t.com"},
-		"cc":  []string{"cc1@t1.com", "cc2@t2.com"},
-		"bcc": []string{"bcc1@test.com", "bcc2@test.com"},
+		"to":  {"to1@t.com", "to2@t.com"},
+		"cc":  {"cc1@t1.com", "cc2@t2.com"},
+		"bcc": {"bcc1@test.com", "bcc2@test.com"},
 	}
 	messages = []Message{
 		{
@@ -229,9 +229,9 @@ func TestSend(t *testing.T) {
 // TestSendWithTLS
 func TestSendWithTLS(t *testing.T) {
 	var ccWriters = []*clientWriteCloser{
-		&clientWriteCloser{},
-		&clientWriteCloser{writeErr: "data write err"},
-		&clientWriteCloser{closeErr: "data close err"},
+		{},
+		{writeErr: "data write err"},
+		{closeErr: "data close err"},
 	}
 
 	for num, test := range []struct {

@@ -78,7 +78,8 @@ func BenchmarkAppend(b *testing.B) {
 	slice1 := []byte(str1)
 	slice2 := []byte(str2)
 
-	b.Run("Benchmark_Append_function", func(b *testing.B) {
+	str = "Benchmark_Append_function"
+	b.Run(str, func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			result = Append(result, slice1)
@@ -86,7 +87,8 @@ func BenchmarkAppend(b *testing.B) {
 		}
 	})
 
-	b.Run("Benchmark_build-in-append", func(b *testing.B) {
+	str = "Benchmark_build-in-append"
+	b.Run(str, func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			result = append(result, slice1...)
@@ -94,13 +96,16 @@ func BenchmarkAppend(b *testing.B) {
 		}
 	})
 
-	b.Run("Benchmark_string_concat", func(b *testing.B) {
+	str = "Benchmark_string_concat"
+	b.Run(str, func(b *testing.B) {
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			str += str1
 			str += str2
 		}
 	})
+	str = "Benchmark pkg/str"
+	fmt.Printf("DONE: %s\n", str)
 }
 
 // TestAppend

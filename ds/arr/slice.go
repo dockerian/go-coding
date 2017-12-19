@@ -9,13 +9,13 @@ func InsertIntoSlice(slice []interface{}, index int, value interface{}) []interf
 	// Grow the slice by one element.
 	if cap(slice) == len(slice) {
 		newSlice = make([]interface{}, len(slice)+1)
-		copy(slice[0:index], newSlice[0:index])
+		copy(newSlice[0:index], slice[0:index])
 	} else {
 		newSlice = slice[0 : len(slice)+1]
 	}
 
 	// Use copy to move the upper part of the slice out of the way and open a hole.
-	copy(slice[index+1:], newSlice[index:])
+	copy(newSlice[index+1:], slice[index:])
 	// Store the new value.
 	newSlice[index] = value
 	// Return the result.

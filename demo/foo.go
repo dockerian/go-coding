@@ -15,6 +15,6 @@ func (f *Foo) GetAnything() interface{} {
 	return f.Anything
 }
 
-func (f *Foo) string() string {
+func (f *Foo) String() string {
 	return fmt.Sprintf("%v", f.Anything)
 }

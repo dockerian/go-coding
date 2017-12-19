@@ -37,7 +37,7 @@ func getRuler(length int) string {
 	return fmt.Sprintf("%s\n%s", string(ruler), rules)
 }
 
-// TestJustify tests func justfiy
+// TestJustify tests func justify
 func TestJustify(t *testing.T) {
 	tests := []JustifyTestCase{
 		{20, "abc", "abc                 "},

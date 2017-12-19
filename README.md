@@ -5,7 +5,7 @@ This is a project for [Golang](https://golang.org/) exercises.
 [![Code Coverage](https://codecov.io/gh/dockerian/go-coding/branch/master/graph/badge.svg)](https://codecov.io/gh/dockerian/go-coding)
 [![GoDoc](https://godoc.org/github.com/dockerian/go-coding?status.svg)](http://godoc.org/github.com/dockerian/go-coding)
 [![Build Status](https://travis-ci.org/dockerian/go-coding.svg?branch=master)](https://travis-ci.org/dockerian/go-coding)
-[![Go ReportCard](https://goreportcard.com/badge/dockerian/go-coding)](https://goreportcard.com/report/dockerian/go-coding)
+[![Go ReportCard](https://goreportcard.com/badge/github.com/dockerian/go-coding)](https://goreportcard.com/report/github.com/dockerian/go-coding)
 
 
 ## Project Structure
@@ -80,4 +80,4 @@ and `$(DOC_PACKAGES)` in `Makefile` to generate documentations for some library 
 [![Code Coverage](https://codecov.io/gh/dockerian/go-coding/branch/master/graph/badge.svg)](https://codecov.io/gh/dockerian/go-coding)
 [![GoDoc](https://godoc.org/github.com/dockerian/go-coding?status.svg)](http://godoc.org/github.com/dockerian/go-coding)
 [![Build Status](https://travis-ci.org/dockerian/go-coding.svg?branch=master)](https://travis-ci.org/dockerian/go-coding)
-[![Go ReportCard](https://goreportcard.com/badge/dockerian/go-coding)](https://goreportcard.com/report/dockerian/go-coding)
+[![Go ReportCard](https://goreportcard.com/badge/github.com/dockerian/go-coding)](https://goreportcard.com/report/github.com/dockerian/go-coding)

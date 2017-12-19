@@ -59,7 +59,7 @@ func (t *RuneTrie) FindMatchedPhases(prefix string) []string {
 	return phases
 }
 
-// HasMatch checks if there is a matched prefix in the trie, additionaly
+// HasMatch checks if there is a matched prefix in the trie, additionally
 // returns the last matched node and matched length
 func (t *RuneTrie) HasMatch(prefix string) (bool, bool, *RuneTrieNode, int) {
 	var matched, matchedAll bool

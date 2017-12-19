@@ -585,7 +585,7 @@
 
   * Node.js
 
-    - install [node](https://nodejs.org/en/download/package-manager/#osx)
+    - install [node](https://nodejs.org/en/download/package-manager/#macos)
 
       ```
       brew install node
@@ -593,6 +593,19 @@
       # port install nodejs7  # using MacPorts
       # pkgin -y install nodejs  # using pkgsrc
       # cd pkgsrc/lang/nodejs && bmake install  # build manually from pkgsrc
+      # or
+      # curl "https://nodejs.org/dist/latest/node-${VERSION:-$(wget -qO- https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
+      ```
+
+    - install [yarn](https://yarnpkg.com/lang/en/docs/install/)
+
+      ```
+      brew install yarn  # without node
+      brew upgrade yarn
+      # or from MacPorts
+      sudo port install yarn
+      # or by node
+      node install -g yarn
       ```
 
   * Python
@@ -855,6 +868,21 @@
     ```
 
   - json tool [jq](https://stedolan.github.io/jq/download/)
+
+  - node from [NodeSource](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions)
+
+    ```
+    curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+    # then install yarn
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+    # alternative
+    sudo apt-get install -y build-essential
+    # then install yarn
+    sudo apt-get update && sudo apt-get install yarn
+    ```
 
   - networking
 
@@ -1309,6 +1337,9 @@
   * Download icons: [flaticon.com](http://www.flaticon.com/)
   * GIF/PNG animation tools: [ezgif.com](https://ezgif.com/)
   * JavaScript
+    - [Codepen](https://codepen.io/)
+    - [CodeSandbox](https://codesandbox.io/)
+    - [JS.do - Online JavaScript Editor](https://js.do/)
     - [JSFiddle](https://jsfiddle.net/)
     - [Plunker](https://plnkr.co/) - Online Snippet Previewer
     - [JSBin](https://jsbin.com/) - Collaborative JS Editor/Debugger
@@ -1318,6 +1349,10 @@
     - [JsPerf](http://jsperf.com/) - JavaScript performance playground
     - [JsLint](http://www.jslint.com/) - JavaScript Code Quality Tool
     - [JsHint](http://jshint.com/) - JavaScript Error Detector
+    - [Stackblitz - Online VS Code IDE for Angular & React](https://stackblitz.com/)
+    - [Vueditor - WYSIWYG Editor For Vue.js](http://www.vuescript.com/wysiwyg-editor-vue-js-vueditor/)
+    - [VueJS Editor](https://www.tutorialspoint.com/online_vuejs_editor.php)
+    - [more ...](http://blog.liveedu.tv/10-best-online-javascript-editors/)
   * JSON Formatters
     - http://codebeautify.org/jsonviewer
     - https://jsonformatter.curiousconcept.com/

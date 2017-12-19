@@ -2,13 +2,13 @@ language: go
 
 go:
   - 1.9.x
-  - tip
+  - master
 
 before_install:
   - go get -t -v ./...
 
 script:
-  - go test -v -run=. -tags=all -race -coverprofile=coverage.txt -covermode=atomic
+  # go test -v -run=. -tags=all -race -coverprofile=coverage.txt -covermode=atomic
   - make test # generating coverage.txt with mode: atomic
 
 after_success:

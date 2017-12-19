@@ -53,8 +53,8 @@ func TestParseInt64(t *testing.T) {
 //       int16: -32,768 to 32,767
 //       int32: -2,147,483,648 to 2,147,483,647
 //       int64: -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807
-// Note: maximium int64 + 1 => minimium int64 (negative)
-//       minimium int64 - 1 => maximium int64 (positive)
+// Note: maximum int64 + 1 => minimum int64 (negative)
+//       minimum int64 - 1 => maximum int64 (positive)
 func TestReverseInt64(t *testing.T) {
 	var tests = []ReverseInt64TestCase{
 		{121, 121},

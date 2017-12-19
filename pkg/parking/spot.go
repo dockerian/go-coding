@@ -44,7 +44,7 @@ func (s *Spot) String() string {
 	if s.isOccupied {
 		str += ": Occupied"
 	} else {
-		str += ": Availble"
+		str += ": Available"
 	}
 	switch {
 	case s.isCarpool:

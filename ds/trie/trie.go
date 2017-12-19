@@ -146,7 +146,7 @@ func (t *Trie) FindMatchedPhases(prefix string) []string {
 	return phases
 }
 
-// HasMatch checks if there is a matched prefix in the trie, additionaly
+// HasMatch checks if there is a matched prefix in the trie, additionally
 // returns the last matched node and matched length
 func (t *Trie) HasMatch(prefix string) (bool, bool, *Node, int) {
 	var matched, matchedAll bool

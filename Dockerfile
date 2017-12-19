@@ -55,9 +55,13 @@ ENV GOPATH=/go \
     SHELL=/bin/bash
 
 # creating "$PROJECT_DIR" and adding Godeps
-ADD Godeps "$PROJECT_DIR/Godeps"
+ADD . "$PROJECT_DIR"
 
-RUN cd -P "$PROJECT_DIR" && godep restore
+RUN cd -P "$PROJECT_DIR" \
+ && tools/check_packages.sh \
+ && godep restore \
+ && tree -L 4 $GOPATH \
+ && ls -al
 
 WORKDIR $PROJECT_DIR
 

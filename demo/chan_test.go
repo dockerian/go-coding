@@ -55,7 +55,7 @@ func TestMergeChannels(t *testing.T) {
 				data = append(data, v)
 				continue // for loop
 			}
-			done = true
+			// done = true
 			// Note: This only to demo `goto` statement
 			goto assertion
 		}

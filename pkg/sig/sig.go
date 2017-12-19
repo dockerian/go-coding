@@ -57,8 +57,8 @@ func CreateSources(rules []Rule, ruleName string) []*zip.Source {
 	}
 
 	return []*zip.Source{
-		&zip.Source{Name: filename, Reader: &output, Size: size},
-		&zip.Source{Name: ruleIBFn, Reader: &outputIB, Size: sizeIB},
+		{Name: filename, Reader: &output, Size: size},
+		{Name: ruleIBFn, Reader: &outputIB, Size: sizeIB},
 	}
 }
 

@@ -16,49 +16,49 @@ var (
 	testDB = &gorm.DB{}
 	params = &api.Params{
 		Form: map[string][]string{
-			"date": []string{
+			"date": {
 				"2017-11-11 11:01:01",
 			},
-			"dates": []string{
+			"dates": {
 				"2017-11-11 11:01:01",
 				"2009-11-22T11:22:02",
 				"2009-11-30T23:33:03",
 			},
-			"datetime-updated": []string{
+			"datetime-updated": {
 				"one",
 				"2017-33-33 33:44:55,yyyy-mm-dd",
 				"2017-11-30,",
 			},
-			"dates-range": []string{
+			"dates-range": {
 				"some invalid date",
 				"2017-11-11 11:01:01,2009-11-22T11:22:02",
 				"2017-11-30,2009-11-30T23:33:03",
 			},
-			"debug": []string{
+			"debug": {
 				"1",
 			},
-			"key": []string{
+			"key": {
 				"value%",
 			},
-			"pgNeg": []string{
+			"pgNeg": {
 				"-5",
 			},
-			"pgOffset": []string{
+			"pgOffset": {
 				"5",
 			},
-			"pgSize": []string{
+			"pgSize": {
 				"20",
 			},
-			"order": []string{
+			"order": {
 				"field desc,name",
 			},
-			"search": []string{
+			"search": {
 				"value",
 			},
-			"name": []string{
+			"name": {
 				"value",
 			},
-			"names": []string{
+			"names": {
 				"value1",
 				"value2",
 				"value3",

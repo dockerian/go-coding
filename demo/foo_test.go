@@ -27,7 +27,7 @@ func TestFoo(t *testing.T) {
 	for index, test := range tests {
 		var foo = &Foo{test.Expected}
 		var val = test.Data.GetAnything()
-		var msg = fmt.Sprintf("expecting %v == %v", val, test.Expected)
+		var msg = fmt.Sprintf("expecting %v == %v [%s]", val, test.Expected, foo)
 		t.Logf("Test %v [%v]: %v\n", index+1, testName, msg)
 		assert.Equal(t, test.Expected, foo.GetAnything(), msg)
 		assert.Equal(t, test.Expected, val, msg)

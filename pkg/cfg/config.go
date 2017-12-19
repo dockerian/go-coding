@@ -24,7 +24,7 @@ var (
 	// _decryptFunc is a decrypt function to return decrypted key value
 	_decryptFunc DecryptFunc = DecryptKeyTextByKMS
 	// configs use config file path mapping to a Config struct
-	configs = map[string]Config{"": Config{}}
+	configs = map[string]Config{"": {}}
 	// syncMtx is a private lock used by GetConfig
 	syncMtx = &sync.Mutex{}
 )

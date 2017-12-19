@@ -270,7 +270,6 @@ clean-cache clean:
 	@echo "Cleaning up cache and coverage data ..."
 	rm -rf .cache
 	rm -rf .vscode
-	rm -rf converage.txt
 	find . -name cover\*.out -type f -delete
 	rm -rf ./$(BIN_DIR)
 	rm -rf ./$(BUILDS_DIR)
@@ -285,6 +284,7 @@ clean-all: clean-cache
 	@echo "Cleaning up codegen client and server ..."
 	for ver in $(CODEGEN_VERS); do \
 	rm -rf "$(CODEGEN_PATH)/$$ver/client" "$(CODEGEN_PATH)/$$ver/server"; \
+	rm -rf converage.txt
 	done
 	@echo ""
 ifeq ("$(DOCKER_DENV)","")
@@ -435,6 +435,8 @@ ifndef DONT_RUN_DOCKER
 	$(MAKE_RUN) $@
 else
 	@echo "Formatting code ..."
+	find . -name '*.go' | xargs gofmt -s -w
+	@echo ""
 	go fmt $(ALL_PACKAGES) || true
 endif
 	@echo ""

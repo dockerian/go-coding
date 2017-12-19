@@ -86,8 +86,8 @@ func ReverseInt64(number int64) int64 {
 		var unit = number % 10
 		var test = result*10 + unit
 		// u.Debug("result= %v, test= %v, unit= %v\n", result, test, unit)
-		// Note: maximum int64 + 1 => minimium int64 (negative)
-		//       minimium int64 - 1 => maximum int64 (positive)
+		// Note: maximum int64 + 1 => minimum int64 (negative)
+		//       minimum int64 - 1 => maximum int64 (positive)
 		if (test-unit)/10 != result || result != 0 && !EqualSign(test, result) {
 			return 0
 		}
