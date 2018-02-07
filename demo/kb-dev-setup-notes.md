@@ -1,6 +1,7 @@
 # Dev Setup Notes
 --------------------
 
+<br/><a name="contents"></a>
 ## Contents
 
   * [Mac OS X Restore](#mac-os-x-restore)
@@ -1308,6 +1309,37 @@
 <br/><a name="online-tools"></a>
 ## Online tools
 
+  * Chrome extensions:
+    - Better Go Playground
+    - DHC (Dynamic HTTP Client)
+    - Exif Meta Viewer
+    - LastPass (password vault management)
+    - World Clocks
+
+  * Coding interview tools, see [interview](../interview/README.md#resources)
+    - [C++ Shell](http://cpp.sh/)
+    - [CodeBunk](https://codebunk.com/) (online interview tool)
+    - [CodeChef](http://codechef.com) (judge code by other engineers)
+    - [CodePad](https://codepad.remoteinterview.io) (remote interview supports golang)
+    - [CodeShare](https://codeshare.io/) (sharing code in real time with others)
+    - [CodeTable](https://code.hackerearth.com) (online code compiler and runner)
+    - [Coding Ground](https://www.tutorialspoint.com/codingground.htm) (dev environments)
+    - [Codvia](https://www.codiva.io) (online compiler and IDE for C/C++, Java)
+    - [CollabEdit](http://collabedit.com/) (online coding interview, free version of https://codinghire.com)
+    - [Compiler Explorer](https://godbolt.org/#)
+    - [IDE One](https://ideone.com/) (online compiler and debugging tool)
+    - [JDoodle](https://www.jdoodle.com/) (online compilers and editors)
+    - [Js.do](https://js.do/) (online javascript editor)
+    - [Go Playground](https://play.golang.org/)
+    - [Oracle Live SQL](https://livesql.oracle.com/apex/livesql/file/index.html)
+    - [OnlineGDB](https://www.onlinegdb.com/) (online C++ compiler)
+    - [Paiza](https://paiza.io) (online PHP editor)
+    - [PHP Fiddle](http://phpfiddle.org/)
+    - [Pramp](https://www.pramp.com) (practicing interviews)
+    - [RemoteInterview](https://www.remoteinterview.io/)
+    - [RexTester](http://rextester.com/) (online C# compiler)
+    - [Repl.it](https://repl.it)
+
   * Developer tools
     - https://www.browserling.com/tools
     - https://code.tutsplus.com/articles/20-tools-to-make-the-life-of-a-web-developer-easier--net-5338
@@ -1318,12 +1350,6 @@
     - http://tutorialzine.com/2014/09/50-awesome-tools-and-resources-for-web-developers/
     - https://vim.rtorr.com/ (vim cheatsheet)
 
-  * Chrome extensions:
-    - Better Go Playground
-    - DHC (Dynamic HTTP Client)
-    - Exif Meta Viewer
-    - LastPass (password vault management)
-    - World Clocks
   * Decode/Encode Base64
     - https://www.base64decode.org/
     - http://www.url-encode-decode.com/base64-encode-decode/
@@ -1334,8 +1360,11 @@
     - http://ostermiller.org/calc/encode.html
   * Decode/Encode URL
     - http://meyerweb.com/eric/tools/dencoder/
+
   * Download icons: [flaticon.com](http://www.flaticon.com/)
+
   * GIF/PNG animation tools: [ezgif.com](https://ezgif.com/)
+
   * JavaScript
     - [Codepen](https://codepen.io/)
     - [CodeSandbox](https://codesandbox.io/)
@@ -1353,6 +1382,7 @@
     - [Vueditor - WYSIWYG Editor For Vue.js](http://www.vuescript.com/wysiwyg-editor-vue-js-vueditor/)
     - [VueJS Editor](https://www.tutorialspoint.com/online_vuejs_editor.php)
     - [more ...](http://blog.liveedu.tv/10-best-online-javascript-editors/)
+
   * JSON Formatters
     - http://codebeautify.org/jsonviewer
     - https://jsonformatter.curiousconcept.com/
@@ -1363,10 +1393,13 @@
     - http://jsonviewer.stack.hu/
     - http://jsonformatter.org/
     - http://jsonformat.com/
+
   * FireFox add-ons: Adblock, Firebug, Flash Downloader, ImTranslator, Markdown
+
   * [Google Draw](https://www.draw.io/)
   * [Go Playground](https://play.golang.org/)
   * [Morse code](https://morsecode.scphillips.com/translator.html)
+
   * Markdown editors
     - [Dillinger](http://dillinger.io/)
     - [GitHub-Flavored](https://jbt.github.io/markdown-editor/)
@@ -1379,15 +1412,43 @@
     - [Remarkable](https://remarkableapp.github.io/) - Linux/Windows
     - [StackEdit](https://stackedit.io/editor)
     - [Mou](http://25.io/mou/)
+
+  * Online resources for web developers
+    - [Argento Theme](http://argentotheme.com/)
+    - [ExpressionEngine](https://ellislab.com/) (content management tool by EllisLab)
+    - [Free Formatters](https://www.freeformatter.com)
+    - [GoJs](https://gojs.net) (interactive JavaScript diagrams in HTML)
+    - [Gridgum](https://gridgum.com/)
+    - [HTML5 Maker](http://html5maker.com/)
+    - [Icon Finder](https://www.iconfinder.com/)
+    - [Icon Maker](https://iconsflow.com/)
+    - [Kukook](https://www.kukook.com/) (professional resume template)
+    - [MotoCMS](https://www.motocms.com/) (website builder)
+    - [Template Master](https://templates-master.com/)
+    - [Themify](http://themify.me/)
+
+  * Online SVG editors
+    - [Boxy SVG](https://boxy-svg.com/app)
+    - [DrawSVG](http://www.drawsvg.org/#tools)
+    - [Janvas](https://www.janvas.com/) tools
+    - [rollApp](https://www.rollapp.com/apps) tools collection
+    - [SVG Editor](http://www.clker.com/inc/svgedit/svg-editor.html) | [https://github.com/SVG-Edit/svgedit](source)
+
   * Online syntax highlighting tools
     - [Markup Highligher](http://markup.su/highlighter/)
     - [Hohli Highligher](http://highlight.hohli.com/)
     - [Code Beautify](http://codebeautify.org/)
     - [ToHtml syntax highlighting for masses](https://tohtml.com/)
     - [Hilite](http://hilite.me/)
+
   * Regular expression
     - Regex 101 [regex101.com](https://regex101.com)
     - Regex Pal [regular expression tester](http://www.regexpal.com/)
     - Regex Tester [regexstorm](http://regexstorm.net/tester)
     - Regexr [regexr](http://regexr.com/)
+
   * [Swagger](http://editor.swagger.io/#/)
+
+
+<br/>
+&raquo; Back to <a href="#contents">Contents</a> &laquo;
