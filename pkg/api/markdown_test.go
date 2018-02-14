@@ -52,7 +52,6 @@ func TestMarkdownHandler(t *testing.T) {
 		appHandler.ServeHTTP(rr, req, http.HandlerFunc(next))
 		msg := fmt.Sprintf("%s [%s] - rr: %+v", test.reqPath, test.docPath, rr.Code)
 		t.Logf("Test %2d: %s", idx+1, msg)
-		assert.NotEmpty(t, rr.Body)
 		assert.Equal(t, test.httpStatus, rr.Code, msg)
 		assert.False(t, rr.Flushed)
 	}

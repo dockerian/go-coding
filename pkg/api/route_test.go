@@ -29,7 +29,7 @@ func TestNewRouter(t *testing.T) {
 	routeConfigs := RouteConfigs{
 		{
 			"/mock", "*", "Mock", MockHandler,
-			ProxyRoute{"/prefix", "http://redirect"},
+			ProxyRoute{"/prefix", true, "http://redirect"},
 		},
 	}
 	router := NewRouter(ctx, routeConfigs)

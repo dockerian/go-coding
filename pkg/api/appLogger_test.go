@@ -33,8 +33,8 @@ func TestAppLogger(t *testing.T) {
 	for idx, test := range tests {
 		appHandler := AppLogger(
 			http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				w.WriteHeader(test.httpStatus)
 				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(test.httpStatus)
 				io.WriteString(w, test.httpResponse)
 			}), test.name)
 

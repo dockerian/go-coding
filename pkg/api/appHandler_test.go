@@ -35,16 +35,17 @@ func TestAppHandler(t *testing.T) {
 			"test1", "result1", "new1", nil, `{"res1": "response1"}`, http.StatusOK,
 		},
 		{
-			"test2", "result2", "new2", AppError{
-				Err:        errors.New(http.StatusText(http.StatusBadRequest)),
-				StatusCode: http.StatusBadRequest,
-			},
+			"test2", "result2", "new2", NewAppError(http.StatusBadRequest, ""),
 			"", http.StatusBadRequest,
 		},
 		{
 			"test3", "result3", "new3",
-			errors.New(http.StatusText(http.StatusBadRequest)),
-			"Internal Server Error", http.StatusBadRequest,
+			errors.New("new server error"),
+			`{
+				  "message": "new server error",
+				  "code": 500
+			}`,
+			http.StatusInternalServerError,
 		},
 	}
 
@@ -60,8 +61,8 @@ func TestAppHandler(t *testing.T) {
 			func(ctx cfg.Context, w http.ResponseWriter, r *http.Request) error {
 				env := ctx.Env
 				env.Set(test.envKey, test.envNewText)
-				w.WriteHeader(test.httpStatus)
 				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(test.httpStatus)
 				if test.handlerError == nil {
 					io.WriteString(w, test.httpResponse)
 				}
@@ -86,10 +87,11 @@ func TestAppHandler(t *testing.T) {
 
 		// check response body
 		body := strings.Trim(rr.Body.String(), "\n")
+		expt := strings.Replace(test.httpResponse, "\t", "", -1)
 		msg3 := fmt.Sprintf("Test %2d.3 - http response - expected: %v, actual: %v",
-			idx, test.httpResponse, body)
+			idx, expt, body)
 		t.Log(msg3)
-		assert.Equal(t, test.httpResponse, body, msg3)
+		assert.Equal(t, expt, body, msg3)
 	}
 
 	testHandler := AppHandler{}

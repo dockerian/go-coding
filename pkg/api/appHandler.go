@@ -23,7 +23,7 @@ type AppHandler struct {
 func (ah AppHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if ah.Handle == nil {
 		message := "missing handler func in AppHandler"
-		log.Printf("[error] %s\n", message)
+		log.Printf("[AppHandler] %s\n", message)
 		WriteError(w, http.StatusBadRequest, message)
 		return
 	}
@@ -32,13 +32,15 @@ func (ah AppHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		switch e := err.(type) {
 		case Error:
 			// retrieve the status and print out
-			log.Printf("[AppError] HTTP %d - %s", e.Status(), e)
-			// TODO: [jzhu] check if Error has been written
-			// http.Error(w, e.Error(), e.Status())
+			log.Printf("[AppHandler] HTTP %d - %v", e.Status(), e.Error())
+			// assuming AppError has been written to w
+			// WriteError(w, e.Status(), e.Error())
 		default:
 			// Any other error types, default to serving a HTTP 500
 			code := http.StatusInternalServerError
-			http.Error(w, http.StatusText(code), code)
+			log.Printf("[AppHandler] default: %+v\n", err)
+			// http.Error(w, http.StatusText(code), code)
+			WriteError(w, code, err.Error())
 		}
 	}
 }

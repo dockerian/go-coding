@@ -17,8 +17,41 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var (
+	bodyReadErr = func(r io.Reader) ([]byte, error) {
+		return []byte{}, errors.New("body read error")
+	}
+	bodyReadOkay = func(r io.Reader) ([]byte, error) {
+		return []byte{}, nil
+	}
+
+	clientResponse200 = &MockProxyClient{
+		StatusCode:   http.StatusOK,
+		ResponseText: "{data: {}}",
+		Err:          nil,
+	}
+	clientResponse404 = &MockProxyClient{
+		StatusCode:   http.StatusNotFound,
+		ResponseText: fmt.Sprintf("{code: %d}", http.StatusNotFound),
+		Err:          nil,
+	}
+	clientResponseErr = &MockProxyClient{
+		StatusCode:   http.StatusForbidden,
+		ResponseText: fmt.Sprintf("{err: \"%s\"}", http.StatusText(http.StatusForbidden)),
+		Err:          errors.New(http.StatusText(http.StatusForbidden)),
+	}
+
+	ioCopyErrorFunc = func(dst io.Writer, src io.Reader) (int64, error) {
+		return 0, errors.New("mocked io.Copy error")
+	}
+	ioCopyOkayFunc = func(dst io.Writer, src io.Reader) (int64, error) {
+		return 1024, nil
+	}
+)
+
 // MockProxyClient struct
 type MockProxyClient struct {
+	StatusCode   int
 	Request      *http.Request
 	ResponseText string
 	Err          error
@@ -29,7 +62,14 @@ func (mpc *MockProxyClient) Do(r *http.Request) (*http.Response, error) {
 	mpc.Request = r
 	response := &http.Response{
 		Body: ioutil.NopCloser(bytes.NewBuffer([]byte(mpc.ResponseText))),
+		Header: map[string][]string{
+			"Content-Type": {
+				"application/json",
+			},
+		},
 	}
+	response.Status = http.StatusText(mpc.StatusCode)
+	response.StatusCode = mpc.StatusCode
 	return response, mpc.Err
 }
 
@@ -42,28 +82,35 @@ func TestProxyFunc(t *testing.T) {
 		restURL     string
 		response    string
 		errText     string
-		errFunc     func(io.Reader) ([]byte, error)
+		errFunc     func(io.Writer, io.Reader) (int64, error)
+		errCode     int
 	}{
+		{
+			"/no-prefix", "http://redir", "", "",
+			"", "", nil, http.StatusBadRequest,
+		},
 		{
 			"/prefix1", "http://redir1", "/prefix1/test", "http://redir1/test",
 			"good", "", nil,
+			http.StatusOK,
 		},
 		{
 			"/pre2", "http://re2", "/pre2/test/value", "http://re2/test/value",
 			"BAD GATEWAY", "bad gateway err test", nil,
+			http.StatusBadGateway,
 		},
 		{
 			"/pre3", "http://re3", "/pre3/test/3", "http://re3/test/3",
-			"read err test", "", func(_ io.Reader) ([]byte, error) {
-				return []byte{}, errors.New("read err test")
-			},
+			"io.Copy err test", "", ioCopyErrorFunc,
+			http.StatusInternalServerError,
 		},
 	}
 
+	savedIoCopy := ioCopy
 	savedClient := proxyClient
-	savedReadAll := bodyReadAll
 	defer func() {
-		// restoring proxyClient (see definition in proxy.go)
+		// restoring ioCopy and proxyClient (see definition in proxy.go)
+		ioCopy = savedIoCopy
 		proxyClient = savedClient
 	}()
 
@@ -72,14 +119,19 @@ func TestProxyFunc(t *testing.T) {
 		if test.errText != "" {
 			err = errors.New(test.errText)
 		}
-		if test.errFunc == nil {
-			bodyReadAll = savedReadAll
+		var clientCode = http.StatusOK
+		if test.errFunc != nil {
+			clientCode = http.StatusNotAcceptable
+			ioCopy = test.errFunc
 		} else {
-			bodyReadAll = test.errFunc
+			ioCopy = savedIoCopy
 		}
 		client := &MockProxyClient{
-			ResponseText: test.response, Err: err,
+			StatusCode:   clientCode,
+			ResponseText: test.response,
+			Err:          err,
 		}
+
 		req, _ := http.NewRequest("GET", test.reqURL, nil)
 		req.Header.Set("Foobar", "Foobar header test")
 		msg := fmt.Sprintf("%s => %s", test.reqURL, test.restURL)
@@ -89,7 +141,12 @@ func TestProxyFunc(t *testing.T) {
 		// here start to test the function
 		Proxy(test.prefix, test.redirectURL, rwr, req)
 
-		data, err := savedReadAll(rwr.Body)
+		if test.reqURL == "" {
+			assert.Equal(t, http.StatusBadRequest, rwr.Code)
+			continue
+		}
+
+		data, err := ioutil.ReadAll(rwr.Body)
 		proxyHeader := client.Request.Header
 		proxyReq := client.Request
 
@@ -105,14 +162,14 @@ func TestProxyFunc(t *testing.T) {
 		assert.Equal(t, test.restURL, proxyReq.URL.String())
 
 		if test.errFunc != nil {
-			assert.Equal(t, test.response+"\n", string(data))
-			assert.Equal(t, http.StatusInternalServerError, rwr.Code)
+			assert.Contains(t, string(data), "mocked io.Copy error")
+			assert.Equal(t, http.StatusNotAcceptable, rwr.Code)
 		} else {
 			if test.errText != "" {
-				assert.Equal(t, test.errText+"\n", string(data))
+				assert.Contains(t, string(data), test.errText)
 				assert.Equal(t, http.StatusBadGateway, rwr.Code)
-			} else {
-				assert.Equal(t, test.response, string(data), err)
+			} else if err != nil {
+				assert.Contains(t, string(data), test.response)
 				assert.Equal(t, http.StatusOK, rwr.Code)
 			}
 		}
@@ -133,15 +190,30 @@ func TestProxyHandler(t *testing.T) {
 		assert.Fail(t, msg)
 	}
 
+	savedClient := proxyClient
+	savedIoCopy := ioCopy
+	defer func() {
+		// restoring ioCopy and proxyClient (see definition in proxy.go)
+		ioCopy = savedIoCopy
+		proxyClient = savedClient
+	}()
+
 	tests := []struct {
 		requestURL   string
 		expectedCode int
+		ioCopyMock   func(dst io.Writer, src io.Reader) (int64, error)
+		clientMock   *MockProxyClient
 	}{
-		{"", http.StatusBadRequest},
-		{"http://test/foo", http.StatusBadGateway},
+		{"", http.StatusBadRequest, nil, nil},
+		{"http://test1/foo", http.StatusBadGateway, ioCopyOkayFunc, clientResponseErr},
+		{"http://test2/foo", http.StatusOK, ioCopyErrorFunc, clientResponse200},
+		{"http://test3/foo", http.StatusNotFound, ioCopyOkayFunc, clientResponse404},
+		{"http://test4/foo", http.StatusOK, ioCopyOkayFunc, clientResponse200},
 	}
 
 	for idx, test := range tests {
+		proxyClient = test.clientMock
+		ioCopy = test.ioCopyMock
 		req, _ := http.NewRequest("GET", test.requestURL, nil)
 		rwr := httptest.NewRecorder()
 

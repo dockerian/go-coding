@@ -19,22 +19,27 @@ var (
 			Pattern: "/info", Method: "GET", Name: "GetInfo", HandlerFunc: Info,
 		},
 		{
-			Pattern: `/private/{rest:[a-zA-Z0-9=\-\/]+}`, Method: "*", Name: "Private",
+			Pattern: `/private/{rest:.*}`, Method: "*", Name: "Private",
 			Proxy: api.ProxyRoute{
 				Prefix: "/private", RedirectURL: privateURL,
 			},
 		},
 		{
-			Pattern: `/test/{rest:[a-zA-Z0-9=\-\/]+}`, Method: "*", Name: "Test",
+			Pattern: `/test/{rest:.*}`, Method: "*", Name: "Test",
 			Proxy: api.ProxyRoute{
 				Prefix: "/test", RedirectURL: testURL,
 			},
 		},
 		{
-			Pattern: `/v1/{rest:[a-zA-Z0-9=\-\/\s% ]+}`, Method: "*", Name: "Data",
+			Pattern: `/v1/{rest:.*}`, Method: "*", Name: "Data",
 			Proxy: api.ProxyRoute{
 				Prefix: "/v1", RedirectURL: dataURL,
+				RedirectOnly: true,
 			},
+		},
+		{
+			Pattern: `/{rest:.+}`, Method: "*", Name: "NotFound",
+			HandlerFunc: NotFound,
 		},
 	}
 )
@@ -71,4 +76,14 @@ func Info(ctx cfg.Context, w http.ResponseWriter, r *http.Request) error {
 func Index(ctx cfg.Context, w http.ResponseWriter, r *http.Request) error {
 	Info(ctx, w, r)
 	return nil
+}
+
+// NotDefined handles any unimplemented path
+func NotDefined(ctx cfg.Context, w http.ResponseWriter, r *http.Request) error {
+	return api.WriteError(w, http.StatusNotImplemented, "API gateway not implemented")
+}
+
+// NotFound handles /{rest} path
+func NotFound(ctx cfg.Context, w http.ResponseWriter, r *http.Request) error {
+	return api.WriteError(w, http.StatusNotFound, "API gateway request not found")
 }

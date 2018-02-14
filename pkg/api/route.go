@@ -2,6 +2,7 @@
 package api
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/dockerian/go-coding/pkg/cfg"
@@ -24,13 +25,22 @@ type RouteConfigs []RouteConfig
 func NewRouter(ctx cfg.Context, routeConfigs RouteConfigs) *mux.Router {
 	var methods []string
 	var handler http.Handler
+	var noProxy bool
 	// mux.Router implements http.Handler
 	router := mux.NewRouter().StrictSlash(true) // mux.Router
+	allowRedirect, _ := ctx.Env.GetValue("allowRedirect").(bool)
+
+	log.Println("[router] allow redirect:", allowRedirect)
+
 	for _, config := range routeConfigs {
 		handler = &AppHandler{Context: ctx, Handle: config.HandlerFunc}
 		methods = []string{config.Method}
+		noProxy = allowRedirect &&
+			config.Proxy.RedirectOnly &&
+			config.Proxy.RedirectURL != "" &&
+			config.Proxy.Prefix != ""
 
-		if config.Proxy.Prefix != "" && config.Proxy.RedirectURL != "" {
+		if noProxy {
 			handler = RedirectHandler(config.Proxy.Prefix, config.Proxy.RedirectURL)
 		}
 		if config.Method == "*" {
