@@ -80,12 +80,13 @@ func GetDateRangeClause(db *gorm.DB, field string, dateValues ...time.Time) *gor
 // GetDateClauseByParams returns database where clause from params
 //
 // Allowing 2 types of date queries for any key=value pairs in params
-// - date range: ?key=2017-11-11,2017-11-30
-// - date selections: ?key=2017-11-11&key=2017-11-20&key=2017-11-30
+//
+//  - date range: ?key=2017-11-11,2017-11-30
+//  - date selections: ?key=2017-11-11&key=2017-11-20&key=2017-11-30
 //
 // Note: The date selections (IN clause) takes preference;
-//       Otherwise, for date range format, all comma-delimited values will be
-//       parsed and sorted, so that the first and last dates define the range.
+// otherwise, for date range format, all comma-delimited values will be
+// parsed and sorted, so that the first and last dates define the range.
 func GetDateClauseByParams(db *gorm.DB, params *api.Params, key, field string) *gorm.DB {
 	// checking date selection params
 	if dateValues, err := params.GetDateValues(key); err == nil {

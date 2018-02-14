@@ -11,7 +11,7 @@ Package sig :: sig.go - signature interface
 #### func  CreateSources
 
 ```go
-func CreateSources(rules []Rule, ruleName string) []*zip.Source
+func CreateSources(rules []IDDosRule, ruleName string) []*zip.Source
 ```
 CreateSources prepares zip sources from all rules output
 
@@ -130,14 +130,24 @@ type IBRule interface {
 
 IBRule interface represents Infoblox rule
 
+#### type IDDosRule
+
+```go
+type IDDosRule interface {
+	IBRule
+	Rule
+}
+```
+
+IDDosRule interface represents rule and signature
+
 #### type Rule
 
 ```go
 type Rule interface {
-	IBRule
 	// Output rule to formatted string
 	Output() string
 }
 ```
 
-Rule interface represents rule and signature
+Rule interface represents a generic rule

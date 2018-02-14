@@ -37,6 +37,7 @@ RUN apt-get update \
 RUN go get -u github.com/golang/lint/golint \
  && go get -u github.com/sanbornm/go-selfupdate \
  && go get -u github.com/ory/go-acc \
+ && go get -u github.com/robertkrimen/godocdown/godocdown \
  && go get -u github.com/golang/dep/cmd/dep \
  && go get -u github.com/Masterminds/glide \
  && go get -u github.com/kardianos/govendor \

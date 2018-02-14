@@ -29,12 +29,19 @@ func ListenAndServe(server api.AppServerInterface, ctx *cfg.Context) error {
 }
 
 // NewAppServer constructs AppServer with
-// - a new *mux.Router
-// - negroni middlewares
-//   any middleware by negroni.Use() should implements negroni.Handler interface:
-//      ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc)
-//   otherwise, by negroni.UseHandler() should implements http.Handler
-//   see https://github.com/urfave/negroni#handlers
+//
+//  - a new `*mux.Router`
+//  - negroni middlewares
+//
+// Any middleware by `negroni.Use()` should implement `negroni.Handler` interface:
+//
+//  ```
+//  ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc)
+//  ```
+//
+// otherwise, by `negroni.UseHandler()` should implements `http.Handler`.
+//
+// see https://github.com/urfave/negroni#handlers
 func NewAppServer() *api.AppServer {
 	ctx := NewAppContext()
 	env := ctx.Env

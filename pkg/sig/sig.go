@@ -22,21 +22,26 @@ var (
 	ddosRuleName = "ddos_domains"
 )
 
+// Rule interface represents a generic rule
+type Rule interface {
+	// Output rule to formatted string
+	Output() string
+}
+
 // IBRule interface represents Infoblox rule
 type IBRule interface {
 	// OutputIB Infoblox rule to formatted string
 	OutputIB() string
 }
 
-// Rule interface represents rule and signature
-type Rule interface {
+// IDDosRule interface represents rule and signature
+type IDDosRule interface {
 	IBRule
-	// Output rule to formatted string
-	Output() string
+	Rule
 }
 
 // CreateSources prepares zip sources from all rules output
-func CreateSources(rules []Rule, ruleName string) []*zip.Source {
+func CreateSources(rules []IDDosRule, ruleName string) []*zip.Source {
 	if strings.TrimSpace(ruleName) == "" {
 		ruleName = ddosRuleName
 	}

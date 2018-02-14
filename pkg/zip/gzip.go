@@ -1,4 +1,5 @@
 // Package zip :: gzip.go - gzip writer and handler
+//
 // GZipHandler constructs a http handler wrapper to add gzip compression.
 // See https://gist.github.com/bryfry/09a650eb8aac0fb76c24
 package zip

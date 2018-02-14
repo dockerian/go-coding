@@ -1,5 +1,5 @@
 hash: 1046b0613a3b77645f8103fbc30463a33df8b6f74953b506baa85115acd59386
-updated: 2017-10-29T11:29:07.402265334-07:00
+updated: 2018-02-14T02:02:22.299398459-08:00
 imports:
 - name: github.com/aws/aws-sdk-go
   version: 867e2302da0d2b7fa459f79831e6eb733f7941bf
@@ -34,18 +34,38 @@ imports:
   version: 5215b55f46b2b919f50a1df0eaa5886afe4e3b3d
   subpackages:
   - spew
+- name: github.com/dockerian/dateparse
+  version: 0d9501caeeb543ff63b7b91fd0a4d6897400f18b
 - name: github.com/go-ini/ini
   version: c787282c39ac1fc618827141a1f762240def08a3
+- name: github.com/go-sql-driver/mysql
+  version: bc14601d1bd56421dd60f561e6052c9ed77f9daf
 - name: github.com/gorilla/context
   version: aed02d124ae4a0e94fea4541c8effd05bf0c8296
 - name: github.com/gorilla/mux
   version: 757bef944d0f21880861c2dd9c871ca543023cba
+- name: github.com/gorilla/securecookie
+  version: e59506cc896acb7f7bf732d4fdf5e25f7ccd8983
+- name: github.com/gorilla/sessions
+  version: 6ba88b7f1c1e2c8298ec7fb2efda9ee411375c80
+- name: github.com/jinzhu/gorm
+  version: 55945afb346c0ca3e62f9cb44d73ff62bc2cce2e
+  subpackages:
+  - dialects/mysql
+- name: github.com/jinzhu/inflection
+  version: 1c35d901db3da928c72a72d8458480cc9ade058f
 - name: github.com/jmespath/go-jmespath
   version: bd40a432e4c76585ef6b72d3fd96fb9b6dc7b68d
 - name: github.com/pmezard/go-difflib
   version: 792786c7400a136282c1664665ae0a8db921c6c2
   subpackages:
   - difflib
+- name: github.com/russross/blackfriday
+  version: 119f356b88f847465545338f0108347453ae0b03
+- name: github.com/satori/go.uuid
+  version: 36e9d2ebbde5e3f13ab2e25625fd453271d6522e
+- name: github.com/shurcooL/sanitized_anchor_name
+  version: 86672fcb3f950f35f2e675df2240550f2a50762f
 - name: github.com/stretchr/objx
   version: 1a9d0bb9f541897e62256577b352fdbc1fb4fd94
 - name: github.com/stretchr/testify
@@ -56,6 +76,8 @@ imports:
   - mock
   - require
   - suite
+- name: github.com/urfave/negroni
+  version: 22c5532ea862c34fdad414e90f8cc00b4f6f4cab
 - name: golang.org/x/text
   version: 5a42fa2464759cbb7ee0af9de00b54d69f09a29c
   subpackages:
@@ -111,6 +133,10 @@ imports:
   - go/ast/astutil
   - go/buildutil
   - go/loader
+- name: google.golang.org/appengine
+  version: 5bee14b453b4c71be47ec1781b0fa61c2ea182db
+  subpackages:
+  - cloudsql
 - name: gopkg.in/yaml.v2
   version: eb3733d160e74a9c7e442f435eb3bea458e1d19f
 testImports: []

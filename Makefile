@@ -1,5 +1,5 @@
 # Makefile for go-coding
-.PHONY: all build build-all clean cmd default docker dep depend godep qb run test fmt lint list vet
+.PHONY: all build build-all clean cmd default doc docker dep depend godep qb run test fmt lint list vet
 
 # Set project variables
 PROJECT := go-coding
@@ -64,7 +64,8 @@ BUILD_MASTER_VERSION ?= 0
 BUILD_PREFIX := $(BINARY)-$(BUILD_VERSION)
 ALL_PACKAGES := $(shell go list ./... 2>/dev/null|grep -v -E '/v[0-9]+/client|/v[0-9]+/server|/vendor/')
 PROJECT_PACKAGE := $(subst $(GOPATH)/src/, , $(PWD))
-DOC_PACKAGES := api pkg/api pkg/cfg pkg/msg pkg/orm pkg/str pkg/zip utils
+DOC_TOOL := $(shell which godocdown)
+DOC_PACKAGES := api pkg/api pkg/cfg pkg/msg pkg/orm pkg/sig pkg/str pkg/zip utils
 CMD_PACKAGE := $(PROJECT_PACKAGE)/cli/cmd
 SOURCE_PATH := $(GOPATH)/src/github.com/$(GITHUB_CORP)/$(PROJECT)
 SYSTOOLS := awk egrep find git go grep jq rm sort tee xargs zip
@@ -383,9 +384,18 @@ endif
 
 
 doc:
+	@echo ""
+ifeq ("$(DOC_TOOL)","")  # doc tool is NOT installed
+	@echo "Please install doc tool"
+	@echo ""
+	@echo "    go get github.com/robertkrimen/godocdown/godocdown"
+else
 	@echo "--- Generating markdown documents ..."
 	$(foreach path,$(DOC_PACKAGES),\
 	$(shell cd $(path) && godocdown > README.md))
+endif
+	@echo ""
+	@echo "- DONE: $@"
 
 
 # docker targets

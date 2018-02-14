@@ -86,12 +86,34 @@ NewAppEnv constructs an cfg.Env for the application
 ```go
 func NewAppServer() *api.AppServer
 ```
-NewAppServer constructs AppServer with - a new *mux.Router - negroni middlewares
+NewAppServer constructs AppServer with
 
-    any middleware by negroni.Use() should implements negroni.Handler interface:
-       ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc)
-    otherwise, by negroni.UseHandler() should implements http.Handler
-    see https://github.com/urfave/negroni#handlers
+    - a new `*mux.Router`
+    - negroni middlewares
+
+Any middleware by `negroni.Use()` should implement `negroni.Handler` interface:
+
+    ```
+    ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc)
+    ```
+
+otherwise, by `negroni.UseHandler()` should implements `http.Handler`.
+
+see https://github.com/urfave/negroni#handlers
+
+#### func  NotDefined
+
+```go
+func NotDefined(ctx cfg.Context, w http.ResponseWriter, r *http.Request) error
+```
+NotDefined handles any unimplemented path
+
+#### func  NotFound
+
+```go
+func NotFound(ctx cfg.Context, w http.ResponseWriter, r *http.Request) error
+```
+NotFound handles /{rest} path
 
 #### func  Root
 

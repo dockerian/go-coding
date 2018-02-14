@@ -2,8 +2,9 @@
 --
     import "github.com/dockerian/go-coding/pkg/zip"
 
-Package zip :: gzip.go - gzip writer and handler GZipHandler constructs a http
-handler wrapper to add gzip compression. See
+Package zip :: gzip.go - gzip writer and handler
+
+GZipHandler constructs a http handler wrapper to add gzip compression. See
 https://gist.github.com/bryfry/09a650eb8aac0fb76c24
 
 Package zip :: zip.go - zip extensions

@@ -17,13 +17,13 @@ var (
 	regexUUID = `[a-z0-9]{8}-([a-z0-9]{4}-){3}[a-z0-9]{12}`
 )
 
-// ruleTest to test Rule interface
+// ruleTest to test IDDosRule interface
 type ruleTest struct {
 	id string
 	ib string
 }
 
-// Output implements Rule interface
+// Output implements IDDosRule interface
 func (rule *ruleTest) Output() string {
 	return strings.Repeat(rule.id, 10)
 }
@@ -35,7 +35,7 @@ func (rule *ruleTest) OutputIB() string {
 
 // TestCreateSources
 func TestCreateSources(t *testing.T) {
-	rules := make([]Rule, 0)
+	rules := make([]IDDosRule, 0)
 	for i := 0; i < 10; i++ {
 		sib := 'a' - i
 		rules = append(rules, &ruleTest{id: strconv.Itoa(i), ib: string(sib)})

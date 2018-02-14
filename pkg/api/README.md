@@ -2,12 +2,16 @@
 --
     import "github.com/dockerian/go-coding/pkg/api"
 
-Package api :: appError.go api.Error interface wraps error with http status.
-api.AppError composes error and http status code for http handler without
-accessing to header in http.ResponseWriter.
+Package api :: appError.go
 
-Package api :: appHandler.go api.AppHandler declares an extended http.Handler
-with configuration data and error (see api.AppError).
+api.Error interface wraps error with http status. api.AppError composes error
+and http status code for http handler without accessing to header in
+http.ResponseWriter.
+
+Package api :: appHandler.go
+
+api.AppHandler declares an extended http.Handler with configuration data and
+error (see api.AppError).
 
 Package api :: appLogger.go - logging handlers
 
@@ -21,11 +25,12 @@ Package api :: markdown.go - a Markdown handler
 
 Package api :: params.go - http request parameters
 
-Package api :: proxy.go - proxy handler For each Proxy redirect/forward call,
-api.ProxyRoute defines a RedirectURL per prefix path. The api.ProxyRoute
-implements http.Handler interface so that the struct pointer itself can be
-wrapped in a routing configuration; optionally, a Proxy() can construct a
-http.Handler with prefix and predefined redirect URL.
+Package api :: proxy.go - proxy handler
+
+For each Proxy redirect/forward call, api.ProxyRoute defines a RedirectURL per
+prefix path. The api.ProxyRoute implements http.Handler interface so that the
+struct pointer itself can be wrapped in a routing configuration; optionally, a
+Proxy() can construct a http.Handler with prefix and predefined redirect URL.
 
 Package api :: redirect.go - http redirect handlers
 
@@ -150,13 +155,22 @@ WriteZIP writes a zip from buffer
 ```go
 type AppError struct {
 	// Err inherits standard error interface
-	Err error
+	Err error `json:"-"`
+	// ErrorMessage represents Err.Error()
+	ErrorMessage string `json:"message,omitempty"`
 	// StatusCode is http status code
-	StatusCode int
+	StatusCode int `json:"code,omitempty"`
 }
 ```
 
 AppError represents an error with an associated HTTP status code.
+
+#### func  NewAppError
+
+```go
+func NewAppError(code int, message string) *AppError
+```
+NewAppError constructs an AppError
 
 #### func (AppError) Error
 
@@ -264,7 +278,7 @@ error interface.
 #### func  WriteAppError
 
 ```go
-func WriteAppError(w http.ResponseWriter, apiError Error) Error
+func WriteAppError(w http.ResponseWriter, appError AppError) Error
 ```
 WriteAppError writes status code and returns Error
 
@@ -403,12 +417,17 @@ ProxyClient interface
 
 ```go
 type ProxyRoute struct {
-	Prefix      string
+	// Prefix defines the matching prefix path to be replaced
+	Prefix string
+	// RedirectOnly specifies to use httpRedirect rather than a proxy client
+	RedirectOnly bool
+	// RedirectURL defines the replacing URL path
 	RedirectURL string
 }
 ```
 
-ProxyRoute struct defines a redirecting URL based on pattern
+ProxyRoute struct defines a redirecting URL based on pattern by converting
+matched Prefix path to RedirectURL
 
 #### func (*ProxyRoute) ServeHTTP
 

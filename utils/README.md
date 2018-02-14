@@ -6,8 +6,9 @@ Package utils :: aws.go - extended AWS SDK functions
 
 Package utils :: bit.go
 
-Package utils :: config.go Get project settings from os env or specified
-config.yaml
+Package utils :: config.go
+
+Get project settings from os env or specified config.yaml
 
 Package utils :: conv.go - extended string formatter functions
 
@@ -36,13 +37,13 @@ var (
 
 	// BinaryString is an array of all 4-bit binary representation
 	BinaryString = map[string][]string{
-		"b": []string{
+		"b": {
 			"0000", "0001", "0010", "0011",
 			"0100", "0101", "0110", "0111",
 			"1000", "1001", "1010", "1011",
 			"1100", "1101", "1110", "1111",
 		},
-		"x": []string{
+		"x": {
 			"0", "1", "2", "3", "4", "5", "6", "7",
 			"8", "9", "A", "B", "C", "D", "E", "F",
 		},
