@@ -43,4 +43,5 @@
 - [nim game](nimgame.go)
 - [singleton](../demo/singleton.go)
 - [testing template](../demo/foo.go) | [test](../demo/foo_test.go)
+- [translate number to words](integer.go) | [test](integer_test.go)
 - [trie](../ds/trie/trie.go) | [test](../ds/trie/trie_test.go)

@@ -4,6 +4,7 @@ package puzzle
 
 import (
 	"fmt"
+	"math"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -27,5 +28,45 @@ func TestFind2ndLargest(t *testing.T) {
 		var msg = fmt.Sprintf("expecting '%v' in %+v", test.expected, test.inputs)
 		t.Logf("Test %2d: %v\n", index+1, msg)
 		assert.Equal(t, test.expected, val, msg)
+	}
+}
+
+// TestTranslate tests Translate function
+func TestTranslate(t *testing.T) {
+	for idx, test := range []struct {
+		number   uint64
+		commaStr string
+		expected string
+	}{
+		{
+			0, "0", "zero",
+		},
+		{
+			10, "10", "ten",
+		},
+		{
+			100, "100", "one hundred",
+		},
+		{
+			7000000, "7,000,000", "seven millions",
+		},
+		{
+			39000000009, "39,000,000,009", "thirty nine billions nine",
+		},
+		{
+			math.MaxUint32,
+			"4,294,967,295",
+			"four billions two hundreds ninety four millions nine hundreds sixty seven thousands two hundreds ninety five",
+		},
+		{
+			math.MaxUint64,
+			"18,446,744,073,709,551,615",
+			"eighteen quintillions four hundreds forty six quadrillions seven hundreds forty four trillions seventy three billions seven hundreds nine millions five hundreds fifty one thousands six hundreds fifteen",
+		},
+	} {
+		result := Translate(test.number)
+		msg := fmt.Sprintf("Test %2d: %s ==> [%s] %s\n",
+			idx, test.number, test.commaStr, test.expected)
+		assert.Equal(t, test.expected, result, msg)
 	}
 }

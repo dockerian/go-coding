@@ -442,6 +442,7 @@
   ```
 
 - data types
+
   | Type      | B | Minimum Value | Maximum Value | Notes |
   |---------- |:--|--------------:|--------------:|-------|
   | TINYINT   | 1 | -128 | 127 | |
@@ -540,6 +541,17 @@
     ```
 - print out Fibonacci series in MATLAB
 - reverse a number
+
+  |type        |  minimum| maximum|     scale |  description |
+  |:-----------|--------:|-------:|----------:|:-------------|
+  |int8        |   -128  |    127 |           |              |
+  |int16       | -32,768 | 32,767 |   2^7 - 1 | K (Thousand) |
+  |int32/int   |-2,147,483,648| 2,147,483,647 | 2^31 -1 | G (Billion) |
+  |int64       |-9,223,372,036,854,775,808|-9,223,372,036,854,775,807| 2^63 - 1 | E (Quintillion) |
+  |uint8       |       0 |    255 |   2^8 - 1 |              |
+  |uint16      |       0 | 65,535 |  2^16 - 1 | K (Thousand) |
+  |uint32/uint |       0 |              4,294,967,295 |  4G - 1 | G (Billion) |
+  |uint64      |       0 | 18,446,744,073,709,551,615 | 18E - 1 | E (Quintillion) |
 
 
 <a name="linked-list"><br /></a>

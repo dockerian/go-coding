@@ -17,6 +17,21 @@ func Append(slice, data []byte) []byte
 ```
 Append concatenates byte slices
 
+#### func  FormatNumber
+
+```go
+func FormatNumber(number uint64) string
+```
+FormatNumber returns a comma delimited decimal string
+
+#### func  FromNumber
+
+```go
+func FromNumber(number uint64) string
+```
+FromNumber returns an English words representation for a number. ex. 1024 =>
+"one thousand twenty four"
+
 #### func  GetPalindromicSubstring
 
 ```go
@@ -80,6 +95,20 @@ func ToSnake(in string) string
 ```
 ToSnake converts a string to snake case format with unicode support See also
 https://github.com/serenize/snaker/blob/master/snaker.go
+
+#### func  TranslateNumber
+
+```go
+func TranslateNumber(number uint64, xFunc TranslateFunc) string
+```
+TranslateNumber translates a number to string by specific function.
+
+#### func  TranslateTo
+
+```go
+func TranslateTo(lang string, number uint64) string
+```
+TranslateTo returns a string representation of number by specific language.
 
 #### type Palindrome
 
@@ -151,3 +180,11 @@ IsPalindrome checks if an input string is palindrome
 func (p *PalindromeString) IsPalindromePhase() bool
 ```
 IsPalindromePhase checks if an input string is palindrome phase
+
+#### type TranslateFunc
+
+```go
+type TranslateFunc func(uint64) string
+```
+
+TranslateFunc defines a type of function to translate number (uint64) to string.
