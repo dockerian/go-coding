@@ -29,8 +29,9 @@ This is a data structures library and general algorithm solutions in Go (golang)
 
 
 <a name="math"><br/></a>
-## Mathemetics
+## Mathematics
 - [Fibonacci](mathEx/fibo.go) | [test](mathEx/fibo_test.go)
+- [Gauss Formula Sum](mathEx/gauss.go) | [test](mathEx/gauss_test.go)
 - [MaxInt / MinInt](mathEx/math.go)
 - [Reverse integer](mathEx/integer.go) | [test](mathEx/integer_test.go)
 
