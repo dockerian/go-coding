@@ -65,7 +65,7 @@ func TestTranslate(t *testing.T) {
 		},
 	} {
 		result := Translate(test.number)
-		msg := fmt.Sprintf("Test %2d: %s ==> [%s] %s\n",
+		msg := fmt.Sprintf("Test %2d: %d ==> [%s] %s\n",
 			idx, test.number, test.commaStr, test.expected)
 		assert.Equal(t, test.expected, result, msg)
 	}
