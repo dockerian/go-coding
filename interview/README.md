@@ -82,6 +82,7 @@
 <a name="archives"><br /></a>
 ## Archives
   - coding [notes](coding.md)
+  - educative [coderust](coderust.md)
   - hard/bigger [problems](problems.md)
   - puzzle/quiz/teaser [questions](puzzles.md)
   - some [examples](examples.md) and [answers](examples-qa.md) | [c# qa](examples-cs.md)
