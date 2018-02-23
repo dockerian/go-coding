@@ -4,65 +4,67 @@ package tree
 import (
 	"fmt"
 	"strings"
+
+	"github.com/dockerian/go-coding/ds/queue"
 )
 
-// BST interface includes basic functions for a binary search tree item
-type BST interface {
-	Left() BST
-	Right() BST
+// BT interface includes basic functions for a binary tree item
+type BT interface {
+	Left() BT
+	Right() BT
 	Value() interface{}
-	SetLeft(BST)
-	SetRight(BST)
+	SetLeft(BT)
+	SetRight(BT)
 	SetValue(interface{})
-	Find(interface{}) BST
+	Find(interface{}) BT
 	Has(interface{}) bool
 }
 
-// BSTNode represents a binary search tree node
-type BSTNode struct {
-	left  BST
-	right BST
+// BTNode represents a binary tree node
+type BTNode struct {
+	left  BT
+	right BT
 	value interface{}
 }
 
-// NewBSTNode constructs an BSTNode instance
-func NewBSTNode(v interface{}, l, r BST) *BSTNode {
-	var o = &BSTNode{value: v, left: l, right: r}
+// NewBTNode constructs an BTNode instance
+func NewBTNode(v interface{}, l, r BT) *BTNode {
+	var o = &BTNode{value: v, left: l, right: r}
 	return o
 }
 
-// Left implements BST
-func (o *BSTNode) Left() BST {
+// Left implements BT
+func (o *BTNode) Left() BT {
 	return o.left
 }
 
-// SetLeft implements BST
-func (o *BSTNode) SetLeft(node BST) {
+// SetLeft implements BT
+func (o *BTNode) SetLeft(node BT) {
 	o.left = node
 }
 
-// Right implements BST
-func (o *BSTNode) Right() BST {
+// Right implements BT
+func (o *BTNode) Right() BT {
 	return o.right
 }
 
-// SetRight implements BST
-func (o *BSTNode) SetRight(node BST) {
+// SetRight implements BT
+func (o *BTNode) SetRight(node BT) {
 	o.right = node
 }
 
-// SetValue implements BST
-func (o *BSTNode) SetValue(v interface{}) {
+// SetValue implements BT
+func (o *BTNode) SetValue(v interface{}) {
 	o.value = v
 }
 
-// Value implements BST
-func (o *BSTNode) Value() interface{} {
+// Value implements BT
+func (o *BTNode) Value() interface{} {
 	return o.value
 }
 
 // Find returns the node matches to the value v
-func (o *BSTNode) Find(v interface{}) BST {
+func (o *BTNode) Find(v interface{}) BT {
 	if o == nil {
 		return nil
 	}
@@ -77,7 +79,7 @@ func (o *BSTNode) Find(v interface{}) BST {
 }
 
 // Has returns true if value v is found in any node; otherwise false
-func (o *BSTNode) Has(v interface{}) bool {
+func (o *BTNode) Has(v interface{}) bool {
 	if o == nil {
 		return false
 	}
@@ -86,8 +88,8 @@ func (o *BSTNode) Has(v interface{}) bool {
 	return o.value == v || hasInLeft || hasInRight
 }
 
-// String returns a string representation of StrBSTNode object
-func (o *BSTNode) String() string {
+// String returns a string representation of StrBTNode object
+func (o *BTNode) String() string {
 	if o == nil {
 		return "<nil>"
 	}
@@ -99,38 +101,89 @@ func (o *BSTNode) String() string {
  *******************************************************************************
  */
 
-// IntBST interface for any binary search tree item contains int value
-type IntBST interface {
-	BST
+// IntBT interface for any binary tree item contains int value
+type IntBT interface {
+	BT
 	Sum() int
 }
 
-// IntBSTNode represents an integer (int) binary search tree node
-type IntBSTNode struct {
-	BSTNode
+// IntBTNode represents an integer (int) binary tree node
+type IntBTNode struct {
+	BTNode
 }
 
-// NewIntBSTNode constructs an IntBSTNode instance
-func NewIntBSTNode(v int, l, r IntBST) *IntBSTNode {
-	var o IntBST = &IntBSTNode{}
+// NewIntBTNode constructs an IntBTNode instance
+func NewIntBTNode(v int, l, r IntBT) *IntBTNode {
+	var o IntBT = &IntBTNode{}
 	o.SetLeft(l)
 	o.SetRight(r)
 	o.SetValue(v)
-	return o.(*IntBSTNode)
+	return o.(*IntBTNode)
+}
+
+// isMirror checks if two BT are in mirror recursively.
+func isMirror(left, right BT) bool {
+	if left == nil && right == nil {
+		return true
+	}
+	if left.Value() == right.Value() {
+		return isMirror(left.Left(), right.Right()) &&
+			isMirror(left.Right(), right.Left())
+	}
+	return false
+}
+
+// IsMirror checks if a binary tree is mirror of itself in recursive mode.
+func (o *BTNode) IsMirror() bool {
+	return o == nil || isMirror(o.Left(), o.Right())
+}
+
+// IsSymmetric checks if a binary tree is symmetric in interative mode.
+func (o *BTNode) IsSymmetric() bool {
+	if o == nil {
+		return false
+	}
+	var q = queue.NewQueue()
+	var right = o.Right()
+	var left = o.Left()
+
+	q.Enqueue(left)
+	q.Enqueue(right)
+
+	for len(q) > 0 {
+		right = q.Dequeue().(*BTNode)
+		left = q.Dequeue().(*BTNode)
+
+		if left == nil && right == nil {
+			continue
+		}
+		if left == nil || right == nil {
+			return false
+		}
+		if left.Value() != right.Value() {
+			return false
+		}
+		q.Enqueue(left.Left())
+		q.Enqueue(right.Right())
+		q.Enqueue(left.Right())
+		q.Enqueue(right.Left())
+	}
+
+	return true
 }
 
 // Sum adds up values in all tree nodes
-func (it *IntBSTNode) Sum() int {
+func (it *IntBTNode) Sum() int {
 	if it == nil {
 		return 0
 	}
 	v := it.value.(int)
 	var sumInLeft, sumInRight int
 	if it.Left() != nil {
-		sumInLeft = it.Left().(*IntBSTNode).Sum()
+		sumInLeft = it.Left().(*IntBTNode).Sum()
 	}
 	if it.Right() != nil {
-		sumInRight = it.Right().(*IntBSTNode).Sum()
+		sumInRight = it.Right().(*IntBTNode).Sum()
 	}
 	return v + sumInLeft + sumInRight
 }
@@ -140,40 +193,40 @@ func (it *IntBSTNode) Sum() int {
  *******************************************************************************
  */
 
-// StrBST interface for any binary search tree item contains string value
-type StrBST interface {
-	BST
+// StrBT interface for any binary tree item contains string value
+type StrBT interface {
+	BT
 	Join(string) string
 }
 
-// StrBSTNode represents an integer (int) binary search tree node
-type StrBSTNode struct {
-	BSTNode
+// StrBTNode represents an integer (int) binary tree node
+type StrBTNode struct {
+	BTNode
 }
 
-// NewStrBSTNode constructs an StrBSTNode instance
-func NewStrBSTNode(v string, l, r StrBST) *StrBSTNode {
-	var o StrBST = &StrBSTNode{}
+// NewStrBTNode constructs an StrBTNode instance
+func NewStrBTNode(v string, l, r StrBT) *StrBTNode {
+	var o StrBT = &StrBTNode{}
 	o.SetLeft(l)
 	o.SetRight(r)
 	o.SetValue(v)
-	return o.(*StrBSTNode)
+	return o.(*StrBTNode)
 }
 
 // Join concatenates values in all tree nodes
-func (it *StrBSTNode) Join(sep string) string {
+func (it *StrBTNode) Join(sep string) string {
 	if it == nil {
 		return ""
 	}
 	v := it.value.(string)
 	var strInLeft, strInRight string
 	if it.Left() != nil {
-		if l, ok := it.Left().(*StrBSTNode); ok {
+		if l, ok := it.Left().(*StrBTNode); ok {
 			strInLeft = l.Join(sep)
 		}
 	}
 	if it.Right() != nil {
-		if r, ok := it.Right().(*StrBSTNode); ok {
+		if r, ok := it.Right().(*StrBTNode); ok {
 			strInRight = r.Join(sep)
 		}
 	}
