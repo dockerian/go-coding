@@ -71,7 +71,8 @@
 
 
 
-<div style="text-align:right;text-decoration:none;"><a href="#contents">&uarr;</a></div>
+<div style="text-align:right;text-decoration:none;" title="Go to Contents"><a href="#contents">&uarr;</a></div>
+
 <a name="linked-list"><br /></a>
 ## Linked List
 
@@ -133,7 +134,8 @@
 
 
 
-<div style="text-align:right;text-decoration:none;"><a href="#contents">&uarr;</a></div>
+<div style="text-align:right;text-decoration:none;" title="Go to Contents"><a href="#contents">&uarr;</a></div>
+
 <a name="math-stats"><br /></a>
 ## Math and Stats
 
@@ -179,7 +181,8 @@
 
 
 
-<div style="text-align:right;text-decoration:none;"><a href="#contents">&uarr;</a></div>
+<div style="text-align:right;text-decoration:none;" title="Go to Contents"><a href="#contents">&uarr;</a></div>
+
 <a name="strings"><br /></a>
 ## Strings
 
@@ -218,7 +221,8 @@
 
 
 
-<div style="text-align:right;text-decoration:none;"><a href="#contents">&uarr;</a></div>
+<div style="text-align:right;text-decoration:none;" title="Go to Contents"><a href="#contents">&uarr;</a></div>
+
 <a name="trees"><br /></a>
 ## Trees
 
@@ -289,7 +293,8 @@
 
 
 
-<div style="text-align:right;text-decoration:none;"><a href="#contents">&uarr;</a></div>
+<div style="text-align:right;text-decoration:none;" title="Go to Contents"><a href="#contents">&uarr;</a></div>
+
 <a name="stacks-n-queues"><br /></a>
 ## Stacks and Queues
 
@@ -307,7 +312,8 @@
 
 
 
-<div style="text-align:right;text-decoration:none;"><a href="#contents">&uarr;</a></div>
+<div style="text-align:right;text-decoration:none;" title="Go to Contents"><a href="#contents">&uarr;</a></div>
+
 <a name="graphs"><br /></a>
 ## Graphs
 
@@ -325,7 +331,8 @@
 
 
 
-<div style="text-align:right;text-decoration:none;"><a href="#contents">&uarr;</a></div>
+<div style="text-align:right;text-decoration:none;" title="Go to Contents"><a href="#contents">&uarr;</a></div>
+
 <a name="back-tracking"><br /></a>
 ## Back Tracking
 
@@ -346,7 +353,8 @@
   Given an array of N positive integers, find all the subsets of the given array that sum up to the number K.
 
 
-<div style="text-align:right;text-decoration:none;"><a href="#contents">&uarr;</a></div>
+<div style="text-align:right;text-decoration:none;" title="Go to Contents"><a href="#contents">&uarr;</a></div>
+
 <a name="dp"><br /></a>
 ## Dynamic Programming
 
@@ -375,7 +383,8 @@
   Compute Levenshtein distance between two strings.
 
 
-<div style="text-align:right;text-decoration:none;"><a href="#contents">&uarr;</a></div>
+<div style="text-align:right;text-decoration:none;" title="Go to Contents"><a href="#contents">&uarr;</a></div>
+
 <a name="misc"><br /></a>
 ## Miscellaneous
 
