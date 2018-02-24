@@ -19,7 +19,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/dockerian/go-coding/api/info"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -31,7 +30,7 @@ var (
 			"/", "GET", mockHandler, "Index",
 		},
 		{
-			"/info", "GET", info.GetInfo, "Info",
+			"/info", "GET", GetInfo, "Info",
 		},
 	}
 

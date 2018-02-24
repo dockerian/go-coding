@@ -14,8 +14,8 @@ go:
     maxUint64: 18446744073709551615
 
 goobar:
-  api_key: SOCKEYE_API_KEY
-  api_url: https://sockeye/api
+  api_key: GO_CODING_API_KEY
+  api_url: https://go-coding/api
   encrypted_api_key: AQICAHg3HNyIwRj/VgA+LeTSbBvD+KLqwR4I7fTUIoefURORLQF4TeZG1NW7J1fYok4dBM83AAAAYjBgBgkqhkiG9w0BBwagUzBRAgEAMEwGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMW7xGM12GTODwP4JRAgEQgB+Aq191ktDJAFXQrJASRNm8oj4q21rYVlj6OkOOhoaz
   bool_tests:
     - False
@@ -43,7 +43,7 @@ goobar:
 
 xxdb:
   debug: True
-  database: sockeye
+  database: mysql
   host: 127.0.0.1
   port: 3306
   username: admin

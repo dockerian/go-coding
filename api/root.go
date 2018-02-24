@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dockerian/go-coding/api/info"
 	"github.com/dockerian/go-coding/pkg/api"
 	"github.com/gorilla/mux"
 )
@@ -22,7 +21,7 @@ var (
 			"/", "GET", rootHandler, "Index",
 		},
 		{
-			"/info", "GET", info.GetInfo, "Info",
+			"/info", "GET", GetInfo, "Info",
 		},
 	}
 )
@@ -50,21 +49,21 @@ func Root() {
 // handleRequests (deprecated) is using basic http
 func handleRequests() {
 	http.HandleFunc("/", rootHandler)
-	http.HandleFunc("/info", info.GetInfo)
+	http.HandleFunc("/info", GetInfo)
 	port := fmt.Sprintf(":%d", ListenPort)
 	log.Fatal(http.ListenAndServe(port, nil))
 }
 
 // rootHandler is api root handler
 func rootHandler(res http.ResponseWriter, req *http.Request) {
-	info.GetInfo(res, req)
+	GetInfo(res, req)
 }
 
 // rootRouter returns a configured mux.Router
 func rootRouter(routes []Route) (*mux.Router, string) {
 	router := mux.NewRouter().StrictSlash(true)
 	// router.HandleFunc("/", rootHandler)
-	// router.HandleFunc("/info", info.GetInfo)
+	// router.HandleFunc("/info", GetInfo)
 	// or
 	for _, route := range routes {
 		var handler http.Handler

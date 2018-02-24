@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TestAppEnvGetConfig tests func GetConfig in app/sng/appEnv.go
+// TestAppEnvGetConfig tests func GetConfig in api/appEnv.go
 func TestAppEnvGetConfig(t *testing.T) {
 	key := "__NON_EXIST_VARIABLE__"
 	val := "This is to test reading from environment variable"
@@ -23,7 +23,7 @@ func TestAppEnvGetConfig(t *testing.T) {
 	assert.Equal(t, val, keyval, "should get value from os environ")
 }
 
-// TestAppEnv tests func NewAppContext in app/sng/appEnv.go
+// TestAppEnv tests func NewAppContext in api/appEnv.go
 func TestAppEnv(t *testing.T) {
 	key := "__NON_EXIST_ENVOIRONMENT_KEY__"
 	val := "This is to test reading from environment key"

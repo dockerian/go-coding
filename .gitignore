@@ -54,6 +54,7 @@ Thumbs.db
 *.sublime-workspace
 
 # Folders
+**/v?/spec
 !vendor/vendor.json
 vendor/**
 bin

@@ -1,0 +1,364 @@
+############################################################
+# Go-coding API Specifications
+swagger: "2.0"
+info:
+  title: Go-coding API
+  description: "Go-coding API Gateway."
+  version: 0.0.1
+  contact:
+    name: Go Developer
+    email: jason.zhuy@gmail.com
+host: localhost:8001
+basePath: /v1
+produces:
+  - application/json
+tags:
+  - name: info
+    description: "Informational api."
+schemes:
+  - https
+
+
+
+############################################################
+# PATHS
+paths:
+
+  ########## /db
+  "/db":
+    # /db GET
+    get:
+      tags:
+        - info
+      summary: Get database schema info
+      description: "GetDbInfo retrieves database schema information."
+      operationId: getDbInfo
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: '#/definitions/dbSchema'
+
+  ########## /db/all
+  "/db/all":
+    # /db/all GET
+    get:
+      tags:
+        - info
+      summary: Get all database schema history
+      description: "GetDbInfoAll retrieves all history of database schema information."
+      operationId: getDbInfoAll
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/dbSchema'
+
+  ########## /info
+  "/info":
+    # /info GET
+    get:
+      tags:
+        - info
+      summary: Get API info
+      description: "GetInfo returns API information."
+      operationId: getInfo
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: '#/definitions/apiSchema'
+
+
+  ########## /user
+  "/user":
+    # /user POST
+    post:
+      tags:
+        - user
+      summary: Create a user
+      description: "CreateUser creates a user, only done by the logged-in admin."
+      operationId: createUser
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: "Created user object"
+          required: true
+          schema:
+            $ref: '#/definitions/user'
+      responses:
+        "201":
+          description: "Successful operation"
+        "400":
+          description: "Invalid user information supplied"
+        "409":
+          description: "Conflict user data supplied"
+
+  ########## /user/{userId}
+  "/user/{userId}":
+    # /user/{userId} DELETE
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: "DeleteUser deletes specified user by admin."
+      operationId: deleteUser
+      produces:
+        - application/json
+      parameters:
+        - $ref: "#/parameters/userIdInPath"
+      responses:
+        "204":
+          description: "The user is deleted successfully"
+        "400":
+          description: "Invalid user supplied"
+        "404":
+          description: "User not found"
+
+    # /user/{userId} GET
+    get:
+      tags:
+        - user
+      summary: Get user by user ID
+      description: "GetUserByID gets a user by specified user ID (alias)."
+      operationId: getUserByID
+      produces:
+        - application/json
+      parameters:
+        - $ref: "#/parameters/userIdInPath"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: '#/definitions/user'
+        "400":
+          description: "Invalid user supplied"
+        "404":
+          description: "User not found"
+
+    # /user/{userId} PUT
+    put:
+      tags:
+        - user
+      summary: Update user
+      description: "UpdateUser updates user information."
+      operationId: updateUser
+      produces:
+        - application/json
+      parameters:
+        - $ref: "#/parameters/userIdInPath"
+        - in: body
+          name: user
+          description: "Updated user object"
+          required: true
+          schema:
+            $ref: '#/definitions/user'
+      responses:
+        "204":
+          description: "The user is updated successfully"
+        "400":
+          description: "Invalid user supplied"
+        "404":
+          description: "User not found"
+
+
+
+
+############################################################
+# MODELS DEFINITIONS
+definitions:
+
+  ########## Model: ApiError ##########
+  apiError:
+    type: object
+    description: "APIError is a standard error object returned by all API calls"
+    x-go-name: APIError
+    required:
+      - code
+      - message
+    properties:
+      apiInfo:
+        type: string
+        description: "APIInfo describes API path and version."
+        x-go-name: APIInfo
+      code:
+        description: "Code is an integer HTTP status code."
+        default: 500
+        type: integer
+        format: int
+      codeStatus:
+        type: string
+        description: "CodeStatus is an HTTP status."
+        default: "Internal Server Error"
+      message:
+        type: string
+        description: "Message defines a message associated with the error."
+      log:
+        type: string
+        description: "Log is additional error information, e.g. log entries, stack trace, etc."
+
+  ########## Model: ApiSchema ##########
+  apiSchema:
+    type: object
+    description: "APISchema provides detailed info for current API spec."
+    x-go-name: APISchema
+    properties:
+      version:
+        description: "Go-coding API schema version."
+        type: string
+        default:
+          $ref: '#/info/version'
+      "description":
+        description: "Go-coding API description."
+        type: string
+        default:
+          $ref: '#/info/description'
+      endpointURL:
+        description: "Go-coding API endpoint URL."
+        type: string
+        default:
+          $ref: '#/host'
+      swaggerYaml:
+        description: "Swagger yaml file."
+        type: string
+        default: swagger.yaml
+      dbInfo:
+        $ref: '#/definitions/dbSchema'
+
+  ########## Model: DbSchema ##########
+  dbSchema:
+    type: object
+    description: "DbSchema provides detailed info for database releases."
+    properties:
+      id:
+        description: "ID represents a schema identifier."
+        type: integer
+        format: int32
+        x-go-custom-tag: gorm:"primary_key:true"
+        x-go-name: ID
+      dbVersion:
+        description: "DbVersion is the database schema version."
+        type: string
+      changeDate:
+        description: "ChangeDate is a date/time string of the schema change."
+        type: string
+      author:
+        description: |
+          Author (in format of 'Name <email.address>') of database schema change.
+        type: string
+      "description":
+        description: "Description of the schema change."
+        type: string
+      deployNotes:
+        description: "DeployNotes is a special notes for database deployment."
+        type: string
+      script:
+        description: "Scriptis the SQL script file name for database deployment."
+        type: string
+
+  ########## Model: User ########## Ref: feature(s), userFunction(s)
+  user:
+    type: object
+    description: "User defines a user information."
+    properties:
+      id:
+        description: "ID is a user identifier"
+        x-go-name: ID
+        type: integer
+        format: int32
+      active:
+        description: "Active indicates if the user is active."
+        type: boolean
+      alias:
+        description: "Alias is user name alias."
+        type: string
+      apiKey:
+        description: "APIKey is user API key for service requests."
+        x-go-name: APIKey
+        type: string
+      password:
+        description: "Password stores hashed user password."
+        type: string
+      emailAddress:
+        description: "EmailAddress is a user email address."
+        type: string
+      firstName:
+        description: "FirstName is a user's first name."
+        type: string
+      lastName:
+        description: "LastName is a user's last name."
+        type: string
+      defaultRole:
+        description: "DefaultRole is default role name."
+        type: string
+      systemUid:
+        description: "SystemUID is a system user id."
+        x-go-name: systemUID
+        type: integer
+        format: int32
+      created:
+        description: "Created is the date/time of the user beinng created."
+        type: string
+        format: date-time
+      lastLoginDateTime:
+        description: "LastLoginDateTime is the date/time of the user last login."
+        type: string
+        format: date-time
+      lastSessionId:
+        description: "LastSessionID is the last login session identifier."
+        x-go-name: LastSessionID
+        type: integer
+        format: int32
+
+  ############## Model: Users ############## Ref: user
+  users:
+    type: array
+    description: "Users defines a collection of users"
+    items:
+      $ref: '#/definitions/user'
+
+
+
+############################################################
+# RESPONSES DEFINITIONS
+responses:
+  statusError:
+    description: "StatusError represents unexpected error occured."
+    schema:
+      $ref: "#/definitions/apiError"
+
+
+
+############################################################
+# PARAMETERS DEFINITIONS
+parameters:
+  userIdInPath:
+    name: userId
+    in: path
+    description: "The user ID to identify the user"
+    required: true
+    type: integer
+    format: int32
+    minimum: 0
+
+
+############################################################
+# SECURITY DEFINITIONS
+
+
+
+############################################################
+# EXTERNAL DOCUMENTATIONS
+externalDocs:
+  description: "Find out more about Go-coding project"
+  url: "https://github.com/dockerian/go-coding"

@@ -1,7 +1,7 @@
 // +build all app api server
 
-// Package api :: appServer_test.go
-package api
+// Package apimain :: appServer_test.go
+package apimain
 
 import (
 	"testing"
@@ -34,7 +34,7 @@ func (mas *MockAppServer) ListenAndServeTLS(cert, key string) error {
 	return nil
 }
 
-// TestAppServer tests func NewAppServer in app/sng/appEnv.go
+// TestAppServer tests func NewAppServer in api/appEnv.go
 func TestAppServer(t *testing.T) {
 	app := NewAppServer()
 	assert.NotNil(t, app.Ctx)

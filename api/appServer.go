@@ -20,11 +20,11 @@ func ListenAndServe(server api.AppServerInterface, ctx *cfg.Context) error {
 	certFile := env.Get("sslCertFile")
 	if _, err := os.Stat(certFile); !os.IsNotExist(err) {
 		if _, err := os.Stat(keyFile); !os.IsNotExist(err) {
-			log.Printf("[sng] starting %s (https) %s", appName, appAddress)
+			log.Printf("[api] starting %s (https) %s", appName, appAddress)
 			return server.ListenAndServeTLS(certFile, keyFile)
 		}
 	}
-	log.Printf("[sng] starting %s (http) %s", appName, appAddress)
+	log.Printf("[api] starting %s (http) %s", appName, appAddress)
 	return server.ListenAndServe()
 }
 
