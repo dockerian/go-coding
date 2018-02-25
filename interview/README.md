@@ -83,6 +83,7 @@
 ## Archives
   - coding [notes](coding.md)
   - educative [coderust](coderust.md)
+  - gainlo [system design questions](design.md)
   - hard/bigger [problems](problems.md)
   - puzzle/quiz/teaser [questions](puzzles.md)
   - some [examples](examples.md) and [answers](examples-qa.md) | [c# qa](examples-cs.md)
@@ -117,6 +118,7 @@
   - [ace the coding interview](https://www.linkedin.com/pulse/20141120061048-6976444-ace-the-coding-interview-every-time)
   - [Facebook interview](https://www.facebook.com/notes/facebook-engineering/get-that-job-at-facebook/10150964382448920)
   - [Google interview](http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html)
+  - [Google interview preparation](http://blog.gainlo.co/index.php/category/google-interview-preparation/)
   - [Big-O](http://bigocheatsheet.com/)
 
     | Data Structure | Read (Avg/Worst) | Write       | Space    |
@@ -279,6 +281,8 @@
 - discuss [NP-complete problems](https://en.wikipedia.org/wiki/List_of_NP-complete_problems)
 
 - how to balance conflicting, urgent priorities from different teams ?
+
+- gainlo [system design questions](design.md)
 
 
 <a name="csharp"><br /></a>
