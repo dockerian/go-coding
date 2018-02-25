@@ -285,7 +285,7 @@ clean-all: clean-cache
 	@echo "Cleaning up codegen client and server ..."
 	for ver in $(CODEGEN_VERS); do \
 	rm -rf "$(CODEGEN_PATH)/$$ver/client" "$(CODEGEN_PATH)/$$ver/server"; \
-	rm -rf converage.txt
+	rm -rf converage.txt; \
 	done
 	@echo ""
 ifeq ("$(DOCKER_DENV)","")

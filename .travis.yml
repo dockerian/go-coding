@@ -1,15 +1,16 @@
 language: go
 
 go:
-  - 1.9.x
-  - master
+  - 1.10.x
 
 before_install:
   - go get -t -v ./...
+  -
 
 script:
+  - make dep
   # go test -v -run=. -tags=all -race -coverprofile=coverage.txt -covermode=atomic
-  - make test # generating coverage.txt with mode: atomic
+  - make test-only # generating coverage.txt with mode: atomic
 
 after_success:
   - export CODECOV_TOKEN=7ccc9443-b2b6-49ca-8377-d42b586a4576 # jasonzhuyx
