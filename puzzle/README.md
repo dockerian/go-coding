@@ -31,6 +31,7 @@
 - [find the longest subsequence in a string](../interview/sequence.go) | [test](../interview/sequence_test.go)
 - [find the number of occurrences of the most frequent substring in a string](../interview/string.go) | [test](../interview/string_test.go)
 - [justify a line of string text](../interview/justify.go) | [test](../interview/justify_test.go)
+- [read link](../puzzle/readlink.go) | [test](../puzzle/readlink_test.go) | [js](../puzzle/readlink.js)
 - [search trie](../ds/trie/trie.go) | [test](../ds/trie/trie_test.go)
 - [reverse string](../ds/str/reverse.go) | [test](../ds/str/reverse_test.go)
 - [reverse words](../ds/str/reverseWords.go) | [test](../ds/str/reverseWords_test.go)
