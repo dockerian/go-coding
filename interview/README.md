@@ -504,12 +504,26 @@
 <a name="client-server-network"><br /></a>
 ## Client/Server and Network
 
-- describe the OSI layers and give an example of each
-- describe internet protocol suite
+* describe the OSI layers and give an example of each
+  - Application
+  - Presentation
+  - Session
+  - Transport
+  - Network
+  - Data Link
+  - Physical (CAT5, Topology, )
+* network topology
+  - bus
+  - star
+  - ring, token ring
+  - mesh: full mesh or partial mesh
+  - tree, daisy chain (one connected to 2 other nodes but no closed loop)
+  - hybrid
+* describe internet protocol suite
   - application (dhcp, ftp, http, imap, socks, ssh),
   - transport (tcp, ucp, rip),
   - internet (ip, icmp, ipsec),
-  - link (arp, ndp, ppp, )
+  - network (arp, ndp, ppp, )
 - how to fix a slow 3-tier application ?
 - troubleshoot a network connection from your workstation to a server inside the company? and from your workstation to a client in another time zone?
 - what is idempotent ? apply for which HTTP method ?
