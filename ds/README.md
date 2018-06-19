@@ -7,6 +7,7 @@ This is a data structures library and general algorithm solutions in Go (golang)
 <a name="array"><br/></a>
 ## Array
 - [Create matrix](arr/matrix.go) | [test](arr/matrix_test.go)
+- [Production of other items](arr/production.go) | [test](arr/production_test.go)
 - [Reverse array](arr/slice.go) | [test](arr/slice_test.go)
 
 
