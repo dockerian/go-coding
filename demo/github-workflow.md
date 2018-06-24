@@ -1,28 +1,57 @@
 # GitHub workflow
 
+
+<br/><a name="contents"></a>
+## Contents
+
+  * [Introduction](#intro)
+  * [Github Workflow In Operation](#operation)
+    - Configure SSH and git
+    - Fork from upstream (one-time setup)
+    - Clone and set upstream (one-time setup)
+    - Pull Request (PR) and merging
+    - Amend historical commits
+  * [References](#reference)
+    - Bash aliases for git
+    - Git/GitHub GUI client options
+    - Diff/Merge Tools
+    - Links
+
+
+
 <br/><a name="intro"></a>
 ## Introduction to the workflow
 
-* Company has a central paid GitHub account with one or more private repositories, which hold the "gold copy" of the work.
+* Organization has a central GitHub account with private or public repositories. These hold the "gold copies" of the projects.
 
-* The repository could have branches. In general, the "master" branch is what in production and others (e.g. "development") is what deployed to the QA server (not as same as in traditional cvs/svn/git workflows). Other long-lived branches could be "staging" server, or a "hackathon".
+* The repository has two branches. The "**master**" branch is what in production and "development" is what deployed to the QA server.
+  *Notes*:
+  - Other long-lived branches could be "staging" server, or a "hackathon" (for experimental development).
+  - These branches are not as same concept as in traditional cvs/svn/git workflows.
+  - For initial setup, use **master** only to simplify the process.
 
-* This "gold copy" repository (mainly "master" branch) is also used with
+* This "gold copy" repository (mainly **master** branch) is also used with
   - CI/CD tools (e.g. building, unit tests, functional tests, staging etc.)
   - any commit/deploy gate checking
-  - auto-deployment tools
+  - deployment tools
 
-* Developers/users fork the repository to their own personal GitHub account. (Note: When the user left the organization, the fork will be automatically deleted with removed account/permission.)
+* Developers/users fork the repository to their own personal GitHub account.
+  *Note*: When the user left the organization, the fork will be automatically deleted with removed account/permission.
 
-* Developer forks the repo, and clones from the fork (by `git clone git@github.com:username/reponame.git`) to a local copy, which makes "origin" point at the personal fork.
+* Developer forks the repo, and clones from the fork (`git clone git@github.com:username/repository-name.git`), which makes "**origin**" point at the personal fork.
 
-* Developer also adds an "upstream" (as naming convention) that points at the company repository (by `git add upstream git@github.com:company/reponame.git`)
+* Developer also adds an "**upstream**" (as naming convention) that points at the company repository (by `git add upstream git@github.com:organization-name/repository-name.git`)
 
-* Developer uses (local) `master` and (forked) `origin/master` to sync with (company's) `upstream/master` and should never commit to any `master` branch.
+* Developer uses (local) `master` and `origin/master` to sync with `upstream/master` and should never explicitly commit to any `master` branch.
 
-* Developer always works on (local) branches, pushes to `origin` (the personal fork), and pull/rebase from `master` (after in sync with `upstream` master).
+* Developer always works on (local) branches, pushes to `origin` (the personal fork), and `pull`/`rebase` from `master`.
 
-* Developer uses branch on `origin` to submit pull request to `upstream/master`
+* Developer uses branches (on `origin`) to submit pull request to `upstream/master`
+
+* Remember any dev using Github workflow manages three (3) repositories for one particular project:
+  - Upstream ("upstream" as naming convention) represents the "gold copy" of the project (on github server). Should only be updated by pull request merging process rather than by committing/pushing directly.
+  - Origin (named as "origin" by default) is the forked copy from "upstream" and should always sync its "`master`" branch to `upstream/master`.
+  - Local copy is where checked out (by `git clone`) and should always sync its "`master`" branch to `origin/master`.
 
 * Advantages
   - Follow the workflow with major open source community
@@ -32,7 +61,7 @@
   - Reduce workload for a dedicated repo admin.
   - Reduce need to maintain multiple branches.
   - Streamline interaction with contractors.
-  - PR conversations on github.
+  - Keep PR (pull request) conversations on github.com.
   - Easier with growing team.
   - Easier for CI/CD.
 
@@ -46,35 +75,33 @@
 
     - generate authentication key for github.com
 
-    ```
-    ssh-keygen -t rsa -b 4096 -C "github.com" -f ~/.ssh/github_key
-    ```
+      ```
+      ssh-keygen -t rsa -b 4096 -C "github.com" -f ~/.ssh/github_key
+      ```
 
-    - add the following to ~/.ssh/config
+    - add the key to github account. see
+      - https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
+      - https://help.github.com/articles/connecting-to-github-with-ssh/
 
-    ```
-    host github.com
-      HostName github.com
-      PreferredAuthentications publickey,keyboard-interactive,password
-      IdentityFile ~/.ssh/github_key
-      IdentitiesOnly yes
-      User git
+    - add the following to `~/.ssh/config`
 
-    host github.com-foobar
-      HostName github.com
-      PreferredAuthentications publickey,keyboard-interactive,password
-      IdentityFile ~/.ssh/github_key_foobar
-      User foobar
-    ```
-    Note: For configuring more than one account for, e.g. `host github.com`,
-          the `host` name is the identifier (for the same `HostName github.com`)
-          so that later the `git remote` can set URL differently
+      ```
+      host github.com
+        HostName github.com
+        PreferredAuthentications publickey,keyboard-interactive,password
+        IdentityFile ~/.ssh/github_key
+        IdentitiesOnly yes
+        User git
 
-    - store in mac os x key chain
-
-    ```
-    git config --global credential.helper osxkeychain
-    ```
+      host github.com-foobar
+        HostName github.com
+        PreferredAuthentications publickey,keyboard-interactive,password
+        IdentityFile ~/.ssh/github_key_foobar
+        User foobar
+      ```
+      Note: For configuring more than one account for, e.g. `host github.com`,
+            the `host` name is the identifier (for the same `HostName github.com`)
+            so that later the `git remote` can set URL differently
 
   2. Configure git
 
@@ -139,30 +166,30 @@
   1. Open a terminal/console
   2. Clone your forked repository:
 
-  ```
-  # Note: DO NOT use https. Use SSH instead.
-  # git clone https://github.com/jasonzhuyx/go-coding.git
-  git clone git@github.com:jasonzhuyx/go-coding.git
-  cd go-coding
-  ```
+    ```
+    # Note: DO NOT use https. Use SSH instead.
+    # git clone https://github.com/jasonzhuyx/go-coding.git
+    git clone git@github.com:jasonzhuyx/go-coding.git
+    cd go-coding
+    ```
 
   3. Add and review upstream
 
-  ```
-  # git remote remove upstream >/dev/null 2>&1
-  # Note: DO NOT use https. Use SSH instead.
-  # git remote add upstream http://github.com/dockerian/go-coding.git
-  git remote add upstream git@github.com/dockerian/go-coding.git
+    ```
+    # git remote remove upstream >/dev/null 2>&1
+    # Note: DO NOT use https. Use SSH instead.
+    # git remote add upstream http://github.com/dockerian/go-coding.git
+    git remote add upstream git@github.com:dockerian/go-coding.git
 
-  git remote –v
-  git fetch upstream
-  ```
-  Note: for using multiple github accounts in `~/.ssh/config`, the URL must be
-        set per the `host name` associated with granted user. For example
-  
-  ```
-  git remote set-url upstream git@github.com-foobar:dockerian/go-coding.git
-  ```
+    git remote –v
+    git fetch upstream
+    ```
+
+  **Note**: For using multiple github accounts in `~/.ssh/config` (e.g. `host github.com-foorbar` for the same `HostName github.com`), the URL must be set per the `HostName` associated with granted user (e.g. `foobar`). For example:
+
+    ```
+    git remote set-url upstream git@github.com-foobar:dockerian/go-coding.git
+    ```
 
 
 ### Pull Request (PR)
@@ -186,15 +213,16 @@
   * Start working on a new branch (usually a new feature or fix)
 
     ```
-    git checkout –b FEA-1234 # a task or fix associated with ticket in tracking system (e.g. JIRA)
-
+    git checkout -b dev
     # optionally with name convention, e.g.
-    git checkout –b feature/FEA-1234
-    git checkout –b fix/BUG-4321
+    # git checkout –b FEA-1234  # a task or fix associated with ticket in tracking system (e.g. JIRA)
+    # git checkout –b feature/FEA-1234  # for multitasking changes
+    # git checkout –b fix/BUG-4321  # for multitasking changes
 
     # undo any individual change
     git checkout -- changed_file_name  # undo a change
     ```
+    Note: Unless for multitasking changes, it's recommended to use a simple working branch name (e.g. just `dev`) rather than being specific.
 
   * Commit on branch (locally)
 
@@ -203,7 +231,7 @@
     git add *
     git commit –m "fixed BUG-4321 a bug in code"
 
-    # optionally amend your change
+    # optionally amend more changes after the commit
     # git add *
     # git commit --amend
     ```
@@ -220,7 +248,7 @@
     - Merging option (1) rebase:
 
       ```
-      git checkout FEA-1234
+      git checkout dev  # or `git checkout FEA-1234`
       git rebase master
 
       # fix conflict locally, and commit (again) or
@@ -230,7 +258,7 @@
     - Merging option (2) pull:
 
       ```
-      git checkout TIP-1234
+      git checkout dev  # or `git checkout FEA-1234`
       git pull upstream master
 
       # fix conflict locally, and commit (again) or
@@ -241,7 +269,7 @@
   * Push changes to origin branch (on your fork)
 
     ```
-    # git push --force  # origin/branch
+    git push  # optionally with `--force origin/branch`
     ```
 
   * Submit PR on github.com
@@ -252,6 +280,13 @@
     - add comment of testing result
     - add reviewers and assignees
     - submit
+
+  * Merge Pull Request
+    - *note*: amending and/or adding commits to the same branch on `origin` are allowed before PR is merged.
+    - review code with approval (e.g. `:+1`) or comments.
+    - upon all reviewers approved the PR, one of assignees can merge the PR.
+    - sync up local and "origin" with "upstream" after the PR is merged.
+    - close the ticket/story after the PR is merged.
 
 
 ## Amend historical commits
@@ -322,9 +357,10 @@ alias gbd='git branch -d '  # delete branch locally
 alias gbdo='git push origin --delete '  # delete branch on origin
 alias gbv="git branch -v "
 alias gco="git checkout "
-alias gfv="git fetch -v --all --prune "
+alias gfv="git fetch -v --all --prune ; git branch -v"
 alias glg="git log --graph --pretty=format:'%C(magenta)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
-alias gpum='git pull upstream master'
+alias gpum='git checkout master && git pull upstream master'
+alias gpumgp='git checkout master && git pull upstream master && git push'
 alias grm='git rebase master'
 alias grmgpf='git rebase master; git push --force'
 alias grv='git remote -v'
@@ -410,7 +446,6 @@ function gbd-all() {
   git fetch --all --prune
   git branch -v
 }
-
 ```
 
 ### Git/GitHub GUI client options
