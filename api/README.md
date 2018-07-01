@@ -10,6 +10,8 @@ Package apimain :: appRouters.go
 
 Package apimain :: appServer.go
 
+Package apimain :: info.go
+
 Package apimain :: root.go
 
 ## Usage
@@ -26,7 +28,7 @@ var (
 			"/", "GET", rootHandler, "Index",
 		},
 		{
-			"/info", "GET", info.GetInfo, "Info",
+			"/info", "GET", GetInfo, "Info",
 		},
 	}
 )
@@ -39,12 +41,40 @@ func App()
 ```
 App is the API main entrance
 
+#### func  AppIndex
+
+```go
+func AppIndex(ctx cfg.Context, w http.ResponseWriter, r *http.Request) error
+```
+AppIndex handles the root of api path
+
 #### func  GetConfig
 
 ```go
 func GetConfig() *cfg.Config
 ```
 GetConfig returns an application configuration
+
+#### func  GetDbInfo
+
+```go
+func GetDbInfo(ctx cfg.Context, w http.ResponseWriter, r *http.Request) error
+```
+GetDbInfo handles /info/db path
+
+#### func  GetDbInfoAll
+
+```go
+func GetDbInfoAll(ctx cfg.Context, w http.ResponseWriter, r *http.Request) error
+```
+GetDbInfoAll handles /info/db/all path
+
+#### func  GetInfo
+
+```go
+func GetInfo(res http.ResponseWriter, req *http.Request)
+```
+GetInfo is api/info handler
 
 #### func  Index
 
@@ -121,6 +151,23 @@ NotFound handles /{rest} path
 func Root()
 ```
 Root is api root entry pointer
+
+#### type APIInfo
+
+```go
+type APIInfo struct {
+	Name        string `json:"name,omitempty"`
+	Description string `json:"desc,omitempty"`
+	Copyright   string `json:"copyright,omitempty"`
+	Author      string `json:"author,omitempty"`
+	APIURL      string `json:"api_url,omitempty"`
+	APIInfoURL  string `json:"api_info_url,omitempty"`
+	APIVersion  string `json:"api_version,omitempty"`
+	Version     string `json:"version,omitempty"`
+}
+```
+
+APIInfo struct
 
 #### type Route
 
