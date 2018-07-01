@@ -3,15 +3,12 @@ package orm
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
 	"github.com/dockerian/go-coding/pkg/api"
-	"github.com/dockerian/go-coding/utils"
+	"github.com/dockerian/go-coding/pkg/str"
 	"github.com/jinzhu/gorm"
-	// golint should ignore the following blank import
-	_ "github.com/jinzhu/gorm/dialects/mysql" // required by gorm
 )
 
 const (
@@ -39,6 +36,9 @@ func GetClauseByParams(db *gorm.DB, params *api.Params, key, field string) *gorm
 	if siz := len(strValues); siz > 0 && strValues[0] != "" {
 		if siz > 1 {
 			return db.Where(fmt.Sprintf("%s in (?)", field), strValues)
+		}
+		if strings.Contains(strValues[0], "%") {
+			return db.Where(fmt.Sprintf("%s LIKE ?", field), strValues[0])
 		}
 		return db.Where(fmt.Sprintf("%s = ?", field), strValues[0])
 	}
@@ -77,12 +77,11 @@ func GetDateRangeClause(db *gorm.DB, field string, dateValues ...time.Time) *gor
 	return db
 }
 
-// GetDateClauseByParams returns database where clause from params
+// GetDateClauseByParams returns database where clause from params.
 //
-// Allowing 2 types of date queries for any key=value pairs in params
-//
-//  - date range: ?key=2017-11-11,2017-11-30
-//  - date selections: ?key=2017-11-11&key=2017-11-20&key=2017-11-30
+// Allowing 2 types of date queries for any key=value pairs in params.
+//   - date range: ?key=2017-11-11,2017-11-30
+//   - date selections: ?key=2017-11-11&key=2017-11-20&key=2017-11-30
 //
 // Note: The date selections (IN clause) takes preference;
 // otherwise, for date range format, all comma-delimited values will be
@@ -104,7 +103,7 @@ func GetDateClauseByParams(db *gorm.DB, params *api.Params, key, field string) *
 // GetLikeClauseByParams returns LIKE comparison clause from params
 func GetLikeClauseByParams(db *gorm.DB, params *api.Params, key, field string) *gorm.DB {
 	if strValue := params.GetValue(key); strValue != "" {
-		if len(strValue) > MinimumSearchLength {
+		if len(strValue) >= MinimumSearchLength {
 			if !strings.Contains(strValue, "%") {
 				strValue = "%" + strValue + "%"
 			}
@@ -120,7 +119,7 @@ func GetOrderClauseByParams(db *gorm.DB, params *api.Params, orderKey string) *g
 	orders := params.GetValues(orderKey)
 	for _, order := range orders {
 		if order != "" {
-			db = db.Order(utils.ToSnake(order))
+			db = db.Order(str.ToSnake(order))
 		}
 	}
 	return db
@@ -136,40 +135,4 @@ func GetPageClauseByParams(db *gorm.DB, params *api.Params, pgSizeKey, pgOffsetK
 		}
 	}
 	return db, pgSize, pgOffset
-}
-
-// OpenMySQL wraps gorm.Open function to open a mysql db connection with
-// host, port, database name, user name, password, and options
-// Note: options allow to use following case-sensitive parameters:
-//    charset (e.g. charset=utf8, default: none)
-//    collation (default: utf8_general_ci)
-//    columnsWithAlias (default: false)
-//    loc (default: UTC)
-//    maxAllowedPacket (default: 4194304)
-//    multiStatements (default: false)
-//    parseTime (default: false, changing DATE or DATETIME values to time.Time)
-//    readTimeout (default: 0) - a unit suffix ("ms", "s", "m", "h"), such as "30s", "0.5m" or "1m30s"
-//    timeout (default: OS default)
-// Parameters can be joined by amphersand (e.g. "charset=utf8&parseTime=true")
-// See https://github.com/go-sql-driver/mysql#parameters
-func OpenMySQL(host, port, db, user, pass string, options ...string) (*gorm.DB, error) {
-	address := host
-	if port != "" {
-		address += ":" + port
-	}
-	parameters := ""
-	for _, opt := range options {
-		if opt == "" {
-			continue
-		}
-		if parameters == "" {
-			parameters += "?" + opt
-		} else {
-			parameters += "&" + opt
-		}
-	}
-	connLog := fmt.Sprintf("%s:%s@tcp(%s)/%s%s", user, "********", address, db, parameters)
-	conn := fmt.Sprintf("%s:%s@tcp(%s)/%s%s", user, pass, address, db, parameters)
-	log.Println("[mysql] connect to", connLog)
-	return openDB("mysql", conn)
 }

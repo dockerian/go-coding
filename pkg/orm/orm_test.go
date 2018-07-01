@@ -67,8 +67,8 @@ var (
 	}
 )
 
-// mockOpenMySQL mocks gorm.Open
-func mockOpenMySQL(dialect string, args ...interface{}) (*gorm.DB, error) {
+// mockGormOpen mocks gorm.Open
+func mockGormOpen(dialect string, args ...interface{}) (*gorm.DB, error) {
 	options := ""
 	if len(args) > 0 {
 		options = args[0].(string)
@@ -80,31 +80,6 @@ func mockOpenMySQL(dialect string, args ...interface{}) (*gorm.DB, error) {
 	return db, nil
 }
 
-// TestOpenMySQL tests orm.OpenMySQL function
-func TestOpenMySQL(t *testing.T) {
-	openDB = mockOpenMySQL
-	db, err := OpenMySQL("host", "", "db", "user", "pass")
-	assert.Nil(t, err)
-	assert.Equal(t, map[string]string{
-		"dialect": "mysql",
-		"options": "user:pass@tcp(host)/db",
-	}, db.Value)
-
-	db, err = OpenMySQL("host", "port", "db", "user", "pass", "")
-	assert.Nil(t, err)
-	assert.Equal(t, map[string]string{
-		"dialect": "mysql",
-		"options": "user:pass@tcp(host:port)/db",
-	}, db.Value)
-
-	db, err = OpenMySQL("host", "port", "db", "user", "pass", "p1=v1", "p2=v2", "p3=v3")
-	assert.Nil(t, err)
-	assert.Equal(t, map[string]string{
-		"dialect": "mysql",
-		"options": "user:pass@tcp(host:port)/db?p1=v1&p2=v2&p3=v3",
-	}, db.Value)
-}
-
 // TestGetClauseByParams tests orm.GetClauseByParams
 func TestGetClauseByParams(t *testing.T) {
 	db0 := GetClauseByParams(testDB, params, "foo", "bar")
@@ -113,6 +88,8 @@ func TestGetClauseByParams(t *testing.T) {
 	assert.NotEqual(t, testDB, db1)
 	db2 := GetClauseByParams(testDB, params, "names", "name")
 	assert.NotEqual(t, testDB, db2)
+	db3 := GetClauseByParams(testDB, params, "key", "field")
+	assert.NotEqual(t, testDB, db3)
 }
 
 // TestGetDateClause tests orm.GetDateClause

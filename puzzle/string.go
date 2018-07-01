@@ -164,7 +164,7 @@ func GetLongestUniqueSubstring(input string) string {
 	var szInput = len(input)
 	var szRunes = len([]rune(input))
 
-	u.Debug("input string: %+v (size= %v, len= )\n", input, szInput, szRunes)
+	u.Debug("input string: %+v (size= %v, len= %d)\n", input, szInput, szRunes)
 	for stIndex := range input {
 		slice := input[stIndex:szInput]
 		u.Debug("%v: input slice: %+v\n", stIndex, slice)
