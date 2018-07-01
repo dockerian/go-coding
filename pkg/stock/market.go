@@ -6,7 +6,7 @@ import (
 	"math"
 	"sort"
 
-	"github.com/dockerian/go-coding/ds/mathEx"
+	"github.com/dockerian/go-coding/ds/mathex"
 	u "github.com/dockerian/go-coding/utils"
 )
 

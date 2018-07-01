@@ -31,10 +31,10 @@ This is a data structures library and general algorithm solutions in Go (golang)
 
 <a name="math"><br/></a>
 ## Mathematics
-- [Fibonacci](mathEx/fibo.go) | [test](mathEx/fibo_test.go)
-- [Gauss Formula Sum](mathEx/gauss.go) | [test](mathEx/gauss_test.go)
-- [MaxInt / MinInt](mathEx/math.go)
-- [Reverse integer](mathEx/integer.go) | [test](mathEx/integer_test.go)
+- [Fibonacci](mathexfibo.go) | [test](mathexfibo_test.go)
+- [Gauss Formula Sum](mathexgauss.go) | [test](mathexgauss_test.go)
+- [MaxInt / MinInt](mathexmath.go)
+- [Reverse integer](mathexinteger.go) | [test](mathexinteger_test.go)
 
 
 <a name="tree-and-trie"><br/></a>

@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/dockerian/go-coding/ds/mathEx"
+	"github.com/dockerian/go-coding/ds/mathex"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/dockerian/go-coding/ds/mathEx"
+	"github.com/dockerian/go-coding/ds/mathex"
 )
 
 const (

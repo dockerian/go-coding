@@ -18,7 +18,7 @@
 <a name="math"><br /></a>
 ## Mathematics
 - [buying stock at best price](../pkg/stock) | [test](../pkg/stock/stock_test.go)
-- [fibonacci](../ds/mathEx/fibo.go) | [test](../ds/mathEx/fibo_test.go)
+- [fibonacci](../ds/mathexfibo.go) | [test](../ds/mathexfibo_test.go)
 
 
 <a name="string"><br /></a>
