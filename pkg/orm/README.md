@@ -89,26 +89,26 @@ port, database name, user name, password, and options.
 
 Note: options allow to use following case-sensitive parameters:
 
-* charset (e.g. charset=utf8, default: none)
+* `charset` (e.g. `charset=utf8`, default: none)
 
-* collation (default: utf8_general_ci)
+* `collation` (default: `utf8_general_ci`)
 
-* columnsWithAlias (default: false)
+* `columnsWithAlias` (default: `false`)
 
-* loc (default: UTC)
+* `loc` (default: `UTC`)
 
-* maxAllowedPacket (default: 4194304)
+* `maxAllowedPacket` (default: `4194304`)
 
-* multiStatements (default: false)
+* `multiStatements` (default: `false`)
 
-* parseTime (default: false, changing DATE or DATETIME values to time.Time)
+* `parseTime` (default: `false`, changing DATE or DATETIME values to time.Time)
 
-* readTimeout (default: 0) - a unit suffix ("ms", "s", "m", "h"), such as "30s",
-"0.5m" or "1m30s"
+* `readTimeout` (default: 0) - a unit suffix ("ms", "s", "m", "h"), such as
+"30s", "0.5m" or "1m30s"
 
-* timeout (default: OS default)
+* `timeout` (default: OS default)
 
-Parameters can be joined by amphersand (e.g. "charset=utf8&parseTime=true")
+Parameters are joined by amphersand (e.g. "charset=utf8&parseTime=true")
 
 See https://github.com/go-sql-driver/mysql#parameters
 
@@ -122,7 +122,7 @@ host, port, database name, user name, password, and options.
 
 Valid connection options:
 
-* sslmode - Whether or not to use SSL (default is 'require'); valid values:
+* `sslmode` - Whether or not to use SSL (default is `require`); valid values:
 
     * `disable` - No SSL
     * `require` - Always SSL (skip verification)
@@ -132,14 +132,18 @@ Valid connection options:
       presented by the server was signed by a trusted CA and the
       server host name matches the one in the certificate)
 
-* fallback_application_name - An application_name to fall back if not provided.
-* connect_timeout - Maximum wait for connection, in seconds.
+* `fallback_application_name` - An application_name to fall back if not
+provided.
+
+* `connect_timeout` - Maximum wait for connection, in seconds.
 
     Zero or not specified means wait indefinitely.
 
-* sslcert - Cert file location. The file must contain PEM encoded data. * sslkey
-- Key file location. The file must contain PEM encoded data. * sslrootcert - The
-location of the root certificate file.
+* `sslcert` - Cert file location. The file must contain PEM encoded data.
+
+* `sslkey` - Key file location. The file must contain PEM encoded data.
+
+* `sslrootcert` - The location of the root certificate file.
 
     The file must contain PEM encoded data.
 

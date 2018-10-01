@@ -13,7 +13,8 @@ import (
 )
 
 var (
-	testDB = &gorm.DB{}
+	testDB, _ = OpenMySQL("host", "port", "db", "user", "pass", "opts")
+
 	params = &api.Params{
 		Form: map[string][]string{
 			"date": {
