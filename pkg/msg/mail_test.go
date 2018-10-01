@@ -210,7 +210,8 @@ func TestSend(t *testing.T) {
 	} {
 		message := test.message
 		sender := MessageSender{
-			Message: message,
+			Message:  message,
+			Password: "secret",
 		}
 		smtpSendMail = mockSendMail
 		err := sender.Send()
@@ -288,6 +289,7 @@ func TestSendWithTLS(t *testing.T) {
 			Message:    message,
 			DomainName: "test.com",
 			UserName:   "foobar",
+			Password:   "secret",
 			WithTLS:    true,
 		}
 		t.Logf("Test %2d: %s\n", num+1, test.expected)

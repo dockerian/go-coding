@@ -34,7 +34,7 @@ RUN apt-get update \
 #  && rm /usr/local/bin/gosu.asc
 # COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
 
-RUN go get -u github.com/golang/lint/golint \
+RUN go get -u golang.org/x/lint/golint \
  && go get -u github.com/sanbornm/go-selfupdate \
  && go get -u github.com/ory/go-acc \
  && go get -u github.com/robertkrimen/godocdown/godocdown \

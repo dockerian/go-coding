@@ -20,6 +20,7 @@ import (
 	"net/textproto"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -79,6 +80,8 @@ type MessageSender struct {
 	UserName string
 	// Password defines the login password for the mail server
 	Password string
+	// PlainAuth specifies to use PlainAuth if WithTLS is not enabled
+	PlainAuth bool
 	// WithTLS specifies to use TLS
 	WithTLS bool
 }
@@ -206,7 +209,7 @@ func GenerateID() (string, error) {
 	sec := time.Now().UnixNano()
 	pid := os.Getpid()
 	var maxBigInt = big.NewInt(math.MaxInt64)
-	randInt, err := randInt(rand.Reader, maxBigInt)
+	hashInt, err := randInt(rand.Reader, maxBigInt)
 	if err != nil {
 		return "", err
 	}
@@ -214,7 +217,7 @@ func GenerateID() (string, error) {
 	if err != nil {
 		hostname = "localhost"
 	}
-	messageID := fmt.Sprintf("<%d.%d.%d@%s>", sec, pid, randInt, hostname)
+	messageID := fmt.Sprintf("<%d.%d.%d@%s>", sec, pid, hashInt, hostname)
 
 	return messageID, nil
 }
@@ -226,12 +229,15 @@ func newDialClient(addr string) (SMTPClient, error) {
 
 // Send is a sender pointer receiver to send email message
 func (sender *MessageSender) Send() error {
-	addr := fmt.Sprintf("%s:%d", sender.ServerHost, sender.ServerPort)
-	// auth := smtp.PlainAuth("", sender.UserName, sender.Password, sender.ServerHost)
-	auth := LoginAuth(sender.UserName, sender.Password, sender.ServerHost)
-
-	if sender.Message.From == "" && sender.DomainName != "" && sender.UserName != "" {
-		sender.Message.From = fmt.Sprintf("%s@%s", sender.UserName, sender.DomainName)
+	if sender.Message.From == "" {
+		if sender.DomainName != "" && sender.UserName != "" {
+			if strings.Contains(sender.UserName, "@") {
+				sender.Message.From = sender.UserName
+			} else {
+				emailAddress := fmt.Sprintf("%s@%s", sender.UserName, sender.DomainName)
+				sender.Message.From = emailAddress
+			}
+		}
 	}
 
 	toList, from, err := sender.Message.parseAddresses()
@@ -239,7 +245,14 @@ func (sender *MessageSender) Send() error {
 		return err
 	}
 
-	log.Printf("[mail] sending %+v\n", sender)
+	odump := fmt.Sprintf("%+v", sender)
+	regex := regexp.MustCompile("Password:[^\\s]+")
+	senderText := regex.ReplaceAllString(odump, "Password:********")
+
+	log.Printf("[mail] sending %+s\n", senderText)
+
+	addr := fmt.Sprintf("%s:%d", sender.ServerHost, sender.ServerPort)
+	auth := LoginAuth(sender.UserName, sender.Password, sender.ServerHost)
 
 	if sender.WithTLS {
 		log.Println("[mail] TLS enabled")
@@ -247,6 +260,9 @@ func (sender *MessageSender) Send() error {
 		return sender.sendWithTLS(from, toList, addr, auth, config)
 	}
 
+	if sender.PlainAuth {
+		auth = smtp.PlainAuth("", sender.UserName, sender.Password, sender.ServerHost)
+	}
 	return sender.sendMail(from, toList, addr, auth)
 }
 

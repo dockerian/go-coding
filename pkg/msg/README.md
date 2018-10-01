@@ -103,6 +103,8 @@ type MessageSender struct {
 	UserName string
 	// Password defines the login password for the mail server
 	Password string
+	// PlainAuth specifies to use PlainAuth if WithTLS is not enabled
+	PlainAuth bool
 	// WithTLS specifies to use TLS
 	WithTLS bool
 }

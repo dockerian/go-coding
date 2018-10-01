@@ -18,7 +18,10 @@ This is a project for [Golang](https://golang.org/) exercises.
   - [Online coding examples](demo/README.md) | [Golang Notes](demo/golang-notes.md)
   - [Package solutions](pkg/README.md)
   - [Utilities](utils/README.md)
-  - [How to build, test, and run](#build-test-run)
+  * [About this project](#readme)
+    - [How to build, test, and run](#build-test-run)
+    - [End-to-end tests](#e2e)
+    - [Documentation](#godoc)
   - [Learning Go](#learning-go)
 
 
@@ -45,23 +48,42 @@ To build and run in docker container, see [here](tools/README.md#docker).
 <a name="build-test-run"><br/></a>
 ### Build, test and run
 
-The `Makefile` has included `build`, `test`, `run` targets. For example, to build, simply change to the project directory and run
+  The `Makefile` has included `build`, `test`, `run` targets. For example, to build, simply change to the project directory and run
 
   ```
   make build # or ./build.sh
   ```
 
-or to run tests
+  or to run tests
 
   ```
   make test  # or ./run.sh test
   ```
 
+
+<a name="e2e"><br/></a>
+### End-to-end tests
+
+  * MessageSender test
+    - In order to run the test, inject environment variables to
+      set user, pass, recipient, e.g.
+
+      ```
+      MAIL_TO='a@hotmail.com' \
+      MAIL_USER='a@hotmail.com' MAIL_PASS='pass!wd' \
+      make e2e
+      ```
+      Default mail server (`MAIL_HOST`): `smtp.office365.com`.<br/>
+      Default auth: `MAIL_TLS=true` (otherwise using just `LoginAuth`)<br/>
+      Default sender (`MAIL_USER`): `jason_zhuyx@hotmail.com`.<br/>
+      And default recipient (`MAIL_TO`): `jason_zhuyx@hotmail.com`.<br/>
+
+
 <a name="godoc"><br/></a>
 ### Documentation
 
-This project uses [godocdown](https://github.com/robertkrimen/godocdown)
-and `$(DOC_PACKAGES)` in `Makefile` to generate documentations for some library packages
+  This project uses [godocdown](https://github.com/robertkrimen/godocdown)
+  and `$(DOC_PACKAGES)` in `Makefile` to generate documentations for some library packages
 
   ```
   make doc
@@ -70,7 +92,7 @@ and `$(DOC_PACKAGES)` in `Makefile` to generate documentations for some library 
 
 
 <br/><a name="learning-go"></a>
-### Learning Go
+## Learning Go
 - [awesome-go](https://github.com/avelino/awesome-go)
 - [go books](https://github.com/dariubs/GoBooks)
 

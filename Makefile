@@ -71,6 +71,11 @@ SOURCE_PATH := $(GOPATH)/src/github.com/$(GITHUB_CORP)/$(PROJECT)
 SYSTOOLS := awk egrep find git go grep jq rm sort tee xargs zip
 MAKE_RUN := tools/run.sh
 
+AWS_ACCESS_KEY_ID ?= $(shell aws configure get aws_access_key_id)
+AWS_SECRET_ACCESS_KEY ?= $(shell aws configure get aws_secret_access_key)
+AWS_DEFAULT_REGION ?= $(shell aws configure get profile.default.region)
+GOPATH ?= $(HOME)/go
+
 DEBUG ?= 1
 
 
@@ -342,7 +347,7 @@ endif
 dep depend godep:
 	@echo ""
 	@echo "Installing go lib and package managers ..."
-	go get -u -f github.com/golang/lint/golint
+	go get -u -f golang.org/x/lint/golint
 	go get -u -f github.com/golang/dep/cmd/dep
 	go get -u -f github.com/Masterminds/glide
 	go get -u -f github.com/kardianos/govendor
@@ -464,7 +469,7 @@ ifndef DONT_RUN_DOCKER
 	$(MAKE_RUN) $@
 else
 	@echo "Check coding style ..."
-	# go get -u github.com/golang/lint/golint
+	# go get -u golang.org/x/lint/golint
 	golint -min_confidence $(LINTER_LEVEL) -set_exit_status $(ALL_PACKAGES)
 endif
 	@echo ""
@@ -576,6 +581,12 @@ test-coverage cover: test show-coverage
 
 # test targets
 test: check-tools fmt-only lint-only vet-only test-only
+	@echo ""
+	@echo "- DONE: $@"
+
+test-e2e e2e:
+	@echo ""
+	go test ./... -v -tags=e2e 2>&1 | tee ./$(TEST_LOGS)
 	@echo ""
 	@echo "- DONE: $@"
 
