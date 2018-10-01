@@ -1,5 +1,5 @@
-// Package mathEx :: fibo.go
-package mathEx
+// Package mathex :: fibo.go
+package mathex
 
 import "errors"
 

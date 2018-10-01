@@ -1,5 +1,5 @@
-// Package mathEx :: gauss.go
-package mathEx
+// Package mathex :: gauss.go
+package mathex
 
 // GaussSum calculates sum of a series of integers from specific `start` with
 // an `interval` in next `num` sequence (as total `num + 1`).

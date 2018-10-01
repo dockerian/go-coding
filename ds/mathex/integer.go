@@ -1,5 +1,5 @@
-// Package mathEx :: integer.go
-package mathEx
+// Package mathex :: integer.go
+package mathex
 
 import (
 	"fmt"

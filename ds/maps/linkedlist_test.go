@@ -51,7 +51,7 @@ func TestLinkedListNumbers(t *testing.T) {
 		assert.Equal(t, strconv.FormatUint(test.Num1, 10), st1, ms1)
 		assert.Equal(t, strconv.FormatUint(test.Num2, 10), st2, ms2)
 
-		var cmp = mathEx.Compare(test.Num1, test.Num2)
+		var cmp = mathex.Compare(test.Num1, test.Num2)
 		msg = fmt.Sprintf("expecting compare LinkedListNumber (%v, %v) == %v",
 			test.Num1, test.Num2, cmp)
 		assert.Equal(t, cmp, ln1.Compare(ln2), msg)

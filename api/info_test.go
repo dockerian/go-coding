@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TestGetDbInfo tests func sng.GetDbInfo
+// TestGetDbInfo tests func api.GetDbInfo
 func TestGetDbInfo(t *testing.T) {
 	ctx := NewAppContext()
 	req, _ := http.NewRequest("GET", "/v1/db", nil)
@@ -27,7 +27,7 @@ func TestGetDbInfo(t *testing.T) {
 	assert.NotNil(t, dbInfo)
 }
 
-// TestGetDbInfoAll tests func sng.GetDbInfoAll
+// TestGetDbInfoAll tests func api.GetDbInfoAll
 func TestGetDbInfoAll(t *testing.T) {
 	ctx := NewAppContext()
 	req, _ := http.NewRequest("GET", "/v1/db/all", nil)

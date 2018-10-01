@@ -1,6 +1,6 @@
 // +build all ds math gauss test
 
-package mathEx
+package mathex
 
 import (
 	"fmt"

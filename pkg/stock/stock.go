@@ -58,7 +58,7 @@ func (s *Stock) GetPriceByAmount(amount int) float64 {
 	amountLeft := amount
 
 	for amountLeft > 0 {
-		x := mathEx.MinInt(amountLeft, stackSize)
+		x := mathex.MinInt(amountLeft, stackSize)
 		stackPrice := s.GetUnitPriceByStack(stack)
 		price = price + stackPrice*float64(x)
 		amountLeft = amountLeft - x

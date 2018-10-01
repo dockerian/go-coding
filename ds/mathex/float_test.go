@@ -1,6 +1,6 @@
 // +build all ds math test
 
-package mathEx
+package mathex
 
 import (
 	"fmt"

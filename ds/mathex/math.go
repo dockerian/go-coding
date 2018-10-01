@@ -1,5 +1,5 @@
-// Package mathEx :: math.go
-package mathEx
+// Package mathex :: math.go
+package mathex
 
 const (
 	// MAXUINT represents maximum uint

@@ -1,5 +1,5 @@
-// Package mathEx :: float.go
-package mathEx
+// Package mathex :: float.go
+package mathex
 
 import (
 	"fmt"

@@ -99,11 +99,11 @@ func (pList *LinkedListNumber) GetNumber() (uint64, error) {
 	p := pList
 	for p != nil {
 		u := uint(p.Data)
-		m, err := mathEx.MultiplyUint64(x, uint64(u))
+		m, err := mathex.MultiplyUint64(x, uint64(u))
 		if err != nil {
 			return 0, err
 		}
-		n, err = mathEx.SumUint64(n, m)
+		n, err = mathex.SumUint64(n, m)
 		if err != nil {
 			return 0, err
 		}

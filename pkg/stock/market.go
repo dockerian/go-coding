@@ -56,7 +56,7 @@ func (m *Market) GetBuyingStocks(id, amount int) []BuyingStock {
 		price := choices[exchangeID]
 		stack := stacked[exchangeID] + 1
 		amountInStock := amounts[exchangeID]
-		x := mathEx.MinInt(STACKSIZE, amountLeft, amountInStock)
+		x := mathex.MinInt(STACKSIZE, amountLeft, amountInStock)
 		amounts[exchangeID] = amountInStock - x
 		selectAmount, _ := selects[exchangeID]
 		selects[exchangeID] = selectAmount + x
