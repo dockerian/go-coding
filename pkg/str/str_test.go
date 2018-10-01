@@ -122,6 +122,38 @@ func TestAppend(t *testing.T) {
 	assert.True(t, (cap1+cap2) <= cap3)
 }
 
+// TestIndentJSON
+func TestIndentJSON(t *testing.T) {
+	ch1 := make(chan int)
+	obj := struct {
+		A string `json:"a"`
+		B string `json:"b"`
+		C int    `json:"count"`
+	}{
+		"aaa", "bb", 3,
+	}
+	out := `{
+    "a": "aaa",
+    "b": "bb",
+    "count": 3
+}
+`
+	tests := []struct {
+		input    interface{}
+		indent   string
+		expected string
+	}{
+		{input: ch1, indent: "", expected: ""},
+		{input: obj, indent: "    ", expected: out},
+		{input: "test", indent: "", expected: "\"test\"\n"},
+	}
+	for idx, test := range tests {
+		result := IndentJSON(test.input, test.indent)
+		t.Logf("Test %2d: %+v => %s\n", idx+1, test.input, test.expected)
+		assert.Equal(t, test.expected, result)
+	}
+}
+
 // TestReplaceProxyURL
 func TestReplaceProxyURL(t *testing.T) {
 	for index, test := range _replaceProxyTestCases {

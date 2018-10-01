@@ -2,6 +2,8 @@
 package str
 
 import (
+	"bytes"
+	"encoding/json"
 	"strings"
 )
 
@@ -23,6 +25,18 @@ func Append(slice, data []byte) []byte {
 		slice[lenSlice+idx] = item
 	}
 	return slice
+}
+
+// IndentJSON formats data object with indented JSON string.
+func IndentJSON(data interface{}, indent string) string {
+	buffer := new(bytes.Buffer)
+	encoder := json.NewEncoder(buffer)
+	encoder.SetIndent("", indent)
+
+	if err := encoder.Encode(data); err != nil {
+		return "" // fmt.Sprintf("%+v", data)
+	}
+	return buffer.String()
 }
 
 // ReplaceProxyURL searches prefix in url and replaces with proxyURL

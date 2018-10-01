@@ -39,6 +39,13 @@ func GetPalindromicSubstring(str string) string
 ```
 GetPalindromicSubstring returns the longest palindromic substring
 
+#### func  IndentJSON
+
+```go
+func IndentJSON(data interface{}, indent string) string
+```
+IndentJSON formats data object with indented JSON string.
+
 #### func  IsPalindrome
 
 ```go
