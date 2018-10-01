@@ -55,6 +55,7 @@ Thumbs.db
 
 # Folders
 **/v?/spec
+.vendor-new
 !vendor/vendor.json
 vendor/**
 bin
