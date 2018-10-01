@@ -22,22 +22,29 @@ type KMSDecryptInterface interface {
 	Decrypt(input *kms.DecryptInput) (*kms.DecryptOutput, error)
 }
 
+// Decrypt tries to decrypt a text
+func Decrypt(text string) string {
+	log.Println("[aws] decrypting:", text)
+
+	inputBlob := []byte(text)
+	if base64Blob, err := base64.StdEncoding.DecodeString(text); err == nil {
+		inputBlob = base64Blob
+	}
+	deInput := &kms.DecryptInput{CiphertextBlob: inputBlob}
+	if decrypt, err := _kmsService.Decrypt(deInput); err == nil {
+		return string(decrypt.Plaintext)
+	}
+	return text
+}
+
 // DecryptKeyTextByKMS checks possible encrypted KMS key/value and retruns decrypted text
 func DecryptKeyTextByKMS(key, text string) string {
 	keyLowers := strings.ToLower(key)
 	keyOrPass := strings.Contains(keyLowers, "api_key") || strings.Contains(keyLowers, "password")
 	encrypted := len(text) > 128 && !strings.Contains(text, " ")
-	inputBlob := []byte(text)
 
 	if keyOrPass && encrypted {
-		log.Println("[aws] decrypting", text)
-		if base64Blob, err := base64.StdEncoding.DecodeString(text); err == nil {
-			inputBlob = base64Blob
-		}
-		deInput := &kms.DecryptInput{CiphertextBlob: inputBlob}
-		if decrypt, err := _kmsService.Decrypt(deInput); err == nil {
-			return string(decrypt.Plaintext)
-		}
+		return Decrypt(text)
 	}
 	return text
 }

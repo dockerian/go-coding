@@ -13,6 +13,13 @@ Package cfg :: env.go
 
 ## Usage
 
+#### func  Decrypt
+
+```go
+func Decrypt(text string) string
+```
+Decrypt tries to decrypt a text
+
 #### func  DecryptKeyTextByKMS
 
 ```go
