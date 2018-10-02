@@ -10,7 +10,9 @@
     - Fork from upstream (one-time setup)
     - Clone and set upstream (one-time setup)
     - Pull Request (PR) and merging
+  * [Advanced operations](#advanced)
     - Amend historical commits
+    - Creating tags
   * [References](#reference)
     - Bash aliases for git
     - Git/GitHub GUI client options
@@ -289,7 +291,10 @@
     - close the ticket/story after the PR is merged.
 
 
-## Amend historical commits
+<br/><a name="advanced"></a>
+## Advanced operations
+
+### Amend historical commits
 
   * Listing previous logs
 
@@ -345,6 +350,14 @@
   * Repeat last 2 steps if there are more than one commit to ammend
 
 
+### Creating tags
+
+  ```
+  git tag -a <tag-name> <commit-sha> -m "Message for the tag"
+  git push --tags origin master
+  ```
+
+
 <br/><a name="reference"></a>
 ## Reference
 
@@ -361,6 +374,7 @@ alias gfv="git fetch -v --all --prune ; git branch -v"
 alias glg="git log --graph --pretty=format:'%C(magenta)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
 alias gpum='git checkout master && git pull upstream master'
 alias gpumgp='git checkout master && git pull upstream master && git push'
+alias gpumgpf='git checkout master && git pull upstream master && git push -f'
 alias grm='git rebase master'
 alias grmgpf='git rebase master; git push --force'
 alias grv='git remote -v'
@@ -500,6 +514,8 @@ Comparing workflows
 
   - https://www.atlassian.com/git/tutorials/comparing-workflows
   - http://blogs.atlassian.com/2013/05/git-branching-and-forking-in-the-enterprise-why-fork/
+  - https://github.community/t5/How-to-use-Git-and-GitHub/Branch-VS-Fork/td-p/10619
+  - https://stackoverflow.com/questions/3611256/forking-vs-branching-in-github
 
 Forks with feature branches
 
@@ -507,6 +523,7 @@ Forks with feature branches
 
 More about Github workflow
 
+  - https://github.com/asmeurer/git-workflow
   - http://hugogiraudel.com/2015/08/13/github-as-a-workflow/
   - https://github.com/servo/servo/wiki/Github-workflow
 

@@ -205,6 +205,10 @@
       - [free](http://www.seagate.com/support/downloads/item/ntfs-driver-for-mac-os-master-dl/) or
       - [buy](https://www.paragon-software.com/ufsdhome/ntfs-mac/)
 
+    * Using [Mounty](https://mounty.app/)
+      - download: https://mounty.app/releases/Mounty.dmg
+      - brew: `brew cask install mounty`
+
     - Using OSX Fuse
       - download [OSX Fuse](https://github.com/osxfuse/osxfuse/releases)
       - or install osxfuse from cmd (```brew install Caskroom/cask/osxfuse```)
@@ -567,6 +571,12 @@
     - [Flycut - app store](https://itunes.apple.com/in/app/flycut-clipboard-manager/id442160987)
     - [Jumpcut](http://jumpcut.sourceforge.net/)
 
+  * Download managers:
+    - [Folx](https://mac.eltima.com/download-manager.html)
+    - [iGetter](http://www.igetter.net/downloads.html)
+    - [Progressive Downloader](https://www.macpsd.net/)
+    - [Xtreme](https://sourceforge.net/projects/xdman/)
+
   * Homebrew [brew.sh](http://brew.sh/)
 
     ```
@@ -659,7 +669,13 @@
     - [AWS](http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
     - [Adobe Flash Player](http://labs.adobe.com/downloads/flashplayer.html)
     - [Baidu](http://srf.baidu.com/input/mac.html)
-    - [DiskInventoryX](http://www.derlien.com/)
+    * Disk tools
+      - [CC Cleaner](https://www.ccleaner.com/)
+      - [Disk Drill 3](https://www.cleverfiles.com)
+      - [DiskInventoryX](http://www.derlien.com/)
+      - [Daisy Disk](https://daisydiskapp.com/) (free trial)
+      - [Grand Perspective](http://grandperspectiv.sourceforge.net/)
+      - [OmniDiskSweeper](https://omnidisksweeper.en.softonic.com/)
     - [Docker Toolbox](https://www.docker.com/products/docker-toolbox)
     - [BetterTouchTool](https://www.boastr.net/)
     - [Charles](https://www.charlesproxy.com/)
@@ -729,10 +745,11 @@
       - [Pydev and Extension](http://pydev.org/updates)
     * [Docker](https://www.docker.com/products/docker-toolbox)
     * [Nuclide.io](http://nuclide.io/docs/quick-start/getting-started/)
-    * Microsoft Visual Studio/Code (VSCode)[https://www.visualstudio.com/vs/visual-studio-mac/] + go + react
+    * Microsoft Visual Studio
+    * Microsoft VS Code [VSCode](https://www.visualstudio.com/vs/visual-studio-mac/) + go + react
     * Concourse/VirtualBox/Vagrant
     * [GitHub Desktop](https://desktop.github.com/)
-    * [Graphviz](http://www.graphviz.org/Download.php)
+    * [Graphviz](http://www.graphviz.org/download/)
     * ipython
     * [Java](http://www.oracle.com/technetwork/java)
     * Java decompilers
@@ -753,7 +770,33 @@
       - [SQL DBM](https://sqldbm.com)
     * [Xcode](https://developer.apple.com/xcode/)
     * [MySQL](http://dev.mysql.com/downloads/mysql/)
-    * [MySQLWorkbenchm](https://dev.mysql.com/downloads/workbench/)
+    * [MySQLWorkbench](https://dev.mysql.com/downloads/workbench/)
+    * [PostgreSQL](https://www.postgresql.org/download/)
+      - For [Homebrew on Mac OS](https://www.moncefbelyamani.com/how-to-install-postgresql-on-a-mac-with-homebrew-and-lunchy/)
+
+        ```
+        brew update
+        brew doctor
+        brew install postgresql
+        ```
+        Note: add, e.g. `/Library/PostgreSQL/10/bin` to `$PATH` after installation.
+      - For [Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04)
+
+        ```
+        sudo apt-get update
+        sudo apt-get install postgresql postgresql-contrib
+        ```
+      * PostgreSQL design/modeling tools comparison
+        - http://www.databaseanswers.org/modelling_tools.htm
+        - https://wiki.postgresql.org/wiki/GUI_Database_Design_Tools
+        - https://wiki.postgresql.org/wiki/Design_Tools
+
+      * Cross-platform tools selection
+        - Free: [DBeaver](https://dbeaver.io/)
+        - Free: [PSequel](http://psequel.com) - similar to [Sequel Pro](http://www.sequelpro.com)
+        - Licensed: [DBSchema](https://www.dbschema.com/index.html)
+        - Browser-based: [pgAdmin](https://www.pgadmin.org/download/)
+        - IDE: [DataGrip](https://www.jetbrains.com/datagrip/)
     * [Sequel Pro](http://www.sequelpro.com/)
   * Hex Editors
     - [010 Editor](http://www.sweetscape.com/010editor/)
@@ -763,6 +806,61 @@
     - [HxD](https://sourceforge.net/projects/osxhxd/)
     - [wxHexEditor](http://www.wxhexeditor.org/download.php)
     - [wxMEditor](https://wxmedit.github.io/)
+
+  * Kubernetes
+    - Install a Hypervisor
+      - macOS: [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+        or [VMware Fusion](https://www.vmware.com/products/fusion),
+        or [HyperKit](https://github.com/moby/hyperkit).
+      - Linux: [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+        or [KVM](http://www.linux-kvm.org/).
+      - **Note**: Minikube also supports a `--vm-driver=none` option that runs
+        the Kubernetes components on the host and not in a VM.
+        Using this driver requires Docker, but not a hypervisor.
+
+    - Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+
+      ```
+      brew install kubernetes-cli
+      kubectl version
+      ```
+
+    - Uninstall minikube (Mac OS X)
+
+      ```
+      minikube stop
+      minikube delete
+      minikube delete && rm -rf ~/.minikube  # delete old minikube
+      brew cask uninstall --force minikube
+      ```
+
+    - Install [MiniKube](https://github.com/kubernetes/minikube/releases/latest)
+
+      ```
+      brew cask install minikube  # on Mac OS X
+      brew update && brew cask reinstall minikube  # upgrade to the latest
+
+      (
+      export MINIKUBE_VER=v0.28.2  # or latest
+      export MINIKUBE_BIN="minikube-$(uname|tr [:upper:] [:lower:])-amd64"
+      export MINIKUBE_URL=https://storage.googleapis.com/minikube/releases
+      curl -Lo minikube ${MINIKUBE_URL}/${MINIKUBE_VER}/${MINIKUBE_BIN} \
+        && chmod +x minikube && sudo cp minikube /usr/local/bin/ && rm minikube
+      )
+      ```
+
+    - Start
+
+      ```
+      # minikube config set WantUpdateNotification false
+      minikube version
+      minikube ip  # this should return an IP address
+      minikube start
+      minikube dashboard
+      minikube ssh 'docker ps -a'  # check current docker process
+      minikube logs -f
+      ```
+
   * Photo Tools
     - [DigiKam](https://www.digikam.org/download)
     - [DxO OpticsPro 10](http://www.dxo.com)
@@ -776,6 +874,7 @@
     - http://www.makeuseof.com/tag/top-6-free-video-editors-mac-os/
   * Mutlimedia/Media Players
     - [5K Player](http://www.5kplayer.com/)
+    - [4K Video Donwloader](https://www.4kdownload.com/)
     - [AviDemux](http://avidemux.sourceforge.net/)
     - [HandBrake](https://handbrake.fr/downloads.php) - video transcoder
     - [DivX](http://www.divx.com/)
@@ -1018,7 +1117,9 @@
   * AWS CLI
 
     ```
+    # brew install awscli
     pip install awscli --upgrade --user
+    pip install awscli-plugin-endpoint --user # if `aws` has `ImportError`
     aws --version
     ```
 
@@ -1238,6 +1339,7 @@
     # add idea icon in dash:
     cp /opt/idea/bin/idea.png /usr/share/pixmaps/idea.png
     ```
+    For license see: http://idea.lanyus.com/
 
   * Kid3 (audio file metadata editor)
 
