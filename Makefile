@@ -1,5 +1,5 @@
 # Makefile for go-coding
-.PHONY: all build build-all clean cmd default doc docker dep depend godep qb run test fmt lint list vet
+.PHONY: all build build-all clean cmd default doc docker dep depend godep qb run test fmt lint list models swagger vet
 
 # Set project variables
 PROJECT := go-coding
@@ -241,6 +241,9 @@ endif
 	@echo "- DONE: $@"
 
 
+check-swagger:
+	go get -u github.com/go-swagger/go-swagger/cmd/swagger
+
 check-tools:
 	@echo ""
 ifndef DONT_RUN_DOCKER
@@ -269,6 +272,7 @@ clean-cache clean:
 	@echo ""
 	@echo "Cleaning up codegen spec and $(SWAGGER_WTAG) ..."
 	for ver in $(CODEGEN_VERS); do \
+	rm -rf $(CODEGEN_PATH)/$$ver/models; \
 	rm -rf $(SWAGGER_PATH)/$$ver/spec; \
 	done
 	docker container rm -f -v $(SWAGGER_WTAG) || true
@@ -313,6 +317,13 @@ endif
 
 # codegen using default $(CODEGEN_SPEC); see $(CODEGEN_VERS) targets
 codegen: $(CODEGEN_SPEC)
+	@echo "- DONE: $@"
+
+codegen-go goswagger swagger: swagger-model
+	@echo "- DONE: $@"
+
+codegen-go-models models swagger-model: check-swagger clean-cache
+	swagger generate model -f $(SWAGGER_PATH)/v1/swagger.yaml -t $(CODEGEN_PATH)/v1/
 	@echo "- DONE: $@"
 
 # codegen targets: codegen using api spec in '$(SWAGGER_PATH)/$@/swagger.yaml'
