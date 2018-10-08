@@ -64,6 +64,8 @@ RUN cd -P "$PROJECT_DIR" \
  && tree -L 4 $GOPATH \
  && ls -al
 
+EXPOSE 8001 8008 8080
+
 WORKDIR $PROJECT_DIR
 
 # this ENTRYPOINT requires gosu

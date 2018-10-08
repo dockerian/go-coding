@@ -21,11 +21,17 @@ GITHUB_USER="${GITHUB_USER:-dockerian}"
 DOCKER_USER="${DOCKER_USER:-${GITHUB_USER}}"
 DOCKER_NAME="${DOCKER_NAME:-go-coding}"
 DOCKER_IMAG="${DOCKER_USER}/${DOCKER_NAME}"
+DOCKER_HOST="${DOCKER_HOST:-${DOCKER_NAME}}"
+DOCKER_PORT="${DOCKER_PORT:-8080}"
+DOCKER_PORT_TEST="8181"
+DOCKER_EXEC="run"
+
 DOCKER_TAGS=$(docker images 2>&1|grep ${DOCKER_IMAG}|awk '{print $1;}')
 # detect if the process running inside the container
 DOCKER_PROC="$(cat /proc/1/cgroup 2>&1|grep -e "/docker/[0-9a-z]\{64\}"|head -1)"
 SOURCE_PATH="/go/src/github.com/${GITHUB_USER}/${GITHUB_REPO}"
 
+GO_PATH_SRC="${GOPATH}/src"
 PROJECT_DIR="${PROJECT_DIR:-${script_base}}"
 DEBUG="${DEBUG:-${VERBOSE:-0}}"
 
@@ -45,12 +51,13 @@ function main() {
   MAKE_BASH=""
   # checking target(s) from command line
   for target in ${MAKE_ARGS}; do
+    echo -e "\nChecking target: ${target} ..."
     t="`echo ${MAKE_LIST}|xargs -n1 echo|grep -e \"^${target}$\"`"
     if [[ ! -n "$t" ]]; then
       echo "Makefile does not have target: ${target}"
       return
     elif [[ -e "/.dockerenv" ]] || [[ "${DOCKER_PROC}" != "" ]]; then
-      if [[ "${target}" =~ (show) ]] || [[ "${target}" =~ (cover) ]]; then
+      if [[ "${target}" =~ (show|cover) ]]; then
         echo "Cannot open test coverage in the container."
         echo "See: cover/index.html"
         return
@@ -58,7 +65,14 @@ function main() {
         echo "Cannot start MySQLWorkbench in the container."
         return
       fi
+    elif [[ "${target}" =~ (check|only|test) ]]; then
+      DOCKER_HOST="${DOCKER_HOST}-test"
+      DOCKER_PORT="${DOCKER_PORT_TEST}"
+      echo -e "\nUsing docker container: ${DOCKER_HOST}:${DOCKER_PORT}"
     elif [[ "${target}" == "cmd" ]]; then
+      if [[ "$(docker ps -q -f name=${DOCKER_NAME})" != "" ]]; then
+        DOCKER_EXEC=exec
+      fi
       MAKE_BASH="; /bin/bash"
     fi
   done
@@ -79,9 +93,7 @@ function main() {
   fi
 
   # configure and start the container
-  CMD="docker run -it --rm
-    --hostname ${DOCKER_NAME}
-    --name ${DOCKER_NAME} --net="host"
+  CMD_OPT="-it
     -e DEBUG=${DEBUG}
     -e PROJECT="${DOCKER_NAME}"
     -e PROJECT_DIR="${SOURCE_PATH}"
@@ -113,11 +125,20 @@ function main() {
     -e TEST_TAGS="${TEST_TAGS:-all}"
     -e TEST_VERBOSE=${TEST_VERBOSE}
     -e VERBOSE
+  "
+  CMD="docker run --rm ${CMD_OPT}
+    --hostname ${DOCKER_HOST}
+    --name ${DOCKER_HOST} --net="bridge"
+    --expose ${DOCKER_PORT} -p 0.0.0.0:${DOCKER_PORT}:${DOCKER_PORT}
     -v "${PWD}":${SOURCE_PATH}
     -v "${HOME}/.ssh":/root/.ssh
     ${DOCKER_IMAG} "
 
-  echo -e "\nRunning 'make ${MAKE_ARGS}' in docker container"
+  if [[ "${DOCKER_EXEC}" == "exec" ]]; then
+    CMD="docker exec ${CMD_OPT} ${DOCKER_HOST} /bin/bash"
+  fi
+
+  echo -e "\nRunning 'make ${MAKE_ARGS}' in docker container ${DOCKER_HOST}:${DOCKER_PORT}"
   if [[ "${DEBUG}" == "1" ]]; then
     echo "${CMD} bash -c \"make ${MAKE_ARGS} ${MAKE_BASH}\""
   fi

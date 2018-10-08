@@ -289,7 +289,9 @@ clean-all: clean-cache
 	@echo ""
 	@echo "Cleaning up codegen client and server ..."
 	for ver in $(CODEGEN_VERS); do \
-	rm -rf "$(CODEGEN_PATH)/$$ver/client" "$(CODEGEN_PATH)/$$ver/server"; \
+	rm -rf "$(CODEGEN_PATH)/$$ver/client"; \
+	rm -rf "$(CODEGEN_PATH)/$$ver/server"; \
+	git checkout -- "$(CODEGEN_PATH)/$$ver"/* || true; \
 	rm -rf converage.txt; \
 	done
 	@echo ""
@@ -349,16 +351,16 @@ dep depend godep:
 	@echo "Installing go lib and package managers ..."
 	go get -u -f golang.org/x/lint/golint
 	go get -u -f github.com/golang/dep/cmd/dep
-	go get -u -f github.com/Masterminds/glide
-	go get -u -f github.com/kardianos/govendor
+	# go get -u -f github.com/Masterminds/glide
+	# go get -u -f github.com/kardianos/govendor
 	go get -u -f github.com/tools/godep
 	@echo ""
 	@echo "Saving go dependency packages info ..."
 	dep ensure || true
 	godep save -t ./... || true
-	govendor add +external || true
-	git checkout -- vendor/vendor.json 2>/dev/null || true
-	govendor sync +external || true
+	# govendor add +external || true
+	# git checkout -- vendor/vendor.json 2>/dev/null || true
+	# govendor sync +external || true
 	@echo ""
 ifneq ("$(DOCKER_DENV)","")  # assume in docker container
 	@echo "CAUTION: this is restoring to $$GOPATH [$(GOPATH)]"
@@ -404,7 +406,7 @@ endif
 
 
 # docker targets
-docker cmd: docker_build.tee
+cmd: docker
 	@echo ""
 ifeq ("$(DOCKER_DENV)","")
 	# not in a docker container yet
@@ -422,7 +424,7 @@ endif
 	@echo ""
 	@echo "- DONE: $@"
 
-docker_build.tee: $(DOCKER_FILE)
+docker docker_build.tee: $(DOCKER_FILE)
 	@echo ""
 ifeq ("$(DOCKER_DENV)","")
 	# make in a docker host environment
@@ -509,7 +511,7 @@ endif
 	@echo ""
 	@echo "- DONE: $@"
 
-show-env:
+show-env env:
 	@echo ""
 	@env | sort
 	@echo "......................................................................."

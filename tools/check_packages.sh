@@ -62,10 +62,10 @@ function check_depends() {
   echo ""
   echo "Golang package managers"
   echo "-----------------------------------------------------------------------"
-  echo "dep      : $(which dep)      - $(dep version|grep -e '^ version'|awk '{print $3}')"
-  echo "glide    : $(which glide)    - $(glide -version 2>/dev/null)"
-  echo "godep    : $(which godep)    - $(godep version 2>/dev/null)"
-  echo "govendor : ${govendor_path} - ${govendor_info}"
+  echo -e "dep      : $(which dep)    \t- $(dep version|grep -e '^ version'|awk '{print $3}')"
+  echo -e "glide    : $(which glide)  \t- $(glide -version 2>/dev/null)"
+  echo -e "godep    : $(which godep)  \t- $(godep version 2>/dev/null)"
+  echo -e "govendor : ${govendor_path}\t- ${govendor_info}"
   echo ""
 
   set -u
