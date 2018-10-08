@@ -15,7 +15,9 @@ This is a project for [Golang](https://golang.org/) exercises.
   - [Dev interview: examples](interview/README.md)
   - [Go API example](api/README.md)
   - [Go CLI example](cli) (TBD)
-  - [Online coding examples](demo/README.md) | [Golang Notes](demo/golang-notes.md)
+  - [Online coding examples](demo/README.md) |
+    [Golang Notes](demo/golang-notes.md) |
+    [Gotchas](demo/gotchas.md)
   - [Package solutions](pkg/README.md)
   - [Utilities](utils/README.md)
   * [About this project](#readme)

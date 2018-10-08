@@ -39,6 +39,7 @@
 - [C++ Shell](http://cpp.sh/)
 - [CareerCup](http://careercup.com) (actual interview questions)
 - [CodeChef](http://codechef.com) (judge code by other engineers)
+- [CodeKata](http://codekata.com/) (coding practice)
 - [CodePad](https://codepad.remoteinterview.io) (remote interview supports golang)
 - [CodeShare](https://codeshare.io/) (sharing code in real time with others)
 - [CodeTable](https://code.hackerearth.com) (online code compiler and runner)

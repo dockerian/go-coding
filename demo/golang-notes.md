@@ -1,7 +1,25 @@
 # Golang Notes
 
+## Contents
+
+  * [Study Notes](#study-notes)
+    - [Golang Training](#go-training)
+  * [Gophercon 2016 Session Notes](#gophercon)
+    - [Usefulness of Nil](#usefulness-of-nil)
+    - [Handle Errors Gracefully](#handle-errors-gracefully)
+    - [Go Vendoring Deconstructed](#go-vendoring-deconstructed)
+    - [Map Implementation in Go](#map-implementation-in-go)
+    - [Go Without the Operating System](#go-without-the-operating-system)
+    - [Design of the Go Assembler](#design-of-the-go-assembler)
+    - [Practical Advice for Go Library Authors](#practical-advice-for-go-library-authors)
+    - [Go for Data Science](#go-for-data-science)
+  * [Gotchas](./gotchas.md)
+
+
+<a name="study-notes"><br/></a>
 ## Golang Study Notes
 
+<a name="go-training"></a>
 ### Golang Training
 
 <a name="ccis"><br/></a>
@@ -45,7 +63,6 @@
     }
     ```
   - Design recipe: Don't use shared data to communicate, use communication to share data
-
 
 
 <a name="testing"><br/></a>

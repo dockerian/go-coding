@@ -18,4 +18,5 @@ This is a collection of coding examples in Go (golang).
 - [dev setup](kb-dev-setup-notes.md)
 - [github workflow](github-workflow.md)
 - [goloang study notes](golang-notes.md)
+- [gotchas](./gotchas.md)
 - [kb and links](kb-study-notes.md)

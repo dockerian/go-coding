@@ -1470,6 +1470,7 @@
   * JavaScript
     - [Codepen](https://codepen.io/)
     - [CodeSandbox](https://codesandbox.io/)
+    - [ES6 Katas](http://es6katas.org/)
     - [JS.do - Online JavaScript Editor](https://js.do/)
     - [JSFiddle](https://jsfiddle.net/)
     - [Plunker](https://plnkr.co/) - Online Snippet Previewer
