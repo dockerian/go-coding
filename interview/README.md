@@ -480,6 +480,50 @@
         HAVING COUNT(*) > 1 )
     ```
 
+  * remove enum value ([postgreSQL](https://www.postgresql.org/docs/current/sql-altertype.html))
+
+    - Rename existing type
+
+      ```sql
+      ALTER TYPE some_enum_type RENAME TO some_enum_type_old;
+      ```
+
+    - Create a new type (without the enum value to be removed)
+    - Change all existing columns which use the old type to use the new one.
+
+      ```sql
+      DO $$
+      DECLARE
+          column_data record;
+          table_name varchar(255);
+          column_name varchar(255);
+      BEGIN
+          FOR column_data IN
+              SELECT cols.table_name, cols.column_name
+                  FROM information_schema.columns cols
+                  WHERE udt_name = 'some_enum_type_old'
+          LOOP
+              table_name := column_data.table_name;
+              column_name := column_data.column_name;
+              EXECUTE format(
+                  '
+                      ALTER TABLE %s
+                      ALTER COLUMN %s
+                      TYPE some_enum_type
+                      USING %s::text::some_enum_type;
+                  ',
+                  table_name, column_name, column_name
+              );
+          END LOOP;
+      END $$;
+      ```
+    - Delete the old type.
+
+      ```sql
+      DROP TYPE some_enum_type_old;
+      ```
+      See [this blog](https://blog.yo1.dog/updating-enum-values-in-postgresql-the-safe-and-easy-way/)
+
   * data types
 
     | Type      | B | Minimum Value | Maximum Value | Notes |
@@ -556,7 +600,7 @@
     - hybrid
   * describe internet protocol suite
     - application (dhcp, ftp, http, imap, socks, ssh),
-    - transport (tcp, ucp, rip),
+    - transport (tcp, udp, rip),
     - internet (ip, icmp, ipsec),
     - network (arp, ndp, ppp, )
   * how to fix a slow 3-tier application ?
@@ -577,6 +621,7 @@
 <a name="math"><br /></a>
 ## Math
 
+  * calculate modular exponentiation: `(x ^ y) % p`
   * cumulative sum of fibonacci series. fib(n) = addition of all the fibonacci numbers up to n-1
   * design a recursive method that calculates a fibonacci sequence, rewrite it to remove the recursion and reduce its time complexity.
   * find if an array of numbers that satisfy the fibonacci sequence.
@@ -598,10 +643,10 @@
 
   |type        |  minimum| maximum|     scale |  description |
   |:-----------|--------:|-------:|----------:|:-------------|
-  |int8        |   -128  |    127 |           |              |
-  |int16       | -32,768 | 32,767 |   2^7 - 1 | K (Thousand) |
+  |int8        |   -128  |    127 |   2^7 - 1 |              |
+  |int16       | -32,768 | 32,767 |  2^15 - 1 | K (Thousand) |
   |int32/int   |-2,147,483,648| 2,147,483,647 | 2^31 -1 | G (Billion) |
-  |int64       |-9,223,372,036,854,775,808|-9,223,372,036,854,775,807| 2^63 - 1 | E (Quintillion) |
+  |int64       |-9,223,372,036,854,775,808| 9,223,372,036,854,775,807| 2^63 - 1 | E (Quintillion) |
   |uint8       |       0 |    255 |   2^8 - 1 |              |
   |uint16      |       0 | 65,535 |  2^16 - 1 | K (Thousand) |
   |uint32/uint |       0 |              4,294,967,295 |  4G - 1 | G (Billion) |
