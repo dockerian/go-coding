@@ -2,6 +2,7 @@
 package mathex
 
 import (
+	"errors"
 	"fmt"
 	"math"
 
@@ -22,6 +23,29 @@ func Compare(a, b uint64) int {
 // EqualSign checks if a and b are both same signed (positive or negative)
 func EqualSign(a, b int64) bool {
 	return a >= 0 && b >= 0 || a < 0 && b < 0
+}
+
+// ModularExponent calculates (x^y)%p based on fomular
+//   ```
+//   (a * b) % p == ((a % p) * (b % p)) % p
+//   ```
+// as such reducing the chance of overflow.
+func ModularExponent(x, y, p uint) (uint64, error) {
+	if p == 0 {
+		return 0, errors.New("zero modulo in modular arithmetic")
+	}
+	if x == 0 {
+		return 0, nil
+	}
+	var result, base, m, n uint64 = 1, uint64(x % p), uint64(p), uint64(y)
+	for n > 0 {
+		if n%2 == 1 {
+			result = (result % m) * (base % m)
+		}
+		base = (base % m) * (base % m)
+		n = n >> 1 // n /= 2
+	}
+	return result % m, nil
 }
 
 // MultiplyUint64 gets muliplication of two integers
@@ -77,6 +101,23 @@ func ParseInt64(s string) (int64, error) {
 	}
 
 	return sign * ival, perr
+}
+
+// Power calculates (x ^ y) in O(log n).
+func Power(x, y uint) (uint64, error) {
+	var result, temp, base, n uint64 = 1, 1, uint64(x), uint64(y)
+	for n > 0 {
+		temp = result
+		if n%2 == 1 {
+			result = result * base
+		}
+		if temp > result {
+			return temp, errors.New("power overflow")
+		}
+		base *= base
+		n = n >> 1
+	}
+	return result, nil
 }
 
 // ReverseInt64 reverses a decimal integer
