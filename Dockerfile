@@ -34,12 +34,20 @@ RUN apt-get update \
 #  && rm /usr/local/bin/gosu.asc
 # COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
 
+# install gosu for a better su+exec command
+ARG GOSU_VERSION=1.10
+RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
+ && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
+ && chmod +x /usr/local/bin/gosu \
+ && gosu nobody true
+
+COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
+
 RUN go get -u golang.org/x/lint/golint \
- && go get -u github.com/sanbornm/go-selfupdate \
  && go get -u github.com/ory/go-acc \
  && go get -u github.com/robertkrimen/godocdown/godocdown \
  && go get -u github.com/golang/dep/cmd/dep \
- && go get -u github.com/Masterminds/glide \
+ ## go get -u github.com/Masterminds/glide \
  && go get -u github.com/kardianos/govendor \
  && go get -u github.com/tools/godep
 
@@ -69,7 +77,7 @@ EXPOSE 8001 8008 8080
 WORKDIR $PROJECT_DIR
 
 # this ENTRYPOINT requires gosu
-# ENTRYPOINT $PROJECT_DIR/tools/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 # ENTRYPOINT ["/bin/bash", "-c"]
 
 CMD ["/bin/bash"]
