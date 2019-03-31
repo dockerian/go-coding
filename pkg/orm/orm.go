@@ -3,6 +3,7 @@ package orm
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -112,6 +113,31 @@ func GetLikeClauseByParams(db *gorm.DB, params *api.Params, key, field string) *
 		return db.Where(fmt.Sprintf("%s = ?", field), strValue)
 	}
 	return db
+}
+
+// GetNumberClauseByParams returns number comparison clause from params
+func GetNumberClauseByParams(db *gorm.DB, params *api.Params, key, field string) *gorm.DB {
+	if strValue := params.GetValue(key); strValue != "" {
+		op := getNumberOperator(strValue)
+		sv := strings.Trim(strValue, ">=< ")
+		// check if sv is a valid number
+		if _, err := strconv.ParseFloat(sv, 16); err == nil {
+			return db.Where(fmt.Sprintf("%s %s ?", field, op), sv)
+		}
+	}
+	return db
+}
+
+// getNumberOperator returns number operator from a string
+func getNumberOperator(input string) string {
+	str := strings.TrimSpace(input)
+	// the order of operators in the range matters
+	for _, op := range []string{">=", "<=", "<>", "=", ">", "<"} {
+		if strings.HasPrefix(str, op) {
+			return op // the first match
+		}
+	}
+	return "="
 }
 
 // GetOrderClauseByParams returns ORDER BY clause by params

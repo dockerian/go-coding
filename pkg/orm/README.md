@@ -65,6 +65,13 @@ func GetLikeClauseByParams(db *gorm.DB, params *api.Params, key, field string) *
 ```
 GetLikeClauseByParams returns LIKE comparison clause from params
 
+#### func  GetNumberClauseByParams
+
+```go
+func GetNumberClauseByParams(db *gorm.DB, params *api.Params, key, field string) *gorm.DB
+```
+GetNumberClauseByParams returns number comparison clause from params
+
 #### func  GetOrderClauseByParams
 
 ```go

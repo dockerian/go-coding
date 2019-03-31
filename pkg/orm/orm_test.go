@@ -64,6 +64,14 @@ var (
 				"value2",
 				"value3",
 			},
+			"nums": {
+				"<>1",
+				">2",
+				"<3",
+			},
+			"num": {
+				"5.5",
+			},
 		},
 	}
 )
@@ -93,11 +101,6 @@ func TestGetClauseByParams(t *testing.T) {
 	assert.NotEqual(t, testDB, db3)
 }
 
-// TestGetDateClause tests orm.GetDateClause
-func TestGetGetDateClause(t *testing.T) {
-
-}
-
 // TestGetDateClauseByParams tests orm.GetDateClauseByParams
 func TestGetDateClauseByParams(t *testing.T) {
 	db0 := GetDateClauseByParams(testDB, params, "foo", "bar")
@@ -124,6 +127,52 @@ func TestGetLikeClauseByParams(t *testing.T) {
 	assert.NotEqual(t, testDB, db3)
 	db4 := GetLikeClauseByParams(testDB, params, "key", "field")
 	assert.NotEqual(t, testDB, db4)
+}
+
+// TestGetNumberOperator tests orm.getNumberOperator
+func TestGetNumberOperator(t *testing.T) {
+	tests := []struct {
+		inputs string
+		result string
+	}{
+		{"", "="},
+		{" 3.14", "="},
+		{">2.7182", ">"},
+		{"<1.618", "<"},
+		{"<= 'NaN'", "<="},
+		{">= 0", ">="},
+		{"<> 0", "<>"},
+		{"<>", "<>"},
+	}
+	for idx, test := range tests {
+		t.Logf("Test %2d: %+v\n", idx+1, test)
+		result := getNumberOperator(test.inputs)
+		assert.Equal(t, test.result, result)
+	}
+}
+
+// TestGetNumberClauseByParams tests orm.GetNumberClauseByParams
+func TestGetNumberClauseByParams(t *testing.T) {
+	tests := []struct {
+		field string
+		equal bool
+	}{
+		{"", true},
+		{"foobar", true},
+		{"name", true},
+		{"nums", false},
+		{"num", false},
+	}
+	for idx, test := range tests {
+		t.Logf("Test %2d: %+v\n", idx+1, test)
+		db := testDB
+		db1 := GetNumberClauseByParams(db, params, test.field, test.field)
+		if test.equal {
+			assert.Equal(t, db, db1)
+		} else {
+			assert.NotEqual(t, db, db1)
+		}
+	}
 }
 
 // TestGetOrderClauseByParams tests orm.GetOrderClauseByParams
