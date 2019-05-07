@@ -77,7 +77,7 @@ EXPOSE 8001 8008 8080
 WORKDIR $PROJECT_DIR
 
 # this ENTRYPOINT requires gosu
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 # ENTRYPOINT ["/bin/bash", "-c"]
 
 CMD ["/bin/bash"]

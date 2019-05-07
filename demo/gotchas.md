@@ -27,6 +27,13 @@
   * Caution on `for x := range []int{3, 1, 4}` where `x` is the index.
   * Circumflex `x^y` denotes bitwise `XOR` (e.g. `1001 ^ 0011 == 1010`) in Go. Not the `math.Pow(x, y)`.
   * Diff: `strings.TrimSuffix()` vs `strings.TrimRight()`
+  * Ensure a struct type, e.g. `SomeType`, implements an interface, e.g. `SomeIf`, at compile time:
+
+    ```go
+    var _ SomeIf = SomeType{} // verify SomeType implements SomeIf
+    var _ SomeIf = (*SomeType)(nil) // verify *SomeType implements SomeIf
+    ```
+
   * Go increment and decrement operations cannot be used as expressions,
     only as in statements, and only the postfix notation is allowed: `i++`.
   * Go strings are immutable and behave like read-only byte slices. Use `[]rune` instead.
@@ -307,8 +314,9 @@
     ```go
     var x interface{}
     fmt.Printf("x = [%5T, %+v], is nil : %v\n", x, x, x == nil)
-    var np *int
-  	x = np
+    var p *int
+    fmt.Printf("p = [%5T, %+v], is nil : %v\n", p, p, p == nil)
+  	x = p
     fmt.Printf("x = [%5T, %+v], is nil : %v\n", x, x, x == nil)
     ```
 

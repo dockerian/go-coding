@@ -709,9 +709,9 @@
       //       G   H   I
       //
       breadthFirst(root) {
-        var node = root;
-        var nodeList = []; // node list
-        var queue = [];
+        let node = root;
+        let nodeList = []; // node list
+        let queue = [];
         queue.push(node); // push root into queue
         while (queue.length > 0) {
           node = queue.shift(); // dequeue the node
@@ -737,25 +737,26 @@
       //        / \     /
       //       E   F   I
       //
-      depthFirstPreOrder(root) {
-        var node = root;
-        var nodeList = [];
-        var stack = [];
+      depthFirstPreOrder(node, nodeList) {
+        if (node) {
+          nodeList.push(node);
+          depthFirstPreOrder(node.left, nodeList);
+          depthFirstPreOrder(node.right, nodeList);
+        }
+      }
+
+      depthFirstPreOrderIterative(root) {
+        let node = root;
+        let nodeList = [];
+        let stack = [];
         stack.push(node);
         while (stack.length > 0) {
           node = stack.pop(); // pop the node from stack
+          nodeList.push(node);
           if (node.right) stack.push(node.right);
           if (node.left) stack.push(node.left);
         }
         return nodeList;
-      }
-
-      depthFirstPreOrderRecursive(node, nodeList) {
-        if (node) {
-          nodeList.push(node);
-          depthFirstPreOrderRecursive(node.left, nodeList);
-          depthFirstPreOrderRecursive(node.right, nodeList);
-        }
       }
       ```
 
@@ -778,7 +779,25 @@
           depthFirstInOrder(node.right, nodeList);
         }
       }
+
+      depthFirstInOrderIterative(root) {
+        let node = root
+        let nodeList = []
+        let stack = []
+        while (node && stack.length > 0) {
+          if (node) {
+            stack.push(node)
+            node = node.left
+          } else {
+            node = stack.pop() // pop top node from the stack
+            nodeList.push(node)
+            node = node.right
+          }
+        }
+        return nodeList
+      }
       ```
+
     - depth-first (post-order)
       - bottom-up order, visiting all leaves before their parent
       - e.g. postfix expression tree `"(a+b)*c" => a b + c *` (Reverse Polish Notation) in arithmetic parser
@@ -799,9 +818,23 @@
           nodeList.push(node);
         }
       }
+
+      depthFirstPostOrderIterative(root) {
+        let nodeList = []
+        let stack = []
+        stack.push(root)
+        while (stack.length > 0) {
+          let node = stack.pop()
+          nodeList.unshift() // insert the node in reversed order
+          if (node.left) stack.push(node.left)
+          if (node.right) stack.push(node.right)
+        }
+        return nodeList
+      }
       ```
 
   * tree construction
+
   * create from pre-order
 
     ```javascript

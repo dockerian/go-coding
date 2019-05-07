@@ -90,4 +90,5 @@
   - [Refdash - Real time interview feedback from senior engineers](https://refdash.com/)
   - [Structured, Rigorous bootcamp: Large Scale Systems Design Interview Preparation Bootcamp](http://interviewkickstart.com/)
   - [System design questions and approaches](https://www.youtube.com/watch?v=0s1aVoeF0Gs)
+  - [System design primer](https://github.com/donnemartin/system-design-primer)
   - [Source](http://blog.gainlo.co/index.php/category/system-design-interview-questions/)
