@@ -377,7 +377,7 @@ ifneq ("$(DOCKER_DENV)","")  # assume in docker container
 	@echo "CAUTION: this is restoring to $$GOPATH [$(GOPATH)]"
 	godep restore
 endif
-	tools/check_packages.sh --vendor
+	tools/check_packages.sh --vendor || true
 	@echo ""
 	@echo "- DONE: $@"
 

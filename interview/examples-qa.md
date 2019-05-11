@@ -167,7 +167,7 @@ s.SendMail();
 
 - Q: Are you familiar with any Design Patterns? Give examples and describe.
 
-- Q: Have you used any separation of concerns patterns, e.g. MV* ?
+- Q: Have you used any separation of concerns patterns, e.g. `MV*` ?
 
 - Q: Compare MVC with MVVM
 
@@ -260,10 +260,10 @@ function findTheOnlyOddCountInIntegerArray(a) {
 function countBits(n) {
     var count = 0;
     while (n > 0) {
-      if (n & 1) count++;
+        if (n & 1) count++;
         n = n >> 1;
-   }
-   return count;   
+    }
+    return count;   
 }
 ```
 

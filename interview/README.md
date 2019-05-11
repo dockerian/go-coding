@@ -687,6 +687,8 @@
   * adding and removing nodes from a ternary tree
   * binary search tree vs balanced BST vs heap (binary heap, min-/max-heap)
   * check if a binary tree a BST (binary search tree)
+  * check if a tree is not a graph (similar data structure but have cyclic path)
+  * check if one tree contains another tree
   * compare the node in an unsorted d-tree
   * create a tree, e.g. insert and delete in a trinary tree
   * find the common ancestor of two nodes
@@ -696,6 +698,7 @@
   * lowest common ancestor in a BT
   * questions about trees with unconventional structures
   * search through a binary search tree, what is the worst-case big-O complexity?
+
   * traversal methods
     - breadth-first
 
@@ -784,7 +787,7 @@
         let node = root
         let nodeList = []
         let stack = []
-        while (node && stack.length > 0) {
+        while (node || stack.length > 0) {
           if (node) {
             stack.push(node)
             node = node.left
@@ -835,59 +838,65 @@
 
   * tree construction
 
-  * create from pre-order
+    - create from pre-order
 
-    ```javascript
-    fromPreOrder(inputs) {
-       var root = {};
-       var size = inputs.length;
-       var half = size / 2 + 1;
-       if (size > 0) {
-         root.value = inputs[0]; // first item is the root
-         if (size > 1) {
-           root.left = fromPreOrder(inputs.slice(1, half));
-         } else if (size > half) {
-           root.left = fromPreOrder(inputs.slice(half, size));
+      ```javascript
+      fromPreOrder(inputs) {
+         var node = null;
+         var size = inputs.length;
+         var half = parseInt(size / 2) + 1;
+         if (size > 0) {
+           node = {}
+           node.value = inputs[0]; // first item is the root node
+           if (half > 1) {
+             node.left = fromPreOrder(inputs.slice(1, half));
+           }
+           if (half < size) {
+             node.right = fromPreOrder(inputs.slice(half, size));
+           }
          }
-       }
-       return null;
-    }
-    ```
+         return node;
+      }
+      ```
 
-  * create from post-order
+    - create from post-order
 
-    ```javascript
-    fromPostOrder(inputs) {
-       var root = {};
-       var size = inputs.length;
-       var half = size / 2;
-       if (size > 0) {
-         root.value = inputs[size-1]; // last item is the root
-         if (size > 1) {
-           root.left = fromPreOrder(inputs.slice(0, half));
-         } else if (size > half) {
-           root.left = fromPreOrder(inputs.slice(half, size-1));
+      ```javascript
+      fromPostOrder(inputs) {
+         var node = null;
+         var size = inputs.length;
+         var half = parseInt(size / 2);
+         if (size > 0) {
+           node = {}
+           node.value = inputs[size-1]; // last item is the root node
+           if (half > 0) {
+             node.left = fromPostOrder(inputs.slice(0, half));
+           }
+           if (half < size-1) {
+             node.right = fromPostOrder(inputs.slice(half, size-1));
+           }
          }
-       }
-       return null;
-    }
-    ```
+         return node;
+      }
+      ```
 
-  * create from in-order
+    - create from in-order
 
-    ```javascript
-    fromInOrder(inputs) {
-       var root = {};
-       var size = inputs.length;
-       var half = size / 2;
-       if (size > 0) {
-         root.value = inputs[half]; // middle item is the root
-         if (size > 1) {
-           root.left = fromInOrder(inputs.slice(0, half));
-         } else if (size > half) {
-           root.left = fromInOrder(inputs.slice(half+1, size));
+      ```javascript
+      fromInOrder(inputs) {
+         var node = null;
+         var size = inputs.length;
+         var half = parseInt(size / 2);
+         if (size > 0) {
+           node = {}
+           node.value = inputs[half]; // middle item is the root node
+           if (half > 0) {
+             node.left = fromInOrder(inputs.slice(0, half));
+           }
+           if (half < size-1) {
+             node.right = fromInOrder(inputs.slice(half+1, size));
+           }
          }
-       }
-       return null;
-    }
-    ```
+         return node;
+      }
+      ```

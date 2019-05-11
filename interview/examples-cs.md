@@ -67,7 +67,7 @@ public class ByFooId : IComparer<Foo> {
 - Q: Will the finally block get executed if an exception has not occurred?­
 Yes.
 
-- Q: What’s the C# syntax to catch any possible exception?
+- Q: What’s the C&#35; syntax to catch any possible exception?
 <br/>A: A catch block that catches the exception of type System.Exception.  You can also omit the parameter data type in this case and just write catch {}.
 
 - Q: Can multiple catch blocks be executed for a single try statement?
