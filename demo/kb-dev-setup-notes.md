@@ -1,5 +1,7 @@
 # Dev Setup Notes
---------------------
+
+> Developer machine setup with MacOS, Ubuntu, and Windows
+
 
 <br/><a name="contents"></a>
 ## Contents
@@ -11,15 +13,16 @@
     - [Command lines](#command-lines)
     - [Keyboard shortcuts](#keyboard-shortcuts)
     - [Install Apps](#install-apps)
+  * [Software and Tools on Windows](#software-windows)
   * [Online Tools](#online-tools)
 
 
 <br/><a name="mac-os-x-restore"></a>
 ## Mac OS X Restore
   * Recovery by holding [Option] key (https://support.apple.com/kb/DL1433)
-  * Re-install OS X by holding [Command+R] during restart
+  * Re-install OS X by holding [`Command+R`] during restart
   * System Integrity protection
-    - Boot with holding [Command+R]
+    - Boot with holding [`Command+R`]
     - Launch Terminal from Utilities menu
     - Disable System Integrity Protection (partially)
 
@@ -86,6 +89,9 @@
     * show hidden files in open file dialog: Cmd+Shift+Period
     * switch between app windows: Cmd+\` (back-quote above Tab key)
     * switch between Finder history: `Cmd+[`, `Cmd+]`
+    * see
+      - https://support.apple.com/en-us/HT201236
+      - https://www.danrodney.com/mac/
 
   * Arrange windows / menu bar / finder / mission control
     - http://apple.stackexchange.com/questions/9659/what-window-management-options-exist-for-os-x
@@ -196,8 +202,14 @@
     netstat
     netstat -nr # routing table (route print)
     netstat -atp tcp | grep -i "listen"
-    sudo lsof -i -n -P | grep "listen"
+    netstat -Watnlv | grep LISTEN | \
+      awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; print cred "proto: " colclr $1 colred " | addr.port: " colclr $4 colred " | pid: " colclr $9 colred " | name: " colclr procname;  }' | column -t -s "|"
+    sudo lsof -PiTCP -sTCP:LISTEN
+    lsof -Pn -i4 | grep LISTEN
     ```
+    see
+    - https://wilsonmar.github.io/ports-open/
+    - https://stackoverflow.com/questions/4421633/who-is-listening-on-a-given-tcp-port-on-mac-os-x
 
   * Mount NTFS drive
     - see https://www.howtogeek.com/236055/how-to-write-to-ntfs-drives-on-a-mac/
@@ -374,6 +386,7 @@
     ~/.profile
     ~/.bashrc
     ```
+    see https://github.com/dockerian/go-coding/blob/master/tools/bashrc.sh
 
   * Widgets
     - [Countdown](https://www.apple.com/downloads/dashboard/status/countdownx.html)
@@ -687,6 +700,9 @@
     - [MacPorts](https://guide.macports.org/#installing)
     - [Omni* Apps](https://www.omnigroup.com/more)
     - [Onyx](http://www.titanium.free.fr/onyx.html) - Titanium system unitils
+    - [OSQuery](https://osquery.io/) |
+      [schema](https://osquery.io/schema/current) |
+      [github](https://github.com/osquery/osquery)
     - Rar Extrator
     - [QuickLook for Webp](https://github.com/emin/WebPQuickLook)
     - [RealVNC](https://www.realvnc.com/)
@@ -1418,6 +1434,24 @@
     - Settings
 
 
+<br/><a name="software-windows"></a>
+## Software and Tools (Windows)
+
+### System Information
+
+  * [CCleaner](https://www.ccleaner.com/ccleaner/download)
+  * [CCleaner/Piriform Speccy](https://www.ccleaner.com/speccy)
+  * [CPU-Z](https://www.cpuid.com/softwares/cpu-z.html)
+    - [HWMonitor](https://www.cpuid.com/softwares/hwmonitor.html)
+    - [Perfmonitor](https://www.cpuid.com/softwares/perfmonitor-2.html)
+    - [PowerMax](https://www.cpuid.com/softwares/powermax.html)
+  * [HWiNFO](https://www.hwinfo.com/download/) (Windows 32/64-bit)
+  * [MsInfo32](https://support.microsoft.com/en-us/help/184075/description-of-microsoft-system-information-msinfo32-exe-tool)
+  * [NirSoft](https://www.nirsoft.net/utils/index.html) Utilities
+  * [Others](https://www.majorgeeks.com/mg/sortdate/system_info.html)
+
+
+
 <br/><a name="online-tools"></a>
 ## Online tools
 
@@ -1425,6 +1459,7 @@
     - Better Go Playground
     - DHC (Dynamic HTTP Client)
     - Exif Meta Viewer
+    - JSON Formatter | JSON Viewer
     - LastPass (password vault management)
     - World Clocks
 

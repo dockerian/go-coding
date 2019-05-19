@@ -13,6 +13,7 @@ This is a project for [Golang](https://golang.org/) exercises.
   - [Data structure solutions](ds/README.md)
   - [Dev interview: coding solutions](puzzle/README.md)
   - [Dev interview: examples](interview/README.md)
+  - [Dev setup](demo/kb-dev-setup-notes.md)
   - [Go API example](api/README.md)
   - [Go CLI example](cli) (TBD)
   - [Online coding examples](demo/README.md) |
