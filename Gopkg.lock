@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:c983cbc78a187ca90daf7ef00de2fee1f8991698dbdc6de3734abb1849a14e84"
+  digest = "1:374cda2d6325f2e39d2daef4a7797b43dab4073c2f6bbf20165b6d3bae23d9e9"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -14,6 +14,7 @@
     "aws/credentials",
     "aws/credentials/ec2rolecreds",
     "aws/credentials/endpointcreds",
+    "aws/credentials/processcreds",
     "aws/credentials/stscreds",
     "aws/csm",
     "aws/defaults",
@@ -22,6 +23,7 @@
     "aws/request",
     "aws/session",
     "aws/signer/v4",
+    "internal/ini",
     "internal/sdkio",
     "internal/sdkrand",
     "internal/sdkuri",
@@ -35,10 +37,11 @@
     "private/protocol/xml/xmlutil",
     "service/kms",
     "service/sts",
+    "service/sts/stsiface",
   ]
   pruneopts = ""
-  revision = "a8ff9e4804fc89c994b731b1c057640ab2aecff3"
-  version = "v1.15.45"
+  revision = "ba829de1f3457a55eddf7ed693f36fe9069e39c4"
+  version = "v1.21.6"
 
 [[projects]]
   digest = "1:0deddd908b6b4b768cfc272c16ee61e7088a60f7fe2f06c547bd3d8e1f8b8e77"
@@ -57,36 +60,20 @@
   revision = "0d9501caeeb543ff63b7b91fd0a4d6897400f18b"
 
 [[projects]]
-  digest = "1:a6f43a35242db0a1387907e6fd0c7e1dccfbed95c7176f166d31d0b5a96c65fc"
-  name = "github.com/go-ini/ini"
-  packages = ["."]
-  pruneopts = ""
-  revision = "7b294651033cd7d9e7f0d9ffa1b75ed1e198e737"
-  version = "v1.38.3"
-
-[[projects]]
-  digest = "1:c07de423ca37dc2765396d6971599ab652a339538084b9b58c9f7fc533b28525"
+  digest = "1:e692d16fdfbddb94e9e4886aaf6c08bdbae5cb4ac80651445de9181b371c6e46"
   name = "github.com/go-sql-driver/mysql"
   packages = ["."]
   pruneopts = ""
-  revision = "d523deb1b23d913de5bdada721a6071e71283618"
-  version = "v1.4.0"
+  revision = "72cd26f257d44c1114970e19afddcd812016007e"
+  version = "v1.4.1"
 
 [[projects]]
-  digest = "1:dbbeb8ddb0be949954c8157ee8439c2adfd8dc1c9510eb44a6e58cb68c3dce28"
-  name = "github.com/gorilla/context"
-  packages = ["."]
-  pruneopts = ""
-  revision = "08b5f424b9271eedf6f9f0ce86cb9396ed337a42"
-  version = "v1.1.1"
-
-[[projects]]
-  digest = "1:c2c8666b4836c81a1d247bdf21c6a6fc1ab586538ab56f74437c2e0df5c375e1"
+  digest = "1:883e2fdbdd0e577187bd8106fec775b1176059af267a7f40eba5308955c67d52"
   name = "github.com/gorilla/mux"
   packages = ["."]
   pruneopts = ""
-  revision = "e3702bed27f0d39777b0b37b664b6280e8ef8fbf"
-  version = "v1.6.2"
+  revision = "00bdffe0f3c77e27d2cf6f5c70232a2d3e4d9c15"
+  version = "v1.7.3"
 
 [[projects]]
   digest = "1:51a1d17ba9fe6648d9fdd5b822baa616d6ec7f28c8669c2091126d206796b5ae"
@@ -97,15 +84,15 @@
   version = "v1.1.1"
 
 [[projects]]
-  digest = "1:c0128be9f0229f609c901fd08ea9c184b269b246ab7a34777fbe6eb10469ad3f"
+  digest = "1:2c2d6229f9afe4e2fc1f74b6b245b8ccd44ac04cac3e3a3b1b3e21df4b45461b"
   name = "github.com/gorilla/sessions"
   packages = ["."]
   pruneopts = ""
-  revision = "81547393f870a35be888759a606ba7bf71dbe5c7"
-  version = "v1.1.2"
+  revision = "4355a998706e83fe1d71c31b07af94e34f68d74a"
+  version = "v1.2.0"
 
 [[projects]]
-  digest = "1:d269638dbd514822446c3c818b6389c880058af79ec54d97731818b34fe66921"
+  digest = "1:3755c1a3de6404d58d7767562d00a84ee4a507df69a1490c9cebb931d7b11b96"
   name = "github.com/jinzhu/gorm"
   packages = [
     ".",
@@ -113,35 +100,36 @@
     "dialects/postgres",
   ]
   pruneopts = ""
-  revision = "6ed508ec6a4ecb3531899a69cbc746ccf65a4166"
-  version = "v1.9.1"
+  revision = "836fb2c19d84dac7b0272958dfb9af7cf0d0ade4"
+  version = "v1.9.10"
 
 [[projects]]
-  branch = "master"
-  digest = "1:d9a7385b84d8187fd94e0357045c6fa1147ca94caa56fdd539336c7c102fc728"
+  digest = "1:a7b97371fb9af808b6a4fcc6693276ef7869bb1f282c3c87038c6c7e74ef4ae6"
   name = "github.com/jinzhu/inflection"
   packages = ["."]
   pruneopts = ""
-  revision = "04140366298a54a039076d798123ffa108fff46c"
+  revision = "f5c5f50e6090ae76a29240b61ae2a90dd810112e"
+  version = "v1.0.0"
 
 [[projects]]
-  digest = "1:6f49eae0c1e5dab1dafafee34b207aeb7a42303105960944828c2079b92fc88e"
+  digest = "1:13fe471d0ed891e8544eddfeeb0471fd3c9f2015609a1c000aefdedf52a19d40"
   name = "github.com/jmespath/go-jmespath"
   packages = ["."]
   pruneopts = ""
-  revision = "0b12d6b5"
+  revision = "c2b33e84"
 
 [[projects]]
-  digest = "1:29145d7af4adafd72a79df5e41456ac9e232d5a28c1cd4dacf3ff008a217fc10"
+  digest = "1:f4216047c24ab66fb757045febd7dac4edc6f4ad9f6c0063d0755d654d04f25e"
   name = "github.com/lib/pq"
   packages = [
     ".",
     "hstore",
     "oid",
+    "scram",
   ]
   pruneopts = ""
-  revision = "4ded0e9383f75c197b3a2aaa6d590ac52df6fd79"
-  version = "v1.0.0"
+  revision = "3427c32cb71afc948325f299f040e53c1dd78979"
+  version = "v1.2.0"
 
 [[projects]]
   digest = "1:256484dbbcd271f9ecebc6795b2df8cad4c458dd0f5fd82a8c2fa0c29f233411"
@@ -168,20 +156,12 @@
   version = "v1.2.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:606fa779c7a80ab6a9ec5836cd12759f86cd6e1d82d5d60cf7ec5133e78c6cf8"
-  name = "github.com/shurcooL/sanitized_anchor_name"
-  packages = ["."]
-  pruneopts = ""
-  revision = "86672fcb3f950f35f2e675df2240550f2a50762f"
-
-[[projects]]
-  digest = "1:c587772fb8ad29ad4db67575dad25ba17a51f072ff18a22b4f0257a4d9c24f75"
+  digest = "1:381bcbeb112a51493d9d998bbba207a529c73dbb49b3fd789e48c63fac1f192c"
   name = "github.com/stretchr/testify"
   packages = ["assert"]
   pruneopts = ""
-  revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
-  version = "v1.2.2"
+  revision = "ffdc059bfe9ce6a4e144ba849dbedead332c6053"
+  version = "v1.3.0"
 
 [[projects]]
   digest = "1:b8c413e059022d3e00ca755703feacc7079495220e6c471606af26601d9aaefb"
@@ -192,7 +172,7 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:5acd3512b047305d49e8763eef7ba423901e85d5dd2fd1e71778a0ea8de10bd4"
+  digest = "1:740b51a55815493a8d0f2b1e0d0ae48fe48953bf7eaf3fcc4198823bf67768c0"
   name = "golang.org/x/text"
   packages = [
     "internal/gen",
@@ -203,24 +183,24 @@
     "unicode/norm",
   ]
   pruneopts = ""
-  revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
-  version = "v0.3.0"
+  revision = "342b2e1fbaa52c93f31447ad2c6abc048c63e475"
+  version = "v0.3.2"
 
 [[projects]]
-  digest = "1:8c432632a230496c35a15cfdf441436f04c90e724ad99c8463ef0c82bbe93edb"
+  digest = "1:47f391ee443f578f01168347818cb234ed819521e49e4d2c8dd2fb80d48ee41a"
   name = "google.golang.org/appengine"
   packages = ["cloudsql"]
   pruneopts = ""
-  revision = "ae0ab99deb4dc413a2b4bd6c8bdd0eb67f1e4d06"
-  version = "v1.2.0"
+  revision = "b2f4a3cf3c67576a2ee09e1fe62656a5086ce880"
+  version = "v1.6.1"
 
 [[projects]]
-  digest = "1:f0620375dd1f6251d9973b5f2596228cc8042e887cd7f827e4220bc1ce8c30e2"
+  digest = "1:cedccf16b71e86db87a24f8d4c70b0a855872eb967cb906a66b95de56aefbd0d"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
   pruneopts = ""
-  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
-  version = "v2.2.1"
+  revision = "51d6538a90f86fe93ac480b35f37b2be17fef232"
+  version = "v2.2.2"
 
 [solve-meta]
   analyzer-name = "dep"

@@ -70,6 +70,7 @@ function main() {
   else
     check "${COVERAGE_THRESHOLDS}" "${COVERAGE_PERCENTAGE}"
   fi
+  return 0
 }
 
 # run tests for all go packages
@@ -124,6 +125,7 @@ function check() {
   fi
   echo ""
   echo "- PASS: ${COVERAGE_PERCENTAGE} % >= ${COVERAGE_THRESHOLDS} % (thresholds)"
+  return 0
 }
 
 # check_return_code(): checks exit code from last command

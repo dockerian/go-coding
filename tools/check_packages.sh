@@ -15,6 +15,7 @@ SYNC_VENDOR="${SYNC_VENDOR:-no}"
 GLIDE="./glide.yaml"
 GODEP="./Godeps/Godeps.json"
 GOVEN="./vendor/vendor.json"
+GOMOD="./go.mod"
 GLOCK="./Gopkg.lock"
 GOPKG="./Gopkg.toml"
 
@@ -33,10 +34,10 @@ function main() {
     SYNC_VENDOR="yes"
   fi
 
-  if [[ -f "${GODEP}" ]]; then check_godep; fi
-  if [[ -f "${GLIDE}" ]]; then check_glide; fi
-  if [[ -f "${GOVEN}" ]]; then check_govendor; fi
-  if [[ -f "${GOPKG}" ]]; then check_gopkg; fi
+# if [[ -f "${GODEP}" ]]; then check_godep; fi
+  if [[ -f "${GOMOD}" ]]; then check_gomod; fi
+# if [[ -f "${GLIDE}" ]]; then check_glide; fi
+# if [[ -f "${GOVEN}" ]]; then check_govendor; fi
   if [[ -f "${GLOCK}" ]]; then check_gopkg; fi
 
 }
@@ -54,7 +55,8 @@ function check_depends() {
   done
 
   if [[ ! -d "${GOPATH}" ]] || [[ ! -d "${GOPATH}/src" ]]; then
-    log_error "Cannot find \$GOPATH or \$GOPATH/src"
+    local ERROR_TAG="$([[ -f "${GOMOD}" ]] && echo "WARNING" || echo "ERROR")"
+    log_trace "Cannot find \$GOPATH or \$GOPATH/src" ${ERROR_TAG}
   fi
 
   local govendor_info="$(which govendor 1>/dev/null && govendor -version 2>&1|grep v)"
@@ -85,6 +87,14 @@ function check_godep() {
   for pkg in $packages; do check_package $pkg; done
 }
 
+# check_gomod
+function check_gomod() {
+  log_trace "Checking go packages in ${GOMOD} ..."
+  local packages="$(cat ${GOMOD}|grep -e '^\t'|awk '{print $1}')"
+  for pkg in $packages; do check_package $pkg; done
+  # GO111MODULE=on go mod tidy
+}
+
 # check_gopkg (using packages list from go tool dep)
 function check_gopkg() {
   log_trace "Checking go packages in ${GOPKG} and ${GLOCK} ..."
@@ -93,7 +103,7 @@ function check_gopkg() {
 
   local DEP="$(which dep)"
   if [[ "${DEP}" == "${GOPATH}/bin/dep" ]] && [[ "${SYNC_VENDOR}" == "yes" ]]; then
-    log_trace "Populating ./vendor from ${GOPKG} ..."
+    log_trace "Populating ./vendor from ${GLOCK} ..."
     dep ensure
     git checkout -- ${GOVEN} 2>&1 >/dev/null
   fi
@@ -129,6 +139,7 @@ function check_package() {
     popd > /dev/null
   elif [[ "${package}" != "" ]]; then
     log_trace "Downloading and installing ${package} ..."
+    GO111MODULE=on \
     go get -u ${package} || true
   fi
 }
@@ -146,7 +157,18 @@ function log_trace() {
 
   if [[ "${err_name}" == "ERROR" ]] || [[ "${err_name}" == "FATAL" ]]; then
     HAS_ERROR="true"
+    echo ''
+    echo '                                                      \\\^|^///  '
+    echo '                                                     \\  - -  // '
+    echo '                                                      (  @ @  )  '
+    echo '----------------------------------------------------oOOo-(_)-oOOo-----'
     echo -e "\n${err_name}: ${err_text}" >&2
+    echo '                                                            Oooo '
+    echo '-----------------------------------------------------oooO---(   )-----'
+    echo '                                                     (   )   ) / '
+    echo '                                                      \ (   (_/  '
+    echo '                                                       \_)       '
+    echo ''
     exit ${err_code}
   else
     echo -e "\n${err_name}: ${err_text}"

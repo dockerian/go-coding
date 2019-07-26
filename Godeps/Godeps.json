@@ -1,6 +1,6 @@
 {
 	"ImportPath": "github.com/dockerian/go-coding",
-	"GoVersion": "go1.11",
+	"GoVersion": "go1.12",
 	"GodepVersion": "v80",
 	"Packages": [
 		"./..."
@@ -138,8 +138,8 @@
 		},
 		{
 			"ImportPath": "github.com/davecgh/go-spew/spew",
-			"Comment": "v1.1.0-9-gecdeabc",
-			"Rev": "ecdeabc65495df2dec95d7c4a4c3e021903035e5"
+			"Comment": "v1.1.1-1-gd8f796a",
+			"Rev": "d8f796af33cc11cb798c1aaeb27a4ebc5099927d"
 		},
 		{
 			"ImportPath": "github.com/dockerian/dateparse",
@@ -147,8 +147,8 @@
 		},
 		{
 			"ImportPath": "github.com/go-ini/ini",
-			"Comment": "v1.30.3",
-			"Rev": "f280b3ba517bf5fc98922624f21fb0e7a92adaec"
+			"Comment": "v1.44.0",
+			"Rev": "8659100d2d9ecf3760a41838b1886db49426d001"
 		},
 		{
 			"ImportPath": "github.com/go-sql-driver/mysql",
@@ -162,8 +162,8 @@
 		},
 		{
 			"ImportPath": "github.com/gorilla/mux",
-			"Comment": "v1.6.0-3-g65ec724",
-			"Rev": "65ec7248c53f499f6b480655e019e0b9d7a6ce11"
+			"Comment": "v1.7.2-1-g212aa90",
+			"Rev": "212aa90d7cec051ab29930d5c56f758f6f69a789"
 		},
 		{
 			"ImportPath": "github.com/gorilla/securecookie",
@@ -177,52 +177,52 @@
 		},
 		{
 			"ImportPath": "github.com/jinzhu/gorm",
-			"Comment": "v1.0-176-g0a51f6c",
-			"Rev": "0a51f6cdc55d1650d9ed3b4c13026cfa9133b01e"
+			"Comment": "v1.9.1-31-gf6260a0",
+			"Rev": "f6260a00852946a10a57e8bb9f505f19bc9389b7"
 		},
 		{
 			"ImportPath": "github.com/jinzhu/gorm/dialects/mysql",
-			"Comment": "v1.0-176-g0a51f6c",
-			"Rev": "0a51f6cdc55d1650d9ed3b4c13026cfa9133b01e"
+			"Comment": "v1.9.1-31-gf6260a0",
+			"Rev": "f6260a00852946a10a57e8bb9f505f19bc9389b7"
 		},
 		{
 			"ImportPath": "github.com/jinzhu/gorm/dialects/postgres",
-			"Comment": "v1.0-176-g0a51f6c",
-			"Rev": "0a51f6cdc55d1650d9ed3b4c13026cfa9133b01e"
+			"Comment": "v1.9.1-31-gf6260a0",
+			"Rev": "f6260a00852946a10a57e8bb9f505f19bc9389b7"
 		},
 		{
 			"ImportPath": "github.com/jinzhu/inflection",
-			"Rev": "1c35d901db3da928c72a72d8458480cc9ade058f"
+			"Rev": "04140366298a54a039076d798123ffa108fff46c"
 		},
 		{
 			"ImportPath": "github.com/jmespath/go-jmespath",
-			"Comment": "0.2.2-14-gbd40a43",
-			"Rev": "bd40a432e4c76585ef6b72d3fd96fb9b6dc7b68d"
+			"Comment": "0.2.2-22-gc2b33e8",
+			"Rev": "c2b33e8439af944379acbdd9c3a5fe0bc44bd8a5"
 		},
 		{
 			"ImportPath": "github.com/lib/pq",
-			"Comment": "go1.0-cutoff-195-g83612a5",
-			"Rev": "83612a56d3dd153a94a629cd64925371c9adad78"
+			"Comment": "v1.0.0",
+			"Rev": "4ded0e9383f75c197b3a2aaa6d590ac52df6fd79"
 		},
 		{
 			"ImportPath": "github.com/lib/pq/hstore",
-			"Comment": "go1.0-cutoff-195-g83612a5",
-			"Rev": "83612a56d3dd153a94a629cd64925371c9adad78"
+			"Comment": "v1.0.0",
+			"Rev": "4ded0e9383f75c197b3a2aaa6d590ac52df6fd79"
 		},
 		{
 			"ImportPath": "github.com/lib/pq/oid",
-			"Comment": "go1.0-cutoff-195-g83612a5",
-			"Rev": "83612a56d3dd153a94a629cd64925371c9adad78"
+			"Comment": "v1.0.0",
+			"Rev": "4ded0e9383f75c197b3a2aaa6d590ac52df6fd79"
 		},
 		{
 			"ImportPath": "github.com/pmezard/go-difflib/difflib",
-			"Comment": "v1.0.0",
-			"Rev": "792786c7400a136282c1664665ae0a8db921c6c2"
+			"Comment": "v1.0.0-4-g5d4384e",
+			"Rev": "5d4384ee4fb2527b0a1256a821ebfc92f91efefc"
 		},
 		{
 			"ImportPath": "github.com/russross/blackfriday",
-			"Comment": "v1.5.2",
-			"Rev": "05f3235734ad95d0016f6a23902f06461fcf567a"
+			"Comment": "v1.5.2-5-gf3ccc8f",
+			"Rev": "f3ccc8fc06d5d2e48a7083dcf0180c00a8a284cc"
 		},
 		{
 			"ImportPath": "github.com/satori/go.uuid",
@@ -249,7 +249,8 @@
 		},
 		{
 			"ImportPath": "gopkg.in/yaml.v2",
-			"Rev": "287cf08546ab5e7e37d55a84f7ed3fd1db036de5"
+			"Comment": "v2.2.2",
+			"Rev": "51d6538a90f86fe93ac480b35f37b2be17fef232"
 		}
 	]
 }

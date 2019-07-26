@@ -25,6 +25,10 @@
   name = "github.com/gorilla/mux"
 
 [[constraint]]
+  name = "github.com/russross/blackfriday"
+  version = "1.5.2"
+
+[[constraint]]
   name = "github.com/stretchr/testify"
 
 [[constraint]]

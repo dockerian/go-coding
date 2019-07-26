@@ -1,0 +1,126 @@
+ARG GO_VERSION=1.12
+ARG ALPINE_VERSION=3.10
+
+FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} as builder
+
+ARG PROJECT=go-coding
+ARG GITHUB_REPO=github.com/dockerian/go-coding
+ARG DOCKER_NAME=go-coding
+ARG DOCKER_IMAG=dockerian/$DOCKER_NAME
+ARG BINARY=go-coding
+
+MAINTAINER Jason Zhu <jason.zhuyx@gmail.com>
+LABEL maintainer="jason.zhuyx@gmail.com"
+LABEL organization="Dockerian Seattle"
+LABEL project="Golang Practice"
+
+RUN apk update \
+ && apk upgrade \
+ && apk add --no-cache --virtual .build-deps \
+    bash \
+    ca-certificates \
+    dpkg \
+    gcc \
+    git \
+    jq \
+    make \
+    musl-dev \
+    net-tools \
+    openssh \
+    tree \
+    tar \
+    zip \
+ && rm -rf /var/lib/apt/lists/* \
+ && rm /bin/sh && ln -sf /bin/bash /bin/sh \
+ && echo "export PS1='\n\u@\h \w [\#]:\n\$ ' " >> ~/.bashrc \
+ && echo "alias ll='ls -al'" >> ~/.bashrc \
+ && echo "" >> ~/.bashrc
+
+# install golang lib
+RUN go get -u golang.org/x/lint/golint \
+ && go get -u github.com/robertkrimen/godocdown/godocdown \
+ && go get -u github.com/go-openapi/strfmt \
+ && go get -u github.com/golang/dep/cmd/dep \
+ && go get -u github.com/tools/godep
+
+# setting environment variables
+ENV HOME=/root \
+    GOPATH=/go \
+    PROJECT=$PROJECT \
+    PROJECT_DIR=/go/src/$GITHUB_REPO \
+    GIT_CREDENTIALS=/root/.git-credentials \
+    NETRC=/root/.netrc \
+    SHELL=/bin/bash
+
+# creating "$PROJECT_DIR" and adding source code
+ADD . "$PROJECT_DIR"
+
+# expecting docker host environment to have a github personal access token
+ARG GITHUB_ACCESS_TOKEN
+
+RUN cd -P "$HOME" \
+ && git config --global credential.helper store \
+ && echo "https://git:${GITHUB_ACCESS_TOKEN}@github.com" >> $GIT_CREDENTIALS \
+ && echo "machine github.com login git password ${GITHUB_ACCESS_TOKEN}" >> $NETRC \
+ && echo "" && cat $HOME/.gitconfig && echo "" && cat $GIT_CREDENTIALS && echo "" && cat $NETRC \
+ && echo "" \
+ && echo "$$HOME: $HOME" \
+ && ls -al
+
+RUN cd -P "$PROJECT_DIR" \
+ && GO111MODULE=on go mod tidy \
+ && make build-only \
+ && tree -L 4 $PROJECT_DIR \
+ && ls -al
+
+# ----- build deployment -----
+FROM alpine:${ALPINE_VERSION}
+
+ARG PROJECT=go-coding
+ARG GITHUB_REPO=github.com/dockerian/go-coding
+ARG DOCKER_NAME=go-coding
+ARG DOCKER_IMAG=dockerian/$DOCKER_NAME
+ARG BINARY=go-coding
+
+ENV HOME=/root \
+    GOPATH=/go \
+    PROJECT=$PROJECT \
+    PROJECT_DIR=/go/src/$GITHUB_REPO \
+    SHELL=/bin/bash
+
+COPY --from=builder $PROJECT_DIR/builds/bin/linux/$BINARY $GOPATH/bin/$BINARY
+
+RUN apk update \
+ && apk upgrade \
+ && apk add --no-cache --virtual .build-deps \
+    bash \
+    git \
+    make \
+    nginx \
+    jq \
+    net-tools \
+    tree \
+    tar \
+    zip \
+ && rm -rf /var/lib/apt/lists/* \
+ && rm /bin/sh && ln -sf /bin/bash /bin/sh \
+ && echo "export PS1='\n\u@\h \w [\#]:\n\$ ' " >> ~/.bashrc \
+ && echo "alias ll='ls -al'" >> ~/.bashrc \
+ && echo "" >> ~/.bashrc
+
+COPY . "$PROJECT_DIR"
+COPY demo/nginx.png /etc/nginx/conf.d/nginx.png
+COPY tools/nginx.conf /etc/nginx/conf.d/default.conf
+
+WORKDIR $PROJECT_DIR
+
+RUN echo "" \
+ && echo "PWD: $PROJECT_DIR" \
+ && tree -L 4 $PROJECT_DIR \
+ && ls -al $PROJECT_DIR
+
+EXPOSE 8001/TCP 8008/TCP 8080/TCP
+
+# ENTRYPOINT ["/bin/bash", "make", "run"]
+
+CMD ["/bin/bash"]

@@ -4,7 +4,10 @@
 # Set project variables
 PROJECT := go-coding
 GITHUB_CORP := dockerian
+GITHUB_USER := dockerian
 GITHUB_REPO := $(PROJECT)
+GOPATH ?= $(HOME)/go
+GO111MODULE := on
 
 # Set docker variables
 DOCKER_IMAG := $(PROJECT)
@@ -13,6 +16,7 @@ DOCKER_TAGS := $(DOCKER_USER)/$(DOCKER_IMAG)
 DOCKER_FILE ?= Dockerfile
 DOCKER_DENV := $(wildcard /.dockerenv)
 DOCKER_PATH := $(shell which docker)
+DOCKER_PORT ?= 8080
 
 # Don't need to start docker in 2 situations:
 ifneq ("$(DOCKER_DENV)","")  # assume inside docker container
@@ -59,9 +63,12 @@ endif
 BINARY ?= $(PROJECT)
 BUILDS_DIR := builds
 BUILD_OS ?= $(OS_PLATFORM)
+BUILD_ENV ?= test
 BUILD_VERSION ?= $(shell cat release/tag)
 BUILD_MASTER_VERSION ?= 0
 BUILD_PREFIX := $(BINARY)-$(BUILD_VERSION)
+BIN_DIR := $(BUILDS_DIR)/bin
+
 ALL_PACKAGES := $(shell go list ./... 2>/dev/null|grep -v -E '/v[0-9]+/client|/v[0-9]+/server|/vendor/')
 PROJECT_PACKAGE := $(subst $(GOPATH)/src/, , $(PWD))
 DOC_TOOL := $(shell which godocdown)
@@ -74,7 +81,7 @@ MAKE_RUN := tools/run.sh
 AWS_ACCESS_KEY_ID ?= $(shell aws configure get aws_access_key_id)
 AWS_SECRET_ACCESS_KEY ?= $(shell aws configure get aws_secret_access_key)
 AWS_DEFAULT_REGION ?= $(shell aws configure get profile.default.region)
-GOPATH ?= $(HOME)/go
+GITHUB_ACCESS_TOKEN ?= "{{__github_personal_access_token__}}"
 
 DEBUG ?= 1
 
@@ -122,6 +129,7 @@ TEST_LOGS := tests.log
 
 # Set the -ldflags option for go build, interpolate the variable values
 LDFLAGS := -ldflags "-X '$(PROJECT_PACKAGE).buildVersion=$(BUILD_VERSION)'"
+G_FLAGS := CGO_ENABLED=0
 
 # Set linter level, higher is looser (golint default is 0.8)
 LINTER_LEVEL=0.0
@@ -172,20 +180,27 @@ build: clean-cache check-tools build-only
 build-only:
 	@echo ""
 ifndef DONT_RUN_DOCKER
+	GO111MODULE=$(GO111MODULE) \
 	PROJECT_DIR="$(PWD)" BUILD_OS=$(BUILD_OS) \
+	GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) \
 	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
+	@go env
 	@echo "......................................................................."
-	@echo "Building: '$(BINARY)' ... [BUILD_OS = $(BUILD_OS)]"
-	go get -u
-
-	GOARCH=$(DIST_ARCH) GOOS=$(BUILD_OS) go build $(LDFLAGS) -o $(BIN_DIR)/$(BUILD_OS)/$(BINARY) main.go
-
+	@echo "Building $(BINARY) for "
+	@rm -rf $(BIN_DIR)/$(BUILD_OS) && mkdir -p $(BIN_DIR)/$(BUILD_OS)
 	@echo ""
-	@echo "Copying $(BIN_DIR)/$(BUILD_OS)/$(BINARY) [BUILD_OS = $(BUILD_OS)]"
-	cp -f $(BIN_DIR)/$(BUILD_OS)/$(BINARY) $(BUILDS_DIR)/$(BINARY)
+	@echo "GOARCH=$(DIST_ARCH) GOOS=$(BUILD_OS) \\"
+	@echo "go build $(LDFLAGS) -o $(BIN_DIR)/$(BUILD_OS)/$(BINARY) $(BUILD_MAIN)"
+	GO111MODULE=$(GO111MODULE) \
+	GOARCH=$(DIST_ARCH) GOOS=$(BUILD_OS) \
+	$(G_FLAGS) \
+	go build $(LDFLAGS) -o $(BIN_DIR)/$(BUILD_OS)/$(BINARY) $(BUILD_MAIN)
+ifeq ("$(BUILD_OS)", "windows")
+	mv $(BIN_DIR)/$(BUILD_OS)/$(BINARY) $(BIN_DIR)/$(BUILD_OS)/$(BINARY).exe
+endif
 endif
 	@echo ""
 	@echo "- DONE: $@"
@@ -195,44 +210,38 @@ build-all: clean-cache check-tools build-all-only
 build-all-only:
 	@echo ""
 ifndef DONT_RUN_DOCKER
+	GO111MODULE=$(GO111MODULE) \
 	PROJECT_DIR="$(PWD)" BUILD_OS=$(BUILD_OS) \
+	GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) \
 	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
 	@echo "......................................................................."
 	@echo "Building $(BINARY) for all platforms..."
-	go get -u
-	go get -t github.com/sanbornm/go-selfupdate
-	go install github.com/sanbornm/go-selfupdate
-
-	mkdir -p $(BIN_DIR)
-	mkdir -p $(DIST_DOWNLOADS)
-	mkdir -p $(GO_SELF_UPDATE_INPUTS)
+	@rm -rf $(BIN_DIR) && mkdir -p $(BIN_DIR)
+	@rm -rf $(DIST_DIR) && mkdir -p $(DIST_DIR)
 
 	@- $(foreach os,darwin linux windows, \
 		echo ""; \
 		echo "Building $(BUILD_VERSION) for $(os) platform"; \
-		echo "GOARCH=$(DIST_ARCH) GOOS=$(os) go build $(LDFLAGS) -o $(BIN_DIR)/$(os)/$(BINARY) main.go"; \
-		GOARCH=$(DIST_ARCH) GOOS=$(os) go build $(LDFLAGS) -o $(BIN_DIR)/$(os)/$(BINARY) main.go; \
-		cp -p $(BIN_DIR)/$(os)/$(BINARY) $(GO_SELF_UPDATE_INPUTS)/$(os)-$(DIST_ARCH); \
+		echo "GOARCH=$(DIST_ARCH) GOOS=$(os) $(G_FLAGS)"; \
+		echo "go build $(LDFLAGS) -o $(BIN_DIR)/$(os)/$(BINARY) $(BUILD_MAIN)"; \
+		mkdir -p "$(DIST_DIR)/$(os)"; \
+		GO111MODULE=$(GO111MODULE) \
+		GOARCH=$(DIST_ARCH) GOOS=$(os) \
+		$(G_FLAGS) \
+		go build $(LDFLAGS) -o $(BIN_DIR)/$(os)/$(BINARY) $(BUILD_MAIN); \
 		if [[ "$(os)" == "windows" ]]; then \
 			mv $(BIN_DIR)/$(os)/$(BINARY) $(BIN_DIR)/$(os)/$(BINARY).exe; \
-			zip -jr $(DIST_PREFIX)-$(os)-$(DIST_ARCH).zip $(BIN_DIR)/$(os)/$(BINARY).exe; \
+			zip -jr $(DIST_DIR)/$(os)/$(BUILD_PREFIX)-$(os)-$(DIST_ARCH).zip \
+			$(BIN_DIR)/$(os)/$(BINARY).exe; \
 		else \
-			tar -C $(BIN_DIR)/$(os)/ -cvzf $(DIST_PREFIX)-$(os)-$(DIST_ARCH).tar.gz ./$(BINARY); \
+			tar -C $(BIN_DIR)/$(os)/ -cvzf \
+			$(DIST_DIR)/$(os)/$(BUILD_PREFIX)-$(os)-$(DIST_ARCH).tar.gz ./$(BINARY); \
 		fi; \
 	)
 	@echo ""
-
-	# create self-update distribution in public folder
-	go-selfupdate "$(GO_SELF_UPDATE_INPUTS)" "$(BUILD_VERSION)"
-
-	mkdir -p "$(DIST_VER)"
-	rm -rf "$(DIST_VER)"
-	cp -rf "$(GO_SELF_UPDATE_PUBLIC)"/* "$(DIST_UPDATES)/"
-	cp -rf "$(GO_SELF_UPDATE_PUBLIC)"/*.json "$(DIST_VER)/"
-	rm -rf "$(GO_SELF_UPDATE_PUBLIC)"
 
 	# show distribution
 	@tree "$(DIST_DIR)" 2>/dev/null; true
@@ -248,6 +257,7 @@ check-tools:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" \
+	GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) \
 	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
@@ -265,6 +275,8 @@ clean-cache clean:
 	@echo ""
 	@echo "-----------------------------------------------------------------------"
 	@echo "Cleaning build ..."
+	go clean || true
+	go clean -modcache || true
 	find . -name '.DS_Store' -type f -delete
 	find . -name \*.bak -type f -delete
 	find . -name \*.log -type f -delete
@@ -286,6 +298,12 @@ clean-cache clean:
 	rm -rf ./$(DIST_DIR)
 	rm -rf ./$(TEST_COVER_OUT)
 	rm -rf ./$(TEST_LOGS)
+	@echo ""
+	@echo "Cleaning up vendor ..."
+	git checkout -- vendor/vendor.json || true
+	rm -rf _vendor*
+	rm -rf .vendor-new
+	rm -rf vendor/g*
 	@echo ""
 	@echo "- DONE: $@"
 
@@ -360,24 +378,20 @@ endif
 dep depend godep:
 	@echo ""
 	@echo "Installing go lib and package managers ..."
-	go get -u -f golang.org/x/lint/golint
-	go get -u -f github.com/golang/dep/cmd/dep
-	# go get -u -f github.com/Masterminds/glide
-	# go get -u -f github.com/kardianos/govendor
+	GO111MODULE=$(GO111MODULE) \
 	go get -u -f github.com/tools/godep
 	@echo ""
 	@echo "Saving go dependency packages info ..."
-	dep ensure || true
-	godep save -t ./... || true
-	# govendor add +external || true
-	# git checkout -- vendor/vendor.json 2>/dev/null || true
-	# govendor sync +external || true
+	# dep ensure || true
+	# after go 1.13 using go module
+	GO111MODULE=$(GO111MODULE) go mod tidy || true
 	@echo ""
 ifneq ("$(DOCKER_DENV)","")  # assume in docker container
 	@echo "CAUTION: this is restoring to $$GOPATH [$(GOPATH)]"
-	godep restore
+	godep restore || true
 endif
-	tools/check_packages.sh --vendor || true
+	# @echo "Checking dependency packages ..."
+	# tools/check_packages.sh || true
 	@echo ""
 	@echo "- DONE: $@"
 
@@ -406,6 +420,7 @@ doc:
 ifeq ("$(DOC_TOOL)","")  # doc tool is NOT installed
 	@echo "Please install doc tool"
 	@echo ""
+	@echo "    GO111MODULE=$(GO111MODULE) \"
 	@echo "    go get github.com/robertkrimen/godocdown/godocdown"
 else
 	@echo "--- Generating markdown documents ..."
@@ -423,6 +438,7 @@ ifeq ("$(DOCKER_DENV)","")
 	# not in a docker container yet
 	@echo `date +%Y-%m-%d:%H:%M:%S` "Start bash in container '$(DOCKER_IMAG)'"
 	PROJECT_DIR="$(PWD)" \
+	GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) \
 	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) cmd
@@ -441,7 +457,11 @@ ifeq ("$(DOCKER_DENV)","")
 	# make in a docker host environment
 	@echo `date +%Y-%m-%d:%H:%M:%S` "Building '$(DOCKER_TAGS)'"
 	@echo "-----------------------------------------------------------------------"
-	docker build -f "$(DOCKER_FILE)" -t $(DOCKER_TAGS) . | tee docker_build.tee
+	DOCKER_FILE="$(DOCKER_FILE)" \
+	GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) \
+	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
+	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
+	$(MAKE_RUN) docker | tee docker_build.tee
 	@echo "-----------------------------------------------------------------------"
 	@echo ""
 	docker images --all | grep -e 'REPOSITORY' -e '$(DOCKER_TAGS)'
@@ -458,6 +478,7 @@ fmt-only:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" \
+	GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) \
 	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
@@ -477,11 +498,13 @@ lint-only:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" \
+	GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) \
 	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
 	@echo "Check coding style ..."
+	# GO111MODULE=$(GO111MODULE) \
 	# go get -u golang.org/x/lint/golint
 	golint -min_confidence $(LINTER_LEVEL) -set_exit_status $(ALL_PACKAGES)
 endif
@@ -496,6 +519,7 @@ qb:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" BUILD_OS=$(BUILD_OS) \
+	GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) \
 	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
@@ -511,13 +535,18 @@ run:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" \
+	GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) \
 	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
 	@echo "......................................................................."
 	@echo "Running: $(BIN_DIR)/$(OS_PLATFORM)/$(BINARY) ..."
-	@$(BIN_DIR)/$(OS_PLATFORM)/$(BINARY)
+	API_PORT=$(DOCKER_PORT) $(GOPATH)/bin/$(BINARY) api || \
+	API_PORT=$(DOCKER_PORT) $(BIN_DIR)/$(OS_PLATFORM)/$(BINARY) api || \
+	API_PORT=$(DOCKER_PORT) \
+	GO111MODULE=$(GO111MODULE) \
+	go run -a main.go api
 endif
 	@echo ""
 	@echo "- DONE: $@"
@@ -606,23 +635,29 @@ test-e2e e2e:
 test-only:
 	@echo ""
 ifndef DONT_RUN_DOCKER
+	GO111MODULE=$(GO111MODULE) \
 	PROJECT_DIR="$(PWD)" DEBUG=$(DEBUG) \
+	GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) \
 	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	TEST_DIR=$(TEST_DIR) TEST_MATCH=$(TEST_MATCH) TEST_BENCH=$(TEST_BENCH) \
 	TEST_COVER_MODE=$(TEST_COVER_MODE) TEST_COVERAGES=$(TEST_COVERAGES) \
 	ALL_PACKAGES="$(ALL_PACKAGES)" TEST_TAGS=$(TEST_TAGS) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
-	$(MAKE_RUN) dep $@
+	$(MAKE_RUN) $@
 else
 	@rm -rf ./$(TEST_LOGS)
 	@echo "......................................................................."
 	@echo "Running tests ... [tags: $(TEST_TAGS)] $(TEST_COVERAGES) %"
+	@echo "GO111MODULE=$(GO111MODULE) \\"
 	@echo "go test $(TEST_PACKAGE) $(TEST_ARGS)"
 ifdef TEST_DIR
+	GO111MODULE=$(GO111MODULE) \
 	go test $(TEST_PACKAGE) $(TEST_ARGS) 2>&1 | tee ./$(TEST_LOGS)
+	GO111MODULE=$(GO111MODULE) \
 	go tool cover -func="$(TEST_COVER_ALL)" | tee "$(TEST_COVERFUNC)"
 else
 	PROJECT_DIR="$(PWD)" \
+	GO111MODULE=$(GO111MODULE) \
 	ALL_PACKAGES="$(ALL_PACKAGES)" \
 	COVER_MODE="$(TEST_COVER_MODE)" \
 	COVER_ALL_OUT="$(TEST_COVER_ALL)" \
@@ -650,11 +685,13 @@ vet-only:
 	@echo ""
 ifndef DONT_RUN_DOCKER
 	PROJECT_DIR="$(PWD)" \
+	GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) \
 	GITHUB_USER=$(GITHUB_CORP) GITHUB_REPO=$(GITHUB_REPO) \
 	DOCKER_USER=$(DOCKER_USER) DOCKER_NAME=$(DOCKER_IMAG) DOCKER_FILE="$(DOCKER_FILE)" \
 	$(MAKE_RUN) $@
 else
 	@echo "Check go code correctness ..."
+	GO111MODULE=$(GO111MODULE) \
 	go vet $(ALL_PACKAGES) || true
 endif
 	@echo ""

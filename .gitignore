@@ -58,9 +58,12 @@ Thumbs.db
 .vendor-new
 !vendor/vendor.json
 vendor/**
+coverage.txt
 bin
 build
+builds/
 dist
+main
 logs
 npm_modules
 obj

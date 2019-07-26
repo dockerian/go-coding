@@ -44,7 +44,7 @@ func NewAppContext() *cfg.Context {
 func NewAppEnv() *cfg.Env {
 	pwd, _ := os.Getwd()
 	configHost := config.Get("api.host")
-	configPort := config.Get("api.port", "8001")
+	configPort := config.Get("api.port", "8080")
 	configAddress := fmt.Sprintf("%s:%s", configHost, configPort)
 	appName := config.Get("api.name", "Go API")
 	appVersion := config.Get("api.version", "1.0.0")

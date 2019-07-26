@@ -54,15 +54,15 @@ function main() {
 
     if [[ "${COUNT_PASS}" != "" ]] || [[ "${DEBUG}" != "false" ]]; then
       printf "\n*** Passed tests  : %2d ***\n" ${COUNT_PASS}
-      (cat "${TEST_LOGS}" | grep --text "\--- PASS:" | cut -d':' -f2 | sort)
+      (cat "${TEST_LOGS}" | grep -e "\--- PASS:" | cut -d':' -f2 | sort)
     fi
     if [[ "${COUNT_SKIP}" != "" ]] || [[ "${DEBUG}" != "false" ]]; then
       printf "\n*** Skipped tests : %2d ***\n" ${COUNT_SKIP}
-      (cat "${TEST_LOGS}" | grep --text "\--- SKIP:" | cut -d':' -f2 | sort)
+      (cat "${TEST_LOGS}" | grep -e "\--- SKIP:" | cut -d':' -f2 | sort)
     fi
     if [[ "${COUNT_FAIL}" != "" ]] || [[ "${DEBUG}" != "false" ]]; then
       printf "\n*** Failed tests  : %2d ***\n" ${COUNT_FAIL}
-      (cat "${TEST_LOGS}" | grep --text "\--- FAIL:\|^FAIL" | cut -d':' -f2 | sort)
+      (cat "${TEST_LOGS}" | grep -e "\--- FAIL:\|^FAIL" | cut -d':' -f2 | sort)
     fi
     echo ""
     echo "======================================================================="
