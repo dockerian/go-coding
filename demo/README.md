@@ -17,6 +17,7 @@ This is a collection of coding examples in Go (golang).
 - [boiler plate](foo.go) | [test](foo_test.go)
 - [dev setup](kb-dev-setup-notes.md)
 - [github workflow](github-workflow.md)
-- [goloang study notes](golang-notes.md)
+- [golang study notes](golang-notes.md)
+- [golang concurrency programming](#concurrency.md)
 - [gotchas](./gotchas.md)
 - [kb and links](kb-study-notes.md)
