@@ -27,6 +27,9 @@ func LogBaseX(base int32, x float64) float64 {
 }
 
 // NearEqual compares a and b in range of precision
+// See:
+// - https://www.socketloop.com/tutorials/golang-compare-floating-point-numbers
+// - https://floating-point-gui.de/errors/comparison/
 func NearEqual(a, b, precision float64) bool {
 	diff := math.Abs(a - b)
 	return diff < precision

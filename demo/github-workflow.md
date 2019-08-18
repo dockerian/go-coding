@@ -154,6 +154,16 @@
       ```
       The above is adding an alias to `~/.gitconfig`.
 
+  * Troubleshot
+
+    - Unset `GIT_SSH` and/or `GIT_SSH_COMMAND` or check if it matches
+
+    - Test SSH over the HTTPS port: `ssh -T -p 443 git@ssh.github.com`
+
+    - Test `ssh -T git@github.com`
+
+    - Test ssh: `ssh -vvv git@github.com`
+
 
 ### Fork (one-time setup)
 

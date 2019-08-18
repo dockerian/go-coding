@@ -59,6 +59,12 @@ func Proxy(prefix, redirectURL string, w http.ResponseWriter, r *http.Request) e
 
 	log.Printf("[proxy] %s (%s) => %+v\n", prefix, r.URL, restURL)
 	proxyReq, err := http.NewRequest(r.Method, restURL, r.Body)
+	if err != nil {
+		log.Println("[proxy] err:", err)
+		return WriteError(w, http.StatusBadRequest, err.Error())
+	}
+	proxyReq.Header.Add("Connection", "close")
+
 	// clone copying header, not just a shallow copy proxyReq.Header = req.Header
 	proxyReq.Header = make(http.Header)
 	for key, val := range r.Header {

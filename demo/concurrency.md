@@ -196,6 +196,124 @@
     }
     ```
 
+
+<br/><a name="example"></a>
+## Practice and Examples
+
+  * Manager/agents:
+    - Implement `Manager` interface that will balance the load of agents that
+      are monitoring live streaming channels.
+    - The rebalancing of load across any number of connected agents should occur
+      when the config is refreshed, agents are added, or agents are removed.
+    - For example, if `Manager.OnConfigRefreshed()` is called with a map
+      containing 98 channels and there are 4 connected Agents then it would
+      expect two agents to be sent 25 channels and 2 agents to be sent 24
+      channels via `Agent.UpdateChannels()`.
+
+    ```go
+    type Agent interface {
+      UpdateChannels(cs []*Channel) error
+    }
+
+    type Manager interface {
+      OnConfigRefreshed(c map[string]*Channel) error
+      OnAgentAdded(agentID string, a Agent) error
+      OnAgentRemoved(agentID string) error
+    }
+
+    type Channel struct {
+      ID string
+      URL string
+    }
+
+    type ChannelAgent struct {
+    	ID string
+      Channels []*Channel
+    }
+
+    type ChannelManager struct {
+    	Agents [string]ChannelAgent
+    }
+
+    func (cm *ChannelManager) OnAgentAdded(id string, a Agent) error {
+    	if newAgent, ok := a //
+    }
+
+    // OnConfigRefreshed
+    func (cm *ChannelManager) OnConfigRefreshed(chmap map[string]*Channel) error {
+    	agentChannels := map([string][]*Channel)
+    	count := len(cm.Agents)
+      idx := 0
+      for _, a := range cm.Agents {
+      	agentChannels[a.ID] = make([]*Channel)
+      }
+      for id, ch := range chmap {
+      	agent := cm.Agents[idx]
+        agentChannels[agent.ID] = append(agentChannels[agent.ID], ch)
+      }
+      for _, a := range cm.Agents {
+      	a.UpdateChannels(agentChannels[a.ID])
+      }
+    }
+    ```
+
+  * Customer channels
+    - Customer A: start 10 req/sec, size 20, refill @ 10/sec
+    - Customer B: start 5 req/sec, size 10, refill @ 1/sec
+
+    ```go
+    struct Customer {
+    	bucketSize int
+      balance    int
+      refill 	   int     // per second
+    	ch         chan int
+    }
+
+    func NewCustomer(bucketSize, start, refill int) *Customer {
+    	cus = &Customer{
+      	bucketSize,
+        start,
+        refill,
+      }
+      cus.ch = GetRillChannel()
+      go Refill(cus)
+      return cus
+    }
+
+    func GetRefillChannel(cus Customer, refill int) {
+    	ch := make(chan int)
+      go func() {
+      	for ch != nil {
+    	  	ch <- refil
+          time.Sleep(1000)
+        }
+      }()
+      return ch
+    }
+
+    func Refill(cus Customer) {
+      // blocking
+    	v := <- cus.ch
+      cus.balance = (cus.balance + v) % cus.bucketSize
+    }
+
+    // Consume takes number of tokens out of the balance and
+    // returns amount that was successfully consumed.
+    func Consume(cus Customer, tokens int) int {
+      // blocking
+    	consumed := cus.balance - tokens
+      if consumed > 0:
+    		cus.balance -= tokens
+      else
+      	consumed = cus.balance
+      	cus.balance = 0
+
+      return consumed
+    }
+    ```
+
+
+
 ## References
 
   * https://go101.org/article/channel.html

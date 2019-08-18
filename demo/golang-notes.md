@@ -3,6 +3,7 @@
 ## Contents
 
   * [Study Notes](#study-notes)
+    - [Golang HTTP Server](#http-server)
     - [Golang Training](#go-training)
   * [Gophercon 2016 Session Notes](#gophercon)
     - [Usefulness of Nil](#usefulness-of-nil)
@@ -176,6 +177,7 @@
 
   - map order is not guaranteed
   - receiver: value vs pointer (attention to the signature)
+    * see https://github.com/golang/go/wiki/CodeReviewComments#receiver-type
   - should method defined by type pointer ?
   - cast from interface to concrete ?
   - embedding type is kind of inheritance ?
@@ -229,6 +231,61 @@
   - https://github.com/dariubs/GoBooks
   - https://github.com/avelino/awesome-go
   - https://www.reddit.com/r/golang/
+
+
+
+<a name="http-server"><br/></a>
+### Golang HTTP server
+
+  * Create a `server` struct
+
+    ```go
+    type server struct {
+      db     *someDatabase
+      router *someRouter
+      email  EmailSender
+    }
+    ```
+
+  * Define routes
+
+    ```go
+    func (s *server) routes() {
+      s.router.HandleFunc("/api/", s.handleAPI())
+      s.router.HandleFunc("/about", s.handleAbout())
+      s.router.HandleFunc("/admin", s.adminOnly(s.handleAdminIndex()))
+      s.router.HandleFunc("/", s.handleIndex())
+    }
+    ```
+
+  * Define handler closure to return `http.HandlerFunc`
+
+    ```go
+    func (s *server) handleSomething() http.HandlerFunc {
+      thing := prepareThing()
+      return func(w http.ResponseWriter, r *http.Request) {
+          // use thing
+      }
+    }
+    ```
+    Note: Prefer `HandlerFunc` over `Handler`.
+
+  * Define middleware
+
+    ```go
+    func (s *server) adminOnly(h http.HandlerFunc) http.HandlerFunc {
+        return func(w http.ResponseWriter, r *http.Request) {
+            if !currentUser(r).IsAdmin {
+                http.NotFound(w, r)
+                return
+            }
+            h(w, r)
+        }
+    }
+    ```
+
+  * See [Medium blog](https://medium.com/statuscode/how-i-write-go-http-services-after-seven-years-37c208122831)
+
 
 
 <a name="gophercon"><br/></a>

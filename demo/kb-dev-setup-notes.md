@@ -511,6 +511,9 @@
 
       ```bash
       brew install coreutils
+      ln -s /usr/local/opt/coreutils/bin/greadlink /usr/local/bin/readlink
+      # or
+      alias readlink='/usr/local/opt/coreutils/bin/greadlink'
       ```
 
     - Install commonly-used commends

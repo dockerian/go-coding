@@ -21,6 +21,9 @@ func Compare(a, b uint64) int {
 }
 
 // EqualSign checks if a and b are both same signed (positive or negative)
+// NOTE:
+// - same sign: a^b >= 0
+// - opposite sign: a^b < 0
 func EqualSign(a, b int64) bool {
 	return a >= 0 && b >= 0 || a < 0 && b < 0
 }

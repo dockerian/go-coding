@@ -9,6 +9,9 @@ This is a collection of packages for more complicate solutions.
 - [Card game](cardgame) | [test](cardgame/game_test.go)
 - [Elevator](elevator) | [test](elevator/elevator_test.go)
 - [Palindrome](str/palindrome.go) | [test](str/palindrome_test.go)
+  * [Longest Palindrome](http://norvig.com/palindrome.html)
+  * [Palindrome poems](https://www.google.com/search?q=palindrome+poem)
+  * [Examples](https://www.thoughtco.com/examples-of-palindromes-4173177)
 - [Parking Lot](parking) | [test](parking/parking_test.go)
 - [Stocks](stock) | [test](stock/stock_test.go)
 

@@ -6,8 +6,9 @@
 
   * [Thought Process](#thought-process)
   * [Design a Cache System](#cache-system)
-  * [Design a TinyURL System](#tiny-url)
   * [Design a Chat Messenger](#chat-messenger)
+  * [Design a GPS Tracker](#gps-tracker)
+  * [Design a TinyURL System](#tiny-url)
   * [Links](#links)
 
 
@@ -67,12 +68,61 @@
     - redirect request to resource machine.
 
 
-<a name="tiny-url"><br /></a>
-## Design a TinyURL System
-
-
 <a name="chat-messenger"><br /></a>
 ## Design a Chat Messenger
+
+
+<a name="gps-tracker"><br /></a>
+# Design a GPS Tracker (bracelet)
+
+  * Requirements and limitations
+    - gathering ideas, info, must-have
+    - possible/proposed/optional solution
+    - scope, timeline, challenges, and limitations
+    - draft/drawing
+
+  * Functionality
+    - Special/unique needs for disabilities
+    - Core science/technologies for the bracelet (how it works - medically)
+    - Data categories to track and persist (hourly/daily/monthly, snapshot and/or statistics)
+    - Compute power behind the calculations and analysis - is it embedded in the device or by a central/cloud data center
+    - Usages (user interactivity or just passive data collection)
+
+  * Device, control, and interfaces
+    - How to make/assemble the devices
+    - Cost effectiveness
+
+  * Performance, network and connection
+    - How fast to response
+    - How it connects with central data center and/or other devices
+    - Responsiveness on connections
+
+  * Power and materials
+    - How is the device powered
+    - Any special materials?
+
+  * Durability and availability
+
+  * Evaluation and tests
+    - Is it easy to run tests or troubleshooting
+    - Can tests be done remotely
+
+  * Usability and UX (user experience)
+    - Easy on/off (wear/take-off/control/read)
+    - Comfort to wear (under different temperatures, shapes, edging/hardness, etc)
+    - Proper size, sound/noise level, clear alert/notification
+    - Look and feel
+
+  * Security
+    - No harm to the owner
+    - Risk (physically, mentally, or electronically)
+    - Data privacy protection
+    - Gone out of control, or being taken over
+    - Cyber-security
+
+
+<a name="tiny-url"><br /></a>
+## Design a TinyURL System
 
 
 

@@ -34,6 +34,27 @@
     var _ SomeIf = (*SomeType)(nil) // verify *SomeType implements SomeIf
     ```
 
+  * Go interface:
+    * casting/conversions:
+      - concrete -> concrete, as long as has the same properties
+      - interface A -> interface B, okay if A has more than in B
+      - concrete -> interface type, not allowed
+      - interface -> concrete type, not allowed
+
+    * assertion: `tv, ok := iv.(T)`
+      - `iv` is an interface type, cannot be nil
+      - `T` is either abstract or concrete type
+
+    * type switch: matching to the case in order
+
+      ```go
+      switch v.(type) { // can only be used in switch statement
+        case I:
+        case T:
+        default: // fallthrough is NOT allowed
+      }
+      ```
+
   * Go increment and decrement operations cannot be used as expressions,
     only as in statements, and only the postfix notation is allowed: `i++`.
   * Go strings are immutable and behave like read-only byte slices. Use `[]rune` instead.
@@ -131,7 +152,7 @@
 
         ```go
         req, err := http.NewRequest("GET", "http://golang.org", nil)
-        if rep != nil {
+        if req != nil {
             req.Close = true
         }
         ```
