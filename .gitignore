@@ -58,6 +58,9 @@ Thumbs.db
 .vendor-new
 !vendor/vendor.json
 vendor/**
+.vscode
+/bazel-*
+!/bazel-README.md
 coverage.txt
 bin
 build
