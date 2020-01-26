@@ -55,8 +55,7 @@
       }
       ```
 
-  * Go increment and decrement operations cannot be used as expressions,
-    only as in statements, and only the postfix notation is allowed: `i++`.
+  * Go increment and decrement operations cannot be used as expressions, only as in statements, and only the postfix notation is allowed: `i++`.
   * Go strings are immutable and behave like read-only byte slices. Use `[]rune` instead.
   * Go **reuses** the XOR operator (`^`) as the unary "NOT" operator (aka
     bitwise complement), while many other languages use `~`.
@@ -79,8 +78,8 @@
     data := map[string]string{"key": "value"}
     var buf bytes.Buffer
     json.NewEncoder(&buf).Encode(data)
-    raw, _ := json.Marshal(data)
-    fmt.Printf("%s != %s\n", raw, buf.String())
+    raw, _ := json.Marshal(data) // no extra ending newline (\n)
+    fmt.Printf("%s != %s<--newline\n", raw, buf.String())
     ```
   * JSON package escapes special HTML characters in keys and string values.
     - use `SetEscapeHTML(false)` but it is not available for `json.Marshel`.
@@ -96,6 +95,23 @@
       encoder.SetEscapeHTML(false) // important to keep "&", "<", and ">"
       encoder.Encode(data)
       ```
+
+  * Built-in `len()` (e.g. `len("♥")`) returns number of bytes, not characters.
+  * String: number of runes:
+
+    ```go
+    import "unicode/utf8"
+    utf8.RuneCountInString("♥") // 1.
+    utf8.RuneCountInString("é") // 2. need normalization to compare
+    ```
+  * String may not be utf-8
+
+    ```go
+    import "unicode/utf8"
+    utf8.ValidString("string") // true, or false for "A\xfeC"
+    ```
+  * String vs byte slice vs rune slice.
+    See http://xahlee.info/golang/golang_char_sequence.html
 
   * The function `regexp.MatchString` (as well as most functions in the
     regexp package) does substring matching.
@@ -291,7 +307,7 @@
     ```go
     for i := 0; i < 3; i++ {
       defer fmt.Println(i) // evaluated ad hoc
-      a := i
+      a := i // loop variable cannot be used directly in closure
       defer func() {
         fmt.Println(a) // copied inside closure
       }()
@@ -314,12 +330,14 @@
   * closure
 
     ```go
+    // import "sync"
     var wg sync.WaitGroup
     for i := 0; i < 3; i++ {
+      n := i  // loop variable cannot be used directly in closure
       wg.Add(1)
       go func() {
-        fmt.Println(i, "in go routine") // data race
-        wg.Done()
+        defer wg.Done() // signal to wg
+        fmt.Println("job", n, "in go routine") // data race
       }()
     }
     wg.Wait()
@@ -329,8 +347,7 @@
 <a name="interface"><br/></a>
 ## interface
 
-  * interfaces are not pointers even though they may look like pointers.
-    interface variable will be `nil` only when both type and value are `nil`.
+  * interfaces are not pointers even though they may look like pointers. interface variable will be `nil` only when both type and value are `nil`.
 
     ```go
     var x interface{}
@@ -340,6 +357,19 @@
   	x = p
     fmt.Printf("x = [%5T, %+v], is nil : %v\n", x, x, x == nil)
     ```
+  * interface and reflection
+
+    ```go
+    // import "reflect"
+    // type someType struct{ f1 string }
+    var v1 *someType
+    var v2 interface{}
+    v2 = v
+    fmt.Printf("v2 == nil: %t\n", v2 == nil)
+    fmt.Printf("v2.(*someType) == nil: %t\n", v2.(*someType) == nil)
+    fmt.Printf("v2 reflected val is nil: %t\n", reflect.ValueOf(v2).IsNil())
+    ```
+
 
 <a name="pointer"><br/></a>
 ## pointer

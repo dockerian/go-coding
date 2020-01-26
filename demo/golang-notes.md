@@ -186,15 +186,25 @@
   - custom err https://golang.org/doc/faq#nil_error
   - `defer fn()` - `fn` is called at the end of the `func` NOT {scope}
   - concurrency vs parallelism ```var wg sync.WaitGroup```
-  - keyword ```defer``` vs ```keyword``` go
-  - go playground or ```runtime.GOMAXPROCS(1)``` limits multi-threading
+  - keyword `defer` vs keyword `go`
+  - go playground or `runtime.GOMAXPROCS(1)` limits multi-threading
   - always use race detector (--race)
-  - avoid racing condition: ```"atomic"``` and/or ```"mutex"```
-  - channel has type: ```make(chan int)```
+  - avoid racing condition: `"atomic"` and/or `"mutex"`
+  - channel has type: `make(chan int)`
   - multiple go routines read/write one channel ? no order guaranteed
   - cannot write to a closed chan (panic)
-  - use no memory: ```struct{}```
-  - no order to pick from ```for { select { case <- chan1: ; case <- chan2 }}```
+  - use no memory: `struct{}`
+  - no order to pick from
+
+    ```go
+    for {
+      select {
+        case <- chan1: ;
+        case <- chan2
+      }
+    }
+    ```
+
   - channel real examples:
     - https://github.com/influxdata/influxdb/blob/master/cmd/influxd/main.go
     - https://github.com/ardanlabs/gotraining/blob/master/topics/channels/exercises/template1/template1.go

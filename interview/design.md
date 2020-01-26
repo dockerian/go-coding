@@ -73,7 +73,7 @@
 
 
 <a name="gps-tracker"><br /></a>
-# Design a GPS Tracker (bracelet)
+## Design a GPS Tracker (bracelet)
 
   * Requirements and limitations
     - gathering ideas, info, must-have
