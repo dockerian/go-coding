@@ -42,16 +42,24 @@ export PATH="${GOPATH}/bin:$PATH" # Add golang
 
 echo "Loading bash aliases ..."
 alias a="alias|cut -d' ' -f 2- "
+alias airdrop='mdfind $HOME com.apple.AirDrop'
 alias bashrc='source ~/.bash_profile; title ${PWD##*/};'
 alias brewery='brew update && brew upgrade && brew cleanup'
 alias bu='brew upgrade; brew update --debug --verbose'
 alias cdp='cd -P .'
-alias clean='find . -name \*.pyc -o -name .DS_Store -delete'
+alias clean='find . -name \*.pyc -o -name .DS_Store -delete 2>/dev/null'
 alias cls='clear && printf "\e[3J"'
+alias dh='du -hs'
 alias dir='ls -al '
 alias dsclean='sudo find . -name *.DS_Store -type f -delete'
+alias dsf1='diskutil secureErase freespace 1'
 alias envi='env | grep -i '
+alias envs='env | sort'
+alias fixcr='perl -i -pe '"'"'s/\r//g'"'" # remove carriage return ('\r')
+alias fixgrayedout='xattr -d com.apple.FinderInfo'
 alias fixmod='for f in *; do if [[ -d "$f" ]] || [[ "${f##*.}" == "sh" ]]; then chmod 755 "$f"; else chmod 644 "$f"; fi; done'
+alias fixrar='/Applications/rar/rar r'
+alias fixunzip='ditto -V -x -k --sequesterRsrc ' # $1.zip $2/dir'
 alias hs='history | grep'
 alias ip='echo $(ipconfig getifaddr en0) $(dig +short myip.opendns.com @resolver1.opendns.com)'
 alias ll='ls -al'
@@ -66,10 +74,14 @@ alias lu='dscl . list /users | grep -v "_"'
 alias luv='dscacheutil -q user' # -a name $USER
 alias ml="make -qp|awk -F':' '/^[a-zA-Z0-9][^\$#\/\t=]*:([^=]|\$)/ {split(\$1,A,/ /);for(i in A)print A[i]}'|sort"
 alias path='echo $PATH|tr ":" "\n"'
+
+alias rarx='unrar x -kb'
 alias setp='(set -o posix; set|grep -v _xspec)'
 alias showhidden='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
 alias si='echo -e $(for k in ~/.ssh/*.pub;do echo -e "\\\n$(ssh-keygen -E md5 -lf $k) - $k";done)|sort -k 3; echo;echo "--- Added identities ---"; ssh-add -E md5 -l|sort -k 3'
 alias ver='echo -e "$(uname -a)"; echo ""; echo -e "$(bash --version)"'
+alias vlc='/Applications/VLC.app/Contents/MacOS/VLC --width 800 --height 600 --aspect-ratio 16x9 &'
+alias ydl='youtube-dl -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' # -o '%(playlist_index)s.%(ext)s'
 alias t='title ${PWD##*/}'
 
 # docker-machine
@@ -108,19 +120,35 @@ alias mkdb='echo "# run inside debug: apk add curl --no-cache" && kubectl run -i
 alias mk="minikube"
 
 echo "Loading bash aliases for git ..."
+alias gfork='/Applications/Fork.app/Contents/MacOS/Fork . &'
+alias mygit='GIT_SSH_COMMAND="ssh -i ~/.ssh/github_jasonzhuyx_2048 -F ~/.ssh/config" git '
 alias gbc='git symbolic-ref --short -q HEAD'
 alias gbd='git branch -d '  # delete branch locally
 alias gbdo='git push origin --delete '  # delete branch on origin
 alias gbv="git branch -v "
 alias gco="git checkout "
+alias gcp='git cherry-pick '
 alias gcdev='git checkout master && git pull upstream master && git push && git checkout dev && git rebase master && git push --force && git fetch --v --all --prune ; git branch -v'
-alias gfv="git fetch -v --all --prune ; git branch -v"
-alias glg="git log --graph --pretty=format:'%C(magenta)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+alias gcr='git clone --recurse-submodules'
+alias gfv="git fetch -v --all --prune ; git branch -v; git prune"
+# git log --pretty=format
+# * committer date:
+#   - %cr (relative)
+#   - %cd (respects --date= option)
+#   - %cD (RFC2822 style)
+#   - %cI (strict ISO 8601 format)
+#   - %ci (ISO 8601-like format)
+#   - %ct (UNIX timestamp)
+alias glg="git log --graph --pretty=format:'%C(magenta)%h%Creset -%C(yellow)%d%Creset %s %Cgreen[%cd] %C(bold blue)<%an>%Creset' --abbrev-commit --date=iso-strict"
+alias gpom='git checkout master && git pull origin master'
 alias gpum='git checkout master && git pull upstream master'
 alias gpumgp='git checkout master && git pull upstream master && git push'
+alias gfom='git checkout master && git fetch --all --prune && git reset --hard origin/master; git prune'
 alias grm='git rebase master'
 alias grmgp='git rebase master && git push'
 alias grmgpf='git rebase master && git push --force'
+alias grom='git rebase origin/master'
+alias grum='git checkout master && git featch --all --prune && git reset --hard upstream/master'
 alias grv='git remote -v'
 alias gst='git status'
 
@@ -128,7 +156,8 @@ echo "Loading bash aliases for dev ..."
 alias apache='httpd -v; sudo apachectl '
 alias exif='exiftool -sort -s'
 alias ipy='ipython -i --ext=autoreload -c "%autoreload 2"'
-alias ipy3='ipython3 -i --ext=autoreload -c "%autoreload 2"'
+alias ipy2='python2 -m IPython -i --ext=autoreload -c "%autoreload 2"'
+alias ipy3='python3 -m ipython -i --ext=autoreload -c "%autoreload 2"'
 alias goback='cd ${GOPATH}/$(cut -d/ -f2,3,4 <<< "${PWD/$GOPATH/}")'
 alias gopath='cd -P ${GOPATH} && pwd'
 alias pipf='pip freeze'
@@ -137,9 +166,23 @@ alias pipiu='pip install --upgrade'
 alias pipl='pip list'
 alias pylib='pip show pip | grep Location | awk '\''{print substr($0, index($0,$2))}'\'''
 alias pyserver='python -m SimpleHTTPServer'
+alias sitedl='wget --mirror –w 2 –p --HTML-extension –-convert-links –P '
 alias dvenv='deactivate'
 alias venv='source .venv/bin/activate'
+alias el='echo ".exit: Close the I/O stream, causing the REPL to exit."; echo ".help: Show this list of special commands."; echo; node_modules/.bin/electron --interactive'
 alias nr="npm run "
+
+# WineHQ app
+echo "Loading bash aliases for wine ..."
+alias wine='/Applications/WineHQ.app/Contents/Resources/wine/bin/wine'
+alias wine64='/Applications/WineHQ.app/Contents/Resources/wine/bin/wine64'
+alias winecfg='/Applications/WineHQ.app/Contents/Resources/wine/bin/winecfg'
+alias geosetter='/Applications/WineHQ.app/Contents/Resources/wine/bin/wine ~/.wine/drive_c/App/geosetter/GeoSetter.exe'
+alias iview='/Applications/WineHQ.app/Contents/Resources/wine/bin/wine64 /Users/jasonzhu/.wine/drive_c/App/iview/i_view64.exe'
+alias npp='/Applications/WineHQ.app/Contents/Resources/wine/bin/wine ~/.wine/drive_c/App/npp/notepad++.exe'
+
+echo ""
+
 
 
 ############################################################

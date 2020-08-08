@@ -79,6 +79,42 @@
     cat /proc/meminfo # for RAM status
     ```
 
+  * Finder
+    - Preview `*.webp`
+      ```
+      brew cask install WebPQuickLook
+      # available with Preview after restart
+      # and licensing requirements for MacOS Catalina
+      xattr -d com.apple.quarantine ~/Library/QuickLook/WebpQuickLook.qlgenerator
+      ```
+    - Show hidden files in dialog: pressing `CMD + Shift + '.'`
+    - Show hidden files in Finder
+
+      ```
+      defaults write com.apple.finder AppleShowAllFiles YES
+      killall Finder
+      ```
+      or using the following AppleScript (in Script Editor):
+
+      ```
+      set vis to do shell script "defaults read com.apple.Finder AppleShowAllFiles"
+
+      if vis = "0" then
+      	do shell script "defaults write com.apple.Finder AppleShowAllFiles 1"
+      else
+      	do shell script "defaults write com.apple.Finder AppleShowAllFiles 0"
+      end if
+
+      tell application "Finder" to quit
+      delay 1
+      tell application "Finder" to activate
+      ```
+      or change file/flder hidden flag
+
+      ```
+      chflags hidden|nohidden folder_or_file
+      ```
+
   * Mac OS X key shortcuts
     * block/column selection in Atom: Control+Shift+[up|down], Shift+[left|right] (or install Sublime Column Selection package)
     * force quit: Cmd+Alt+Esc (Force Quit) or Cmd+Alt+Esc (for active window)
@@ -135,7 +171,7 @@
     shopt -s histappend
     ```
 
-  * Delete all \*.pyc and .DS_Store recursively
+  * Delete all `*.pyc` and "`.DS_Store`" recursively
 
     ```bash
     sudo find . -name *.DS_Store -type f -delete
@@ -204,8 +240,8 @@
     netstat -atp tcp | grep -i "listen"
     netstat -Watnlv | grep LISTEN | \
       awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; print cred "proto: " colclr $1 colred " | addr.port: " colclr $4 colred " | pid: " colclr $9 colred " | name: " colclr procname;  }' | column -t -s "|"
+    sudo lsof -i -n -P | grep "listen"
     sudo lsof -PiTCP -sTCP:LISTEN
-    lsof -Pn -i4 | grep LISTEN
     ```
     see
     - https://wilsonmar.github.io/ports-open/
@@ -319,6 +355,22 @@
         mysql> quit
         ```
 
+  * Rar
+    - Official website: https://www.rarlab.com/download.htm
+    - WinRar for Mac: https://www.techspot.com/downloads/5169-winrar-for-mac/similar/
+    - See https://best-mac-tips.com/2013/02/01/install-free-command-line-unrar-mac/
+    - Command "`unrar`"
+
+      ```bash
+      brew install unrar  # no rar command from brew
+      ```
+
+  * Ruby
+
+    ```bash
+    curl -L https://get.rvm.io | bash -s stable
+    ```
+
   * Shell prompt
     - My default prompt
 
@@ -330,35 +382,6 @@
       - http://bashrcgenerator.com/
       - https://www.kirsle.net/wizards/ps1.html
       - https://xta.github.io/HalloweenBash/
-
-  * Show hidden files in dialog: pressing `CMD + Shift + '.'`
-
-  * Show hidden files in Finder
-
-    ```
-    defaults write com.apple.finder AppleShowAllFiles YES
-    killall Finder
-    ```
-    or using the following AppleScript (in Script Editor):
-
-    ```
-    set vis to do shell script "defaults read com.apple.Finder AppleShowAllFiles"
-
-    if vis = "0" then
-    	do shell script "defaults write com.apple.Finder AppleShowAllFiles 1"
-    else
-    	do shell script "defaults write com.apple.Finder AppleShowAllFiles 0"
-    end if
-
-    tell application "Finder" to quit
-    delay 1
-    tell application "Finder" to activate
-    ```
-    or change file/flder hidden flag
-
-    ```
-    chflags hidden|nohidden folder_or_file
-    ```
 
   * Tail and watch
 
@@ -494,6 +517,27 @@
       ```
       The above is adding an alias to `~/.gitconfig`.
 
+  * Fixing brew and ruby:
+
+    ```bash
+    cd $(brew --repo); git add . ; git fetch; git reset --hard origin/master
+    brew update-reset
+
+    sudo gem update --system
+    ```
+
+  * Python and pyenv
+
+    ```bash
+    brew install openssl readline sqlite3 xz zlib
+
+    curl https://pyenv.run | bash
+
+    # Add to ~/.bashrc
+    export PATH="$HOME/.pyenv/bin:$PATH"
+    eval "$(pyenv init -)"
+    ```
+
   * Others
     - Install homebrew
 
@@ -527,14 +571,15 @@
       brew install binutils
       brew install diffutils
       brew install ed --default-names
-      brew install findutils --with-default-names
+      brew install fcrackzip
+      brew install findutils
       brew install gawk
-      brew install gnu-indent --with-default-names
-      brew install gnu-sed --with-default-names
-      brew install gnu-tar --with-default-names
-      brew install gnu-which --with-default-names
+      brew install gnu-indent
+      brew install gnu-sed
+      brew install gnu-tar
+      brew install gnu-which
       brew install gnutls
-      brew install grep --with-default-names
+      brew install grep
       brew install gzip
       brew install screen
       brew install watch
@@ -567,8 +612,8 @@
       brew install rsync
       brew install svn
       brew install unzip
-      brew install vim --override-system-vi
-      brew install macvim --override-system-vim --custom-system-icons
+      brew install macvim
+      brew install vim
       ```
 
 
@@ -579,6 +624,8 @@
     - Add Administrator as Admin user: @dmini$tr@t0r
     - Enable root user: R00tU$er4M@cB00kPr0
     - Run <code>`sudo su`</code>
+
+  * Bible Study (App store)
 
   * Clipboard managers:
     - [1Clipboard](http://1clipboard.io/)
@@ -591,6 +638,7 @@
     - [Folx](https://mac.eltima.com/download-manager.html)
     - [iGetter](http://www.igetter.net/downloads.html)
     - [Progressive Downloader](https://www.macpsd.net/)
+    - [SiteSucker](https://ricks-apps.com/osx/sitesucker/index.html)
     - [Xtreme](https://sourceforge.net/projects/xdman/)
 
   * Homebrew [brew.sh](http://brew.sh/)
@@ -681,21 +729,24 @@
 
   * System tools
     - [94FBR](https://www.google.com/search?q=94FBR)
+    - [Better365](https://www.better365.cn/apps.html) tools
     - [GPG Tools](https://gpgtools.org)
     - [AWS](http://docs.aws.amazon.com/cli/latest/userguide/installing.html)
     - [Adobe Flash Player](http://labs.adobe.com/downloads/flashplayer.html)
     - [Baidu](http://srf.baidu.com/input/mac.html)
     * Disk tools
       - [CC Cleaner](https://www.ccleaner.com/)
+      - [Clean-Me](https://github.com/Kevin-De-Koninck/Clean-Me)
       - [Disk Drill 3](https://www.cleverfiles.com)
       - [DiskInventoryX](http://www.derlien.com/)
       - [Daisy Disk](https://daisydiskapp.com/) (free trial)
       - [Grand Perspective](http://grandperspectiv.sourceforge.net/)
       - [OmniDiskSweeper](https://omnidisksweeper.en.softonic.com/)
     - [Docker Toolbox](https://www.docker.com/products/docker-toolbox)
+    - [Docker Version Manager](https://howtowhale.github.io/dvm/install.html)
     - [BetterTouchTool](https://www.boastr.net/)
     - [Charles](https://www.charlesproxy.com/)
-    - [Chinese Lunar Calendar/WanNianLi](http://calendar.zfdang.com/)
+    - [Chinese Lunar Calendar/WanNianLi](http://calendar.zfdang.com/) | [顺历](https://www.zhihu.com/question/35251600)
     - [GeekTool](https://www.tynsoe.org/v2/geektool/)
     - [f.lux](https://justgetflux.com/news/pages/macquickstart/) - brightness tool
     - HipChat and Slack
@@ -706,12 +757,12 @@
     - [OSQuery](https://osquery.io/) |
       [schema](https://osquery.io/schema/current) |
       [github](https://github.com/osquery/osquery)
-    - Rar Extrator
     - [QuickLook for Webp](https://github.com/emin/WebPQuickLook)
     - [RealVNC](https://www.realvnc.com/)
     - [Spectacle](https://www.spectacleapp.com/) - keyboard shortcuts
     - [Snip](http://snip.qq.com/)
     - [Snort](https://michaelok.tumblr.com/post/1095392081/how-to-install-snort-on-mac-os-x)
+    - [Syncios Manager](https://www.syncios.com/download.html)
     - [tmate](https://tmate.io/): `brew install tmate`
     - [Tunnelblick](https://tunnelblick.net/)
     - [Unarchiver](http://wakaba.c3.cx/s/apps/unarchiver.html)
@@ -729,11 +780,14 @@
       - hold `Cmd+R` on boot up then open Terminal
       - run `csrutil enable --without debug`
     - See https://github.com/alebcay/awesome-shell
+
   * Browsers
     - Chrome: Cast, Currently, DHC, Dictionary, Firebug, LastPass, Markdown, ScrollMaps, Vimium, Exif
     - Firefox: Firebug, Google Code Wiki Viewer, Dictionary, Flash Video Downloader, LastPass, Markdown, Poster
     - Opera: Dictionary, LastPass
+
   * Dictionary
+    - [Bob](https://github.com/ripperhe/Bob 翻译软件
     - http://diary.taskinghouse.com/posts/383137-mac-built-in-dictionary-install-traditional-chinese-dictionary
     - http://blogger.gtwang.org/2013/03/mac-os-x-dicttionary-add-chinese.html
     - Rhyme [github](https://github.com/shaunplee/homebrew-rhyme)
@@ -833,17 +887,21 @@
         or [HyperKit](https://github.com/moby/hyperkit).
       - Linux: [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
         or [KVM](http://www.linux-kvm.org/).
-      - **Note**: Minikube also supports a `--vm-driver=none` option that runs
-        the Kubernetes components on the host and not in a VM.
-        Using this driver requires Docker, but not a hypervisor.
+      - **Note**: Minikube also supports a `--vm-driver=none` option that runs the Kubernetes components on the host and not in a VM. Using this driver requires Docker, but not a hypervisor.
 
-    - Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+    - Install Docker
+    - Install [Docker Version Manager](https://howtowhale.github.io/dvm/)
 
       ```
       brew install kubernetes-cli
       kubectl version
+      # using `brew` on Mac OS X
+      brew update && brew install dvm
+      # or directly without Homebrew
+      curl -sL https://howtowhale.github.io/dvm/downloads/latest/install.sh | sh
       ```
-      or for Linux
+
+    - Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
       ```
       sudo apt-get update && sudo apt-get install -y apt-transport-https
@@ -852,6 +910,8 @@
       sudo tee -a /etc/apt/sources.list.d/kubernetes.list
       sudo apt-get update
       sudo apt-get install -y kubectl
+      brew install kubernetes-cli
+      kubectl version
       ```
 
     - Uninstall minikube (Mac OS X)
@@ -903,13 +963,17 @@
     - http://www.makeuseof.com/tag/top-6-free-video-editors-mac-os/
   * Mutlimedia/Media Players
     - [5K Player](http://www.5kplayer.com/)
-    - [4K Video Donwloader](https://www.4kdownload.com/)
+    - [4K Video Downloader 4.2](https://www.4kdownload.com/products/product-videodownloader)
+      - Serial Keys: XS3W4CD4VF5GB8HU / NJKM9JN8UHYB7GTV / F5RCD4X3XAQSW4CD / E5FRV6GTBH6YN8JU
+      - License Keys: MI0KMPOK0I9NJUBHV / G5FC5DX4ESW3AXWS
+      - Activation Keys: DCF5VG68B9HP0KMI / N9B7Y6VT5CR4X3HS
     - [AviDemux](http://avidemux.sourceforge.net/)
     - [HandBrake](https://handbrake.fr/downloads.php) - video transcoder
     - [DivX](http://www.divx.com/)
     - [Kid3](https://kid3.sourceforge.io/)
     - [Calibre](https://calibre-ebook.com/)
     - [Sigil](https://github.com/Sigil-Ebook/Sigil)
+    - [XLD](https://sourceforge.net/projects/xld/)
 
   * Weather
     - [Meteorologist](http://macappstore.org/meteorologist/)
@@ -950,6 +1014,16 @@
     gnome-system-monitor
     ```
 
+  - convert to utf-8:
+
+    ```bash
+    for file in *; do
+      iconv -f gbk -t utf-8 "$file" -o "utf8/${file}"
+    done
+    iconv -f iso-8859-1 -t utf-8 < ${file} > ${file_new}
+    ```
+    see also [ConvertFilesToUtf8.js](https://www.ultraedit.com/resources/scripts/ConvertFilesToUtf8.js)
+
   - docker post-insatll
     - see https://docs.docker.com/engine/installation/linux/linux-postinstall/
 
@@ -964,6 +1038,16 @@
       # restart docker or have to restart the system
       sudo service docker restart  
       ```
+
+  - download website:
+
+    ```bash
+    wget --mirror –w 2 –p --HTML-extension –-convert-links –P ${website}
+    ```
+    other options
+    * [Pavuk](http://pavuk.sourceforge.net/)
+    * [SiteSucker](https://ricks-apps.com/osx/sitesucker/index.html) (free before v3)
+    * [A1](https://www.microsystools.com/products/website-download/)
 
   - git
 
@@ -1435,6 +1519,7 @@
     - Tweek Tool / Unity Tweek Tool
     - System Monitor
     - Settings
+
 
 
 <br/><a name="software-windows"></a>
