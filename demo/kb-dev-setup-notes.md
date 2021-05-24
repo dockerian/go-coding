@@ -749,7 +749,6 @@
     - [Chinese Lunar Calendar/WanNianLi](http://calendar.zfdang.com/) | [顺历](https://www.zhihu.com/question/35251600)
     - [GeekTool](https://www.tynsoe.org/v2/geektool/)
     - [f.lux](https://justgetflux.com/news/pages/macquickstart/) - brightness tool
-    - HipChat and Slack
     - [Karabiner](https://pqrs.org/osx/karabiner/)
     - [MacPorts](https://guide.macports.org/#installing)
     - [Omni* Apps](https://www.omnigroup.com/more)
@@ -759,9 +758,11 @@
       [github](https://github.com/osquery/osquery)
     - [QuickLook for Webp](https://github.com/emin/WebPQuickLook)
     - [RealVNC](https://www.realvnc.com/)
-    - [Spectacle](https://www.spectacleapp.com/) - keyboard shortcuts
+    - [Screen Mirroring](https://letsview.com/)
+    - [Slack](https://slack.com/) and ~[HipChat](http://hipchat.com)~
     - [Snip](http://snip.qq.com/)
     - [Snort](https://michaelok.tumblr.com/post/1095392081/how-to-install-snort-on-mac-os-x)
+    - [Spectacle](https://www.spectacleapp.com/) - keyboard shortcuts
     - [Syncios Manager](https://www.syncios.com/download.html)
     - [tmate](https://tmate.io/): `brew install tmate`
     - [Tunnelblick](https://tunnelblick.net/)
@@ -1537,6 +1538,17 @@
   * [MsInfo32](https://support.microsoft.com/en-us/help/184075/description-of-microsoft-system-information-msinfo32-exe-tool)
   * [NirSoft](https://www.nirsoft.net/utils/index.html) Utilities
   * [Others](https://www.majorgeeks.com/mg/sortdate/system_info.html)
+
+### Dictionaries
+
+  * [WordWeb for Windows](https://wordweb.info/free/) - support systemwide right-click
+  * [TheSage English Dictionary and Thesaurus](https://www.sequencepublishing.com/1/)
+  * [Perfect Dictionary](https://www.microsoft.com/en-us/p/perfect-dictionary/9wzdncrd2ljv)
+  * [Dictionary](https://www.microsoft.com/en-in/p/dictionary/9wzdncrfj3zp) by Flow Simulation Ltd.
+  * [Bible Dictionary](https://www.microsoft.com/en-us/p/bible-dictionary-app/9nblggh09lr5)
+  * [Advanced English Dictionary](https://www.microsoft.com/en-in/p/advanced-english-dictionary/9wzdncrfhmvb)
+  * [The Free Dictionary](https://www.microsoft.com/en-us/p/dictionary/9wzdncrfj1z0) from Microsoft Store
+  * (Native) Search Box: e.g. "fox mean"
 
 
 
