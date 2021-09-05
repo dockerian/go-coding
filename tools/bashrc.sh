@@ -53,6 +53,7 @@ alias dh='du -hs'
 alias dir='ls -al '
 alias dsclean='sudo find . -name *.DS_Store -type f -delete'
 alias dsf1='diskutil secureErase freespace 1'
+alias dswake='wakeonlan -i 192.168.1.218 00:11:32:aa:e3:5d'
 alias envi='env | grep -i '
 alias envs='env | sort'
 alias fixcr='perl -i -pe '"'"'s/\r//g'"'" # remove carriage return ('\r')
@@ -611,6 +612,78 @@ function timeout() {
     if [ $? = 1 ] ; then
         echo "Timeout after ${time} seconds"
     fi
+}
+
+############################################################
+# function: Use youtube-dl or yt-dlp
+# see
+#   - https://github.com/lrvick/youtube-dl
+#   - https://github.com/yt-dlp/yt-dlp
+############################################################
+function ydlo() {
+  local _tool_=""
+
+  if [[ -x "$(which yt-dlp)" ]]; then
+    _tool_="yt-dlp"
+  elif [[ -x "$(which youtube-dl)" ]]; then
+    _tool_="youtube-dl"
+  else
+    echo ""
+    echo "Cannot find yt-dlp or youtube-dl. See"
+    echo "  - https://github.com/lrvick/youtube-dl"
+    echo "  - https://github.com/yt-dlp/yt-dlp"
+    echo ""
+    return
+  fi
+
+  local _href_=""
+  local _name_=""
+  local _sarg_=""
+  local _earg_=""
+  local _snum_=""
+  local _enum_=""
+  local _ycmd_="${_tool_} -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4"
+  for p in "$@"; do
+    echo " $p"
+    if [[ "$p" =~ ^https?:// ]]; then
+      _href_="$p"
+    elif [[ "$p" =~ ^[0-9]+$ ]]; then
+      if [[ "${_snum_}" == "" ]]; then _snum_="$p";
+    elif [[ "${_enum_}" == "" ]]; then
+      if [[ $p -gt ${_snum_} ]]; then _enum_="$p";
+      else
+        _enum_=$((${_snum_} + $p - 1)); fi; fi
+    else
+      _name_="$p"
+    fi
+  done
+
+  if [[ "${_href_}" == "" ]]; then return; fi
+
+  echo "----------"
+  echo " name: ${_name_}"
+  echo " href: ${_href_}"
+  if [[ "${_href_}" =~ playlist ]]; then
+    if [[ ! "${_snum_}" == "" ]]; then
+      _sarg_="--playlist-start ${_snum_}";
+      echo "start: ${_snum_}"
+    fi
+    if [[ ! "${_enum_}" == "" ]]; then
+      _earg_="--playlist-end ${_enum_}"
+      echo "  end: ${_enum_}"
+    fi
+  fi
+  echo "----------"
+
+  if [[ "${_name_}" == "" ]]; then
+    ${_ycmd_} ${_sarg_} ${_earg_} ${_href_}
+    return
+  fi
+
+  ${_ycmd_} \
+  ${_sarg_} ${_earg_} \
+  -o "${_name_}"'-%(playlist_index)s.%(ext)s' \
+  ${_href_}
 }
 
 
