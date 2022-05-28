@@ -66,6 +66,7 @@ alias ip='echo $(ipconfig getifaddr en0) $(dig +short myip.opendns.com @resolver
 alias ll='ls -al'
 alias lll='ls -al -T | sort -f -k9,9'  # --time-style=full-iso
 alias lln='ls -al | sort -f -k9,9'
+alias llo='ls -l --time-style=long-iso'
 alias llt='ls -al -rt'
 alias lg='dscl . list /groups | grep -v "_"'
 alias lgv='dscacheutil -q group' # -a name staff
@@ -636,15 +637,19 @@ function ydlo() {
     return
   fi
 
+  local _exec_=""
   local _href_=""
   local _name_=""
   local _sarg_=""
   local _earg_=""
   local _snum_=""
   local _enum_=""
+  # default sequence and extension for playlist
+  local _extn_='-%(playlist_index)s.%(ext)s'
   local _ycmd_="${_tool_} -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4"
+  # echo "---args: $@"
   for p in "$@"; do
-    echo " $p"
+    echo "# $p"
     if [[ "$p" =~ ^https?:// ]]; then
       _href_="$p"
     elif [[ "$p" =~ ^[0-9]+$ ]]; then
@@ -664,6 +669,9 @@ function ydlo() {
   echo " name: ${_name_}"
   echo " href: ${_href_}"
   if [[ "${_href_}" =~ playlist ]]; then
+    if [[ "${_name_}" =~ .*"-".* ]]; then
+      _extn_='%(playlist_index)s.%(ext)s'
+    fi
     if [[ ! "${_snum_}" == "" ]]; then
       _sarg_="--playlist-start ${_snum_}";
       echo "start: ${_snum_}"
@@ -672,17 +680,23 @@ function ydlo() {
       _earg_="--playlist-end ${_enum_}"
       echo "  end: ${_enum_}"
     fi
+  else # not from playlist, no need sequence
+    _extn_='.%(ext)s'
   fi
   echo "----------"
 
   if [[ "${_name_}" == "" ]]; then
-    ${_ycmd_} ${_sarg_} ${_earg_} ${_href_}
+    _exec_="${_ycmd_} ${_sarg_} ${_earg_} ${_href_}"
+    echo Downloading "${_href_}" ...
+    ${_exec_}
     return
   fi
 
+  # download with name
+  echo Downloading "${_name_}""${_extn_}" ...
   ${_ycmd_} \
   ${_sarg_} ${_earg_} \
-  -o "${_name_}"'-%(playlist_index)s.%(ext)s' \
+  -o "${_name_}""${_extn_}" \
   ${_href_}
 }
 
