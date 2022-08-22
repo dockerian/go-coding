@@ -616,6 +616,43 @@ function timeout() {
 }
 
 ############################################################
+# function: Use `touch -d` on file/dir
+# Params: a file/dir, or FMT "%Y-%m-%d %H:%M"
+############################################################
+function touchd() {
+  local _awk_="awk '{print \$6,\$7}'"
+  local _arg_='-l --time-style=long-iso'
+  local _datetime_=`date +"%Y-%m-%d %H:%M"`
+  local _dt_regex_='^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]( [0-9][0-9]:[0-9][0-9])?$'
+  local _date_iso_=''
+  local _dir_file_=''
+
+  # echo "---args: $@"
+  for p in "$@"; do
+    if [[ "$p" =~ ${_dt_regex_} ]]; then
+      _date_iso_="$p"
+    elif [[ -d "$p" ]]; then
+      if [[ "${_date_iso_}" == "" ]]; then
+        IFS=$'\n'
+        for a in `ls -l --time-style=long-iso "$p"|awk '{print $6,$7}'`; do
+          _date_iso_="$a"
+        done
+      fi
+      _dir_file_="$p"
+    fi
+  done
+
+  if [[ "${_date_iso_}" =~ ${_dt_regex_} ]]; then
+  if [[ -e "${_dir_file_}" ]]; then
+    echo "Applying '${_date_iso_}' on ${_dir_file_}"
+    touch -d "${_date_iso_}" "${_dir_file_}" && echo OK
+    fi
+  else
+    echo "no-op"
+  fi
+}
+
+############################################################
 # function: Use youtube-dl or yt-dlp
 # see
 #   - https://github.com/lrvick/youtube-dl
