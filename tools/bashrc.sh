@@ -47,11 +47,12 @@ alias bashrc='source ~/.bash_profile; title ${PWD##*/};'
 alias brewery='brew update && brew upgrade && brew cleanup'
 alias bu='brew upgrade; brew update --debug --verbose'
 alias cdp='cd -P .'
-alias clean='find . -name \*.pyc -o -name .DS_Store -delete 2>/dev/null'
+alias clean='find . -name *.DS_Store -delete 2>/dev/null; find . -name Thumbs.db -delete 2>/dev/null'
 alias cls='clear && printf "\e[3J"'
+alias conv='iconv -f windows-1252 -t utf-8'
 alias dh='du -hs'
 alias dir='ls -al '
-alias dsclean='sudo find . -name *.DS_Store -type f -delete'
+alias dsclean='sudo find . -name Thumbs.db -delete -name *.DS_Store -type f -delete'
 alias dsf1='diskutil secureErase freespace 1'
 alias dswake='wakeonlan -i 192.168.1.218 00:11:32:aa:e3:5d'
 alias envi='env | grep -i '
@@ -674,6 +675,7 @@ function ydlo() {
     return
   fi
 
+  local _args_=""
   local _exec_=""
   local _href_=""
   local _name_=""
@@ -681,6 +683,7 @@ function ydlo() {
   local _earg_=""
   local _snum_=""
   local _enum_=""
+  local _rvpl_=""
   # default sequence and extension for playlist
   local _extn_='-%(playlist_index)s.%(ext)s'
   local _ycmd_="${_tool_} -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4"
@@ -695,6 +698,8 @@ function ydlo() {
       if [[ $p -gt ${_snum_} ]]; then _enum_="$p";
       else
         _enum_=$((${_snum_} + $p - 1)); fi; fi
+    elif [[ "$p" =~ ^[/-]{1,2}[rR] ]]; then
+      _rvpl_="--playlist-reverse"
     else
       _name_="$p"
     fi
@@ -717,6 +722,9 @@ function ydlo() {
       _earg_="--playlist-end ${_enum_}"
       echo "  end: ${_enum_}"
     fi
+    if [[ ! "${_rvpl_}" == "" ]]; then
+      _args_=$(echo "${_rvpl_} ${_args_}"|xargs)
+    fi
   else # not from playlist, no need sequence
     _extn_='.%(ext)s'
   fi
@@ -732,7 +740,7 @@ function ydlo() {
   # download with name
   echo Downloading "${_name_}""${_extn_}" ...
   ${_ycmd_} \
-  ${_sarg_} ${_earg_} \
+  ${_sarg_} ${_earg_} ${_args_} \
   -o "${_name_}""${_extn_}" \
   ${_href_}
 }
