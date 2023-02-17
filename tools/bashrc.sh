@@ -617,12 +617,51 @@ function timeout() {
 }
 
 ############################################################
+# function: Use `touch -d` to apply all sub-dirs recursively
+# Params: $1 a source dir
+############################################################
+function touchdbyfile() {
+  if [[ ! -d "$1" ]]; then return 1; fi
+  local _dir_=${1%/}
+  local _old_=$(date '+%Y-%m-%d %H:%M:%S' -r "$1" 2>/dev/null)
+  local _new_=''
+  local _sub_=''
+  local _ymd_=''
+
+  for f in "${_dir_}"/*; do
+    if [[ -d "$f" ]]; then
+      touchdbyfile "$f"
+      _new_=$(date '+%Y-%m-%d %H:%M:%S' -r "$f" 2>/dev/null)
+      if [[ "${_new_}" > "${_sub_}" ]]; then
+        _sub_=${_new_}
+      fi
+    else
+      _new_=$(date '+%Y-%m-%d %H:%M:%S' -r "$f" 2>/dev/null)
+      if [[ "${_new_}" > "${_ymd_}" ]]; then
+        _ymd_=${_new_}
+      fi
+    fi
+  done
+
+  _ymd_=${_ymd_:-${_sub_}}
+  if [[ "${_ymd_}" == "" ]]; then return 2; fi
+
+  echo ""
+  if [[ "${_ymd_}" == "${_old_}" ]]; then
+    echo Matching ${_ymd_} on ${_dir_}
+  elif [[ "${_ymd_}" > "${_old_}" ]]; then
+    echo Reserved ${_old_} on ${_dir_}
+  else
+    echo Applying ${_ymd_} to ${_dir_} [${_old_}]
+    touch -d "${_ymd_}" "${_dir_}"
+  fi
+}
+
+############################################################
 # function: Use `touch -d` on file/dir
 # Params: a file/dir, or FMT "%Y-%m-%d %H:%M"
 ############################################################
 function touchd() {
-  local _awk_="awk '{print \$6,\$7}'"
-  local _arg_='-l --time-style=long-iso'
   local _datetime_=`date +"%Y-%m-%d %H:%M"`
   local _dt_regex_='^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]( [0-9][0-9]:[0-9][0-9])?$'
   local _date_iso_=''
@@ -632,14 +671,13 @@ function touchd() {
   for p in "$@"; do
     if [[ "$p" =~ ${_dt_regex_} ]]; then
       _date_iso_="$p"
-    elif [[ -d "$p" ]]; then
-      if [[ "${_date_iso_}" == "" ]]; then
-        IFS=$'\n'
-        for a in `ls -l --time-style=long-iso "$p"|awk '{print $6,$7}'`; do
-          _date_iso_="$a"
-        done
+    elif [[ -e "$p" ]]; then
+      if [[ "${_date_iso_}" == "" ]] && [[ ! "" == "${_dir_file_}" ]]; then
+        _date_iso_=$(date '+%Y-%m-%d %H:%M:%S' -r "$p" 2>/dev/null)
       fi
-      _dir_file_="$p"
+      if [[ "${_dir_file_}" == "" ]]; then
+        _dir_file_="${p%/}"
+      fi
     fi
   done
 
@@ -648,6 +686,8 @@ function touchd() {
     echo "Applying '${_date_iso_}' on ${_dir_file_}"
     touch -d "${_date_iso_}" "${_dir_file_}" && echo OK
     fi
+  elif [[ -d "${_dir_file_}" ]]; then
+    touchdbyfile "${_dir_file_}"
   else
     echo "no-op"
   fi

@@ -425,6 +425,14 @@
     xcode-select --install
     ```
 
+  * VLC
+    - cannot start/launch
+	```
+	rm ~/Library/Preferences/org.videolan.vlc/vlcrc  # or rename to vlcrc.bak
+	# optionally to reset defaults if clearing preference does not work
+	defaults delete org.videolan.vlc
+	```
+	
   * Git/GitHub
     - SSH (see [SSH keys](#keys-ssh))
 
