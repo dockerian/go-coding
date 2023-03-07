@@ -618,19 +618,29 @@ function timeout() {
 
 ############################################################
 # function: Use `touch -d` to apply all sub-dirs recursively
-# Params: $1 a source dir
+# Params: $1 a source dir path
+#         $2 optional depth
 ############################################################
 function touchdbyfile() {
   if [[ ! -d "$1" ]]; then return 1; fi
   local _dir_=${1%/}
+  local _lvl_=$((${2:-0} - 1))
+  local _dig_="yes"
   local _old_=$(date '+%Y-%m-%d %H:%M:%S' -r "$1" 2>/dev/null)
   local _new_=''
   local _sub_=''
   local _ymd_=''
 
+  if [[ ${_lvl_} == 0 ]] || [[ ${_lvl_} == -255 ]]; then
+    # Do NOT echo. Should be handled by upper caller.
+    _dig_="no"
+  fi
+
   for f in "${_dir_}"/*; do
     if [[ -d "$f" ]]; then
-      touchdbyfile "$f"
+      if [[ "${_dig_}" == "yes" ]]; then
+        touchdbyfile "$f" ${_lvl_}
+      fi
       _new_=$(date '+%Y-%m-%d %H:%M:%S' -r "$f" 2>/dev/null)
       if [[ "${_new_}" > "${_sub_}" ]]; then
         _sub_=${_new_}
@@ -662,22 +672,27 @@ function touchdbyfile() {
 # Params: a file/dir, or FMT "%Y-%m-%d %H:%M"
 ############################################################
 function touchd() {
-  local _datetime_=`date +"%Y-%m-%d %H:%M"`
+  local _awk_="awk '{print \$6,\$7}'"
+  local _arg_='-l --time-style=long-iso'
+  local _datetime_='date +"%Y-%m-%d %H:%M"'
   local _dt_regex_='^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]( [0-9][0-9]:[0-9][0-9])?$'
   local _date_iso_=''
   local _dir_file_=''
+  local _dirdepth_=-1
 
   # echo "---args: $@"
   for p in "$@"; do
-    if [[ "$p" =~ ${_dt_regex_} ]]; then
-      _date_iso_="$p"
-    elif [[ -e "$p" ]]; then
+    if [[ -e "$p" ]]; then
       if [[ "${_date_iso_}" == "" ]] && [[ ! "" == "${_dir_file_}" ]]; then
-        _date_iso_=$(date '+%Y-%m-%d %H:%M:%S' -r "$p" 2>/dev/null)
+        _date_iso_=`${_datetime_} -r "$p"`
       fi
       if [[ "${_dir_file_}" == "" ]]; then
         _dir_file_="${p%/}"
       fi
+    elif [[ "$p" =~ ${_dt_regex_} ]]; then
+      _date_iso_="$p"
+    elif [[ $p =~ ([/-]*L?)([0-9]{1,3}) ]]; then
+      _dirdepth_=${BASH_REMATCH[2]}
     fi
   done
 
@@ -687,9 +702,14 @@ function touchd() {
     touch -d "${_date_iso_}" "${_dir_file_}" && echo OK
     fi
   elif [[ -d "${_dir_file_}" ]]; then
-    touchdbyfile "${_dir_file_}"
+    touchdbyfile "${_dir_file_}" ${_dirdepth_}
   else
-    echo "no-op"
+    echo ""
+    echo "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+    echo "┃ Syntax:                                         ┃"
+    echo "┃ touchd <dir> ['yyyy-mm-dd HH:MM'] [-L][<depth>] ┃"
+    echo "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    echo ""
   fi
 }
 
