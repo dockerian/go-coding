@@ -742,11 +742,13 @@ function ydlo() {
   local _sarg_=""
   local _earg_=""
   local _snum_=""
+  local _bmkv_="--merge-output-format mkv"
+  local _bmp4_="-f bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4"
   local _enum_=""
   local _rvpl_=""
   # default sequence and extension for playlist
   local _extn_='-%(playlist_index)s.%(ext)s'
-  local _ycmd_="${_tool_} -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4"
+  local _ycmd_="${_tool_}"
   # echo "---args: $@"
   for p in "$@"; do
     echo "# $p"
@@ -758,6 +760,10 @@ function ydlo() {
       if [[ $p -gt ${_snum_} ]]; then _enum_="$p";
       else
         _enum_=$((${_snum_} + $p - 1)); fi; fi
+    elif [[ "$p" =~ ^[/-]{1,2}mkv ]]; then
+      _ycmd_="${_tool_} ${_bmkv_}"
+    elif [[ "$p" =~ ^[/-]{1,2}mp4 ]]; then
+      _ycmd_="${_tool_} ${_bmp4_}"
     elif [[ "$p" =~ ^[/-]{1,2}[rR] ]]; then
       _rvpl_="--playlist-reverse"
     else
@@ -765,11 +771,19 @@ function ydlo() {
     fi
   done
 
-  if [[ "${_href_}" == "" ]]; then return; fi
+  if [[ "${_href_}" == "" ]]; then
+    echo "┏━━━━━━━━┓"
+    echo "┃ Syntax ┃"
+    echo "┗━━━━━━━━┛"
+    echo "  ${FUNCNAME[0]} [-r] [-mkv|mp4] <http_url> [<start#> [<end#>]]"
+    echo ""
+    return
+  fi
 
   echo "----------"
   echo " name: ${_name_}"
   echo " href: ${_href_}"
+  echo " args: ${_ycmd_} ${_rvpl_}"
   if [[ "${_href_}" =~ playlist ]]; then
     if [[ "${_name_}" =~ .*"-".* ]]; then
       _extn_='%(playlist_index)s.%(ext)s'
