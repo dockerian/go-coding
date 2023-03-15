@@ -50,6 +50,8 @@ alias cdp='cd -P .'
 alias clean='find . -name *.DS_Store -delete 2>/dev/null; find . -name Thumbs.db -delete 2>/dev/null'
 alias cls='clear && printf "\e[3J"'
 alias conv='iconv -f windows-1252 -t utf-8'
+alias dater='date +"%Y-%m-%d %H:%M:%S" -r'
+alias dated='date +"%Y-%m-%d %H:%M:%S" -d'
 alias dh='du -hs'
 alias dir='ls -al '
 alias dsclean='sudo find . -name Thumbs.db -delete -name *.DS_Store -type f -delete'
@@ -764,12 +766,13 @@ function ydlo() {
   local _earg_=""
   local _snum_=""
   local _bmkv_="--merge-output-format mkv"
+  local _bmp3_="-f bestaudio -x --audio-format mp3 --audio-quality 0"
   local _bmp4_="-f bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4"
   local _enum_=""
   local _rvpl_=""
   # default sequence and extension for playlist
   local _extn_='-%(playlist_index)s.%(ext)s'
-  local _ycmd_="${_tool_}"
+  local _ycmd_="${_tool_} ${_bmp4_}"
   # echo "---args: $@"
   for p in "$@"; do
     echo "# $p"
@@ -783,8 +786,12 @@ function ydlo() {
         _enum_=$((${_snum_} + $p - 1)); fi; fi
     elif [[ "$p" =~ ^[/-]{1,2}mkv ]]; then
       _ycmd_="${_tool_} ${_bmkv_}"
+    elif [[ "$p" =~ ^[/-]{1,2}mp3 ]]; then
+      _ycmd_="${_tool_} ${_bmp3_}"
     elif [[ "$p" =~ ^[/-]{1,2}mp4 ]]; then
       _ycmd_="${_tool_} ${_bmp4_}"
+    elif [[ "$p" =~ ^[/-]{1,2}best ]]; then
+      _ycmd_="${_tool_}"
     elif [[ "$p" =~ ^[/-]{1,2}[rR] ]]; then
       _rvpl_="--playlist-reverse"
     else
@@ -796,7 +803,7 @@ function ydlo() {
     echo "┏━━━━━━━━┓"
     echo "┃ Syntax ┃"
     echo "┗━━━━━━━━┛"
-    echo "  ${FUNCNAME[0]} [-r] [-mkv|mp4] <http_url> [<start#> [<end#>]]"
+    echo "  ${FUNCNAME[0]} [-r] [-best|mkv|mp4] <youtube_url> [<start#> [<end#>]]"
     echo ""
     return
   fi
