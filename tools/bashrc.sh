@@ -668,6 +668,23 @@ function touchdbyfile() {
 }
 
 ############################################################
+# function: Use `touch -d` to apply all basepath recursively
+# Params: $1 a source dir paths
+############################################################
+function touchdpath {
+  if [[ ! -d "$1" ]]; then return 1; fi
+  local _spath_="$( cd "$( echo "${1}" )" && pwd )"
+  local _sbase_="$( cd "${_spath_}/.." && pwd )"
+  local _slash_=${_spath_//[!\/]}
+  local _depth_=${#_slash_}
+
+  if [[ ${_depth_} -gt 2 ]]; then
+    touchdbyfile "${_spath_}" 1
+    touchdpath "${_sbase_}"
+  fi
+}
+
+############################################################
 # function: Use `touch -d` on file/dir
 # Params: a file/dir, or FMT "%Y-%m-%d %H:%M"
 ############################################################
@@ -702,7 +719,11 @@ function touchd() {
     touch -d "${_date_iso_}" "${_dir_file_}" && echo OK
     fi
   elif [[ -d "${_dir_file_}" ]]; then
-    touchdbyfile "${_dir_file_}" ${_dirdepth_}
+    if [[ ${_dirdepth_} -ne 0 ]]; then
+      touchdbyfile "${_dir_file_}" ${_dirdepth_}
+    else
+      touchdpath "${_dir_file_}"
+    fi
   else
     echo ""
     echo "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
