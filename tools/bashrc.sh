@@ -47,7 +47,7 @@ alias bashrc='source ~/.bash_profile; title ${PWD##*/};'
 alias brewery='brew update && brew upgrade && brew cleanup'
 alias bu='brew upgrade; brew update --debug --verbose'
 alias cdp='cd -P .'
-alias clean='find . -name *.DS_Store -delete 2>/dev/null; find . -name Thumbs.db -delete 2>/dev/null'
+alias clean='find . -type f \( -name *.DS_Store -o -name Thumbs.db \) -delete 2>/dev/null'
 alias cls='clear && printf "\e[3J"'
 alias conv='iconv -f windows-1252 -t utf-8'
 alias dater='date +"%Y-%m-%d %H:%M:%S" -r'
@@ -622,15 +622,18 @@ function timeout() {
 # function: Use `touch -d` to apply all sub-dirs recursively
 # Params: $1 a source dir path
 #         $2 optional depth
+#         $3 options
 ############################################################
 function touchdbyfile() {
   if [[ ! -d "$1" ]]; then return 1; fi
   local _dir_=${1%/}
   local _lvl_=$((${2:-0} - 1))
+  local _opt_=${3%/}
   local _dig_="yes"
   local _old_=$(date '+%Y-%m-%d %H:%M:%S' -r "$1" 2>/dev/null)
-  local _new_=''
+  local _cur_=''
   local _sub_=''
+  local _new_=''
   local _ymd_=''
 
   if [[ ${_lvl_} == 0 ]] || [[ ${_lvl_} == -255 ]]; then
@@ -641,32 +644,55 @@ function touchdbyfile() {
   for f in "${_dir_}"/*; do
     if [[ -d "$f" ]]; then
       if [[ "${_dig_}" == "yes" ]]; then
-        touchdbyfile "$f" ${_lvl_}
+        touchdbyfile "$f" ${_lvl_} ${_opt_}
       fi
-      _new_=$(date '+%Y-%m-%d %H:%M:%S' -r "$f" 2>/dev/null)
-      if [[ "${_new_}" > "${_sub_}" ]]; then
-        _sub_=${_new_}
+    fi
+    if [[ -d "$f" ]]; then
+      _ymd_=${_sub_}
+    else
+      _ymd_=${_cur_}
+    fi
+    _new_=$(date '+%Y-%m-%d %H:%M:%S' -r "$f" 2>/dev/null)
+    if [[ "${_opt_}" == "--asc-sort" ]]; then
+      if [[ "${_ymd_}" == "" ]] || \
+         [[ "${_new_}" < "${_ymd_}" ]] ; then
+        _ymd_=${_new_}
       fi
     else
-      _new_=$(date '+%Y-%m-%d %H:%M:%S' -r "$f" 2>/dev/null)
       if [[ "${_new_}" > "${_ymd_}" ]]; then
         _ymd_=${_new_}
       fi
     fi
+    if [[ -d "$f" ]]; then
+      _sub_=${_ymd_}
+    else
+      _cur_=${_ymd_}
+    fi
   done
 
-  _ymd_=${_ymd_:-${_sub_}}
-  if [[ "${_ymd_}" == "" ]]; then return 2; fi
+  _ymd_=${_cur_:-${_sub_:-${_new_:-${_old_}}}}
 
-  echo ""
+  # echo "_dir_=${_dir_}"
+  # echo "_ymd_=${_ymd_}"
+  # echo "_old_=${_old_} ,_new_=${_new_}"
+  # echo "_cur_=${_cur_} ,_sub_=${_sub_}"
+  # echo "_opt_=${_opt_}"
+
+  local _act_=""
   if [[ "${_ymd_}" == "${_old_}" ]]; then
-    echo Matching ${_ymd_} on ${_dir_}
-  elif [[ "${_ymd_}" > "${_old_}" ]]; then
-    echo Reserved ${_old_} on ${_dir_}
-  else
+    _act_="Matching ${_ymd_} on ${_dir_}"
+  fi
+  if [[ "${_ymd_}" > "${_old_}" ]] && \
+     [[ "${_opt_}" == "" ]]; then
+      _act_="Reserved ${_old_} on ${_dir_}"
+  fi
+  if [[ "${_act_}" == "" ]]; then
     echo Applying ${_ymd_} to ${_dir_} [${_old_}]
     touch -d "${_ymd_}" "${_dir_}"
+  else
+    echo ${_act_}
   fi
+  echo ""
 }
 
 ############################################################
@@ -677,12 +703,14 @@ function touchdpath {
   if [[ ! -d "$1" ]]; then return 1; fi
   local _spath_="$( cd "$( echo "${1}" )" && pwd )"
   local _sbase_="$( cd "${_spath_}/.." && pwd )"
+  local _upper_="$( cd "${_sbase_}/.." && pwd )"
   local _slash_=${_spath_//[!\/]}
   local _depth_=${#_slash_}
+  local _order_=$2
 
   if [[ ${_depth_} -gt 2 ]]; then
-    touchdbyfile "${_spath_}" 1
-    touchdpath "${_sbase_}"
+    touchdbyfile "${_spath_}" 1 ${_order_}
+    touchdpath "${_sbase_}" ${_order_}
   fi
 }
 
@@ -693,45 +721,79 @@ function touchdpath {
 function touchd() {
   local _awk_="awk '{print \$6,\$7}'"
   local _arg_='-l --time-style=long-iso'
-  local _datetime_='date +"%Y-%m-%d %H:%M"'
-  local _dt_regex_='^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]( [0-9][0-9]:[0-9][0-9])?$'
-  local _date_iso_=''
+  local _asc_sort_=''
+  local _fmt_date_='%Y-%m-%d %H:%M'
+  local _fmt_regx_='[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]( [0-9][0-9]:[0-9][0-9])?'
+  local _iso_date_=''
+  local _dir_from_=''
   local _dir_file_=''
+  local _dir_path_=''
   local _dirdepth_=-1
 
   # echo "---args: $@"
   for p in "$@"; do
-    if [[ -e "$p" ]]; then
-      if [[ "${_date_iso_}" == "" ]] && [[ ! "" == "${_dir_file_}" ]]; then
-        _date_iso_=`${_datetime_} -r "$p"`
-      fi
-      if [[ "${_dir_file_}" == "" ]]; then
+    if [[ "$p" =~ ^${_fmt_regx_}$ ]]; then
+      _iso_date_="$p"
+    elif [[ -e "$p" ]]; then
+      if [[ -d "$p" ]]; then
+        if [[ "${_dir_path_}" == "" ]]; then
+          _dir_path_="${p%/}"
+        fi
+      else # non-directory
+        # echo "File: $p"
+        if [[ "${_iso_date_}" == "" ]] && \
+           [[ "${_dir_from_}" == "" ]]; then
+          _iso_date_=`date +"${_fmt_date_}" -r "$p"`
+          _dir_from_="${p%/}"
+        fi
         _dir_file_="${p%/}"
       fi
-    elif [[ "$p" =~ ${_dt_regex_} ]]; then
-      _date_iso_="$p"
+      # if [[ $p =~ (${_fmt_regx_}) ]] && \
+      #    [[ "${_iso_date_}" == "" ]]; then
+      #   _iso_date_="${BASH_REMATCH[1]} 00:00"
+      # fi
     elif [[ $p =~ ([/-]*L?)([0-9]{1,3}) ]]; then
       _dirdepth_=${BASH_REMATCH[2]}
+    elif [[ "$p" =~ [/-]{1,2}[vV] ]]; then
+      _asc_sort_='--asc-sort'
+    elif [[ "$p" =~ [/-]{1,2}[fF] ]]; then
+      if [[ "${_asc_sort_}" == "" ]]; then
+        _asc_sort_='--always'
+      fi
     fi
   done
 
-  if [[ "${_date_iso_}" =~ ${_dt_regex_} ]]; then
-  if [[ -e "${_dir_file_}" ]]; then
-    echo "Applying '${_date_iso_}' on ${_dir_file_}"
-    touch -d "${_date_iso_}" "${_dir_file_}" && echo OK
+  echo ""
+  # echo "Date: ${_iso_date_}"
+  if [[ "${_iso_date_}" =~ ${_fmt_regx_} ]]; then
+    if [[ -d "${_dir_path_}" ]]; then
+      echo "Applying '${_iso_date_}' on ${_dir_path_}/*"
+      touch -d "${_iso_date_}" "${_dir_path_}"/* && echo OK
+    elif [[ -e "${_dir_file_}" ]]; then
+      echo "Applying '${_iso_date_}' to ${_dir_file_}"
+      touch -d "${_iso_date_}" "${_dir_file_}" && echo OK
     fi
-  elif [[ -d "${_dir_file_}" ]]; then
+  elif [[ -d "${_dir_path_}" ]]; then
+    if [[ ! "${_asc_sort_}" == "" ]]; then
+      echo "+-----------------+"
+      echo " Sorting by oldest "
+      echo "+-----------------+"
+    fi
+    local _dir_base_="$( cd "${_dir_path_}/.." && pwd )"
     if [[ ${_dirdepth_} -ne 0 ]]; then
-      touchdbyfile "${_dir_file_}" ${_dirdepth_}
+      touchdbyfile "${_dir_path_}" ${_dirdepth_} ${_asc_sort_}
     else
-      touchdpath "${_dir_file_}"
+      touchdpath "${_dir_path_}" ${_asc_sort_}
     fi
   else
+    echo "\$ touchd $@ [args]"
     echo ""
-    echo "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
-    echo "┃ Syntax:                                         ┃"
-    echo "┃ touchd <dir> ['yyyy-mm-dd HH:MM'] [-L][<depth>] ┃"
-    echo "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    echo "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓"
+    echo "┃ Syntax:                                          ┃"
+    echo "┃  touchd <file>|'yyyy-mm-dd HH:MM' <dir>|<file>   ┃"
+    echo "┃     or:                                          ┃"
+    echo "┃  touchd <dir> [-L<depth>] [-v]                   ┃"
+    echo "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     echo ""
   fi
 }
