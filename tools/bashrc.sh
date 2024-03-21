@@ -728,6 +728,8 @@ function touchd() {
   local _dir_from_=''
   local _dir_file_=''
   local _dir_path_=''
+  local _grp_dirs_=()
+  local _grp_file_=()
   local _dirdepth_=-1
 
   # echo "---args: $@"
@@ -736,16 +738,15 @@ function touchd() {
       _iso_date_="$p"
     elif [[ -e "$p" ]]; then
       if [[ -d "$p" ]]; then
-        if [[ "${_dir_path_}" == "" ]]; then
-          _dir_path_="${p%/}"
-        fi
+        _grp_dirs_+=("${p%/}")
+        _dir_path_="${p%/}"
+      elif [[ "${_iso_date_}" == "" ]] && \
+         [[ "${_dir_from_}" == "" ]]; then
+        _iso_date_=`date +"${_fmt_date_}" -r "$p"`
+        _dir_from_="${p%/}"
       else # non-directory
         # echo "File: $p"
-        if [[ "${_iso_date_}" == "" ]] && \
-           [[ "${_dir_from_}" == "" ]]; then
-          _iso_date_=`date +"${_fmt_date_}" -r "$p"`
-          _dir_from_="${p%/}"
-        fi
+        _grp_file_+=("${p%/}")
         _dir_file_="${p%/}"
       fi
       # if [[ $p =~ (${_fmt_regx_}) ]] && \
@@ -766,9 +767,23 @@ function touchd() {
   echo ""
   # echo "Date: ${_iso_date_}"
   if [[ "${_iso_date_}" =~ ${_fmt_regx_} ]]; then
-    if [[ -d "${_dir_path_}" ]]; then
+    echo "Fetched: '${_iso_date_}' from ${_dir_from_}"
+    if [[ ${#_grp_dirs_[@]} -gt 1 ]]; then
+      echo "Applying '${_iso_date_}' on dirs..."
+      for _dir_ in "${_grp_dirs_[@]}"; do
+        echo "Applying '${_iso_date_}' on ${_dir_}"
+        touch -d "${_iso_date_}" "${_dir_}"
+      done
+    elif [[ -d "${_dir_path_}" ]]; then
       echo "Applying '${_iso_date_}' on ${_dir_path_}/*"
       touch -d "${_iso_date_}" "${_dir_path_}"/* && echo OK
+    fi
+    if [[ ${#_grp_file_[@]} -gt 1 ]]; then
+      echo "Applying '${_iso_date_}' to files..."
+      for _file_ in "${_grp_file_[@]}"; do
+        echo "Applying '${_iso_date_}' to ${_file_}"
+        touch -d "${_iso_date_}" "${_file_}"
+      done
     elif [[ -e "${_dir_file_}" ]]; then
       echo "Applying '${_iso_date_}' to ${_dir_file_}"
       touch -d "${_iso_date_}" "${_dir_file_}" && echo OK
@@ -779,12 +794,16 @@ function touchd() {
       echo " Sorting by oldest "
       echo "+-----------------+"
     fi
-    local _dir_base_="$( cd "${_dir_path_}/.." && pwd )"
-    if [[ ${_dirdepth_} -ne 0 ]]; then
-      touchdbyfile "${_dir_path_}" ${_dirdepth_} ${_asc_sort_}
-    else
-      touchdpath "${_dir_path_}" ${_asc_sort_}
-    fi
+    echo "Recuring on ${#_grp_dirs_[@]} dir(s)..."
+    echo ""
+    for _dir_ in "${_grp_dirs_[@]}"; do
+      local _dir_base_="$( cd "${_dir_}/.." && pwd )"
+      if [[ ${_dirdepth_} -ne 0 ]]; then
+        touchdbyfile "${_dir_}" ${_dirdepth_} ${_asc_sort_}
+      else
+        touchdpath "${_dir_}" ${_asc_sort_}
+      fi
+    done
   else
     echo "\$ touchd $@ [args]"
     echo ""
