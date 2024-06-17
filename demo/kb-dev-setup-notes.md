@@ -432,7 +432,7 @@
 	# optionally to reset defaults if clearing preference does not work
 	defaults delete org.videolan.vlc
 	```
-	
+
   * Git/GitHub
     - SSH (see [SSH keys](#keys-ssh))
 
@@ -966,6 +966,7 @@
     - [GIMP](https://www.gimp.org/downloads/)
     - [Pixlr](https://pixlr.com/desktop)
     - [QuickLook for Webp](https://github.com/emin/WebPQuickLook)
+    - Raw editors: [darktable](https://www.darktable.org/) | [RawTherapee](https://rawtherapee.com/)
     - [XnViewMP](http://www.xnview.com/)
   * Movie Editors
     - http://filmora.wondershare.com/video-editor/free-video-editing-software-mac.html
