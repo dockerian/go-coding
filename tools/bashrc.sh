@@ -849,6 +849,7 @@ function ydlo() {
   local _bmkv_="--merge-output-format mkv"
   local _bmp3_="-f bestaudio -x --audio-format mp3 --audio-quality 0"
   local _bmp4_="-f bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4"
+  local _subt_="--write-subs --sub-format srt"
   local _enum_=""
   local _rvpl_=""
   # default sequence and extension for playlist
@@ -873,7 +874,10 @@ function ydlo() {
       _ycmd_="${_tool_} ${_bmp4_}"
     elif [[ "$p" =~ ^[/-]{1,2}best ]]; then
       _ycmd_="${_tool_}"
+    elif [[ "$p" =~ ^[/-]{1,2}nosub ]]; then
+      _subt_=""
     elif [[ "$p" =~ ^[/-]{1,2}[rR] ]]; then
+      _extn_='-%(playlist_autonumber)02d.%(ext)s'
       _rvpl_="--playlist-reverse"
     else
       _name_="$p"
@@ -892,25 +896,39 @@ function ydlo() {
   echo "----------"
   echo " name: ${_name_}"
   echo " href: ${_href_}"
-  echo " args: ${_ycmd_} ${_rvpl_}"
   if [[ "${_href_}" =~ playlist ]]; then
     if [[ "${_name_}" =~ .*"-".* ]]; then
       _extn_='%(playlist_index)s.%(ext)s'
+      if [[ ! "${_rvpl_}" == "" ]]; then
+        _extn_='%(playlist_autonumber)02d.%(ext)s'
+      fi
     fi
     if [[ ! "${_snum_}" == "" ]]; then
-      _sarg_="--playlist-start ${_snum_}";
+      _sarg_="--autonumber-start ${_snum_}"
+      _sarg_="--playlist-start ${_snum_} ${_sarg_}"
+      if [[ ! "${_enum_}" == "" ]]; then
+        local _xend_=$((${_enum_} - ${_snum_} + 1))
+        _sarg_="--autonumber-start ${_snum_}"
+        _sarg_="--autonumber-size ${_xend_} ${_sarg_}"
+        _sarg_="--playlist-end ${_xend_} ${_sarg_}"
+        _sarg_="--playlist-start 1 ${_sarg_}"
+      fi
       echo "start: ${_snum_}"
     fi
     if [[ ! "${_enum_}" == "" ]]; then
-      _earg_="--playlist-end ${_enum_}"
-      echo "  end: ${_enum_}"
+      if [[ "${_rvpl_}" == "" ]]; then
+        _earg_="--playlist-end ${_enum_}"
+        echo "  end: ${_enum_}"
+      fi
     fi
-    if [[ ! "${_rvpl_}" == "" ]]; then
-      _args_=$(echo "${_rvpl_} ${_args_}"|xargs)
-    fi
+    _args_=$(echo "${_args_} ${_subt_} ${_rvpl_}"|xargs)
   else # not from playlist, no need sequence
+    _args_=$(echo "${_args_} ${_subt_}"|xargs)
     _extn_='.%(ext)s'
   fi
+  echo " args: ${_ycmd_}"
+  echo "       ${_args_}"
+  echo "       ${_sarg_} ${_earg_}"
   echo "----------"
 
   if [[ "${_name_}" == "" ]]; then
@@ -922,6 +940,7 @@ function ydlo() {
 
   # download with name
   echo Downloading "${_name_}""${_extn_}" ...
+  echo ""
   ${_ycmd_} \
   ${_sarg_} ${_earg_} ${_args_} \
   -o "${_name_}""${_extn_}" \
