@@ -50,6 +50,7 @@ alias cdp='cd -P .'
 alias clean='find . -type f \( -name *.DS_Store -o -name Thumbs.db \) -delete 2>/dev/null'
 alias cls='clear && printf "\e[3J"'
 alias conv='iconv -f windows-1252 -t utf-8'
+alias convgbk='iconv -f gbk -t utf-8'
 alias dater='date +"%Y-%m-%d %H:%M:%S" -r'
 alias dated='date +"%Y-%m-%d %H:%M:%S" -d'
 alias dh='du -hs'
@@ -64,6 +65,7 @@ alias fixgrayedout='xattr -d com.apple.FinderInfo'
 alias fixmod='for f in *; do if [[ -d "$f" ]] || [[ "${f##*.}" == "sh" ]]; then chmod 755 "$f"; else chmod 644 "$f"; fi; done'
 alias fixrar='/Applications/rar/rar r'
 alias fixunzip='ditto -V -x -k --sequesterRsrc ' # $1.zip $2/dir'
+alias hide='chflags hidden'
 alias hs='history | grep'
 alias ip='echo $(ipconfig getifaddr en0) $(dig +short myip.opendns.com @resolver1.opendns.com)'
 alias ll='ls -al'
@@ -84,10 +86,12 @@ alias rarx='unrar x -kb'
 alias setp='(set -o posix; set|grep -v _xspec)'
 alias showhidden='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
 alias si='echo -e $(for k in ~/.ssh/*.pub;do echo -e "\\\n$(ssh-keygen -E md5 -lf $k) - $k";done)|sort -k 3; echo;echo "--- Added identities ---"; ssh-add -E md5 -l|sort -k 3'
+alias sshv='ssh -v -o HostKeyAlgorithms=ssh-dss -o KexAlgorithms=diffie-hellman-group14-sha1'
 alias ver='echo -e "$(uname -a)"; echo ""; echo -e "$(bash --version)"'
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC --width 800 --height 600 --aspect-ratio 16x9 &'
 alias ydl='youtube-dl -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' # -o '%(playlist_index)s.%(ext)s'
 alias t='title ${PWD##*/}'
+
 
 # docker-machine
 export DOCKER_EMAIL=''
@@ -631,6 +635,14 @@ function touchdbyfile() {
   local _opt_=${3%/}
   local _dig_="yes"
   local _old_=$(date '+%Y-%m-%d %H:%M:%S' -r "$1" 2>/dev/null)
+  local _now_=$(date '+%Y-%m-%d %H:%M:%S')
+  local _old_sec_=`date --date="${_old_}" +%s`
+  local _now_sec_=`date --date="${_now_}" +%s`
+  local _sec_=$((${_now_sec_} - ${_old_sec_}))
+  local _num_=${_neardays_:-60}
+  local _ddf_=$((${_sec_#-}/86400 - ${_num_}))
+  local _dth_=$((${_lvl_} - ${_dirdepth_}))
+  local _act_=""
   local _cur_=''
   local _sub_=''
   local _new_=''
@@ -640,13 +652,31 @@ function touchdbyfile() {
     # Do NOT echo. Should be handled by upper caller.
     _dig_="no"
   fi
-
-  for f in "${_dir_}"/*; do
-    if [[ -d "$f" ]]; then
-      if [[ "${_dig_}" == "yes" ]]; then
-        touchdbyfile "$f" ${_lvl_} ${_opt_}
+  if [[ "${_dth_#-}" -gt 1 ]]; then
+    if [[ ${_act_mode_} =~ --quick ]]; then
+      if [[ ${_ddf_} -gt 0 ]]; then
+        if [[ "${_day_skip_}" == "" ]]; then
+          echo ""
+        fi
+        _day_skip_="${_ddf_}"
+      elif [[ ! "${_day_skip_}" == "" ]]; then
+        _day_skip_=""
       fi
     fi
+  fi
+
+  for d in "${_dir_}"/*; do
+    if [[ -d "$d" ]] && [[ "${_dig_}" == "yes" ]]; then
+      touchdbyfile "$d" ${_lvl_} ${_opt_}
+    fi
+  done
+
+  if [[ ! "${_day_skip_}" == "" ]]; then
+    echo "Skipping ${_old_} beyond ${_num_} days on ${_dir_}"
+    return ${_ddf_}
+  fi
+
+  for f in "${_dir_}"/*; do
     if [[ -d "$f" ]]; then
       _ymd_=${_sub_}
     else
@@ -678,7 +708,6 @@ function touchdbyfile() {
   # echo "_cur_=${_cur_} ,_sub_=${_sub_}"
   # echo "_opt_=${_opt_}"
 
-  local _act_=""
   if [[ "${_ymd_}" == "${_old_}" ]]; then
     _act_="Matching ${_ymd_} on ${_dir_}"
   fi
@@ -686,13 +715,13 @@ function touchdbyfile() {
      [[ "${_opt_}" == "" ]]; then
       _act_="Reserved ${_old_} on ${_dir_}"
   fi
+  echo ""
   if [[ "${_act_}" == "" ]]; then
     echo Applying ${_ymd_} to ${_dir_} [${_old_}]
     touch -d "${_ymd_}" "${_dir_}"
   else
     echo ${_act_}
   fi
-  echo ""
 }
 
 ############################################################
@@ -722,15 +751,18 @@ function touchd() {
   local _awk_="awk '{print \$6,\$7}'"
   local _arg_='-l --time-style=long-iso'
   local _asc_sort_=''
+  local _act_mode_='--quick'
+  local _neardays_=${NEARDAYS:-60}
+  local _day_skip_=''
   local _fmt_date_='%Y-%m-%d %H:%M'
   local _fmt_regx_='[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]( [0-9][0-9]:[0-9][0-9])?'
   local _iso_date_=''
   local _dir_from_=''
   local _dir_file_=''
   local _dir_path_=''
+  local _dirdepth_=${DIRDEPTH:-3}
   local _grp_dirs_=()
   local _grp_file_=()
-  local _dirdepth_=-1
 
   # echo "---args: $@"
   for p in "$@"; do
@@ -753,16 +785,21 @@ function touchd() {
       #    [[ "${_iso_date_}" == "" ]]; then
       #   _iso_date_="${BASH_REMATCH[1]} 00:00"
       # fi
-    elif [[ $p =~ ([/-]*L?)([0-9]{1,3}) ]]; then
+    elif [[ "$p" =~ ([/-]{1,2}L?)([0-9]{1,3}) ]]; then
       _dirdepth_=${BASH_REMATCH[2]}
+    elif [[ "$p" =~ ([/-]{1,2}N)([1-9][0-9]{0,3}) ]]; then
+      _neardays_=${BASH_REMATCH[2]}
     elif [[ "$p" =~ [/-]{1,2}[vV] ]]; then
       _asc_sort_='--asc-sort'
     elif [[ "$p" =~ [/-]{1,2}[fF] ]]; then
-      if [[ "${_asc_sort_}" == "" ]]; then
-        _asc_sort_='--always'
-      fi
+      _act_mode_='--always'
+    elif [[ "$p" =~ [/-]{1,2}[kK] ]]; then
+      _act_mode_='--quick'
     fi
   done
+  if [[ "${_dirdepth_}" == "0" ]]; then
+    _act_mode_='--always'
+  fi
 
   echo ""
   # echo "Date: ${_iso_date_}"
@@ -794,8 +831,10 @@ function touchd() {
       echo " Sorting by oldest "
       echo "+-----------------+"
     fi
-    echo "Recuring on ${#_grp_dirs_[@]} dir(s)..."
-    echo ""
+    if [[ ${_act_mode_} =~ --quick ]]; then
+      _act_mode_="${_act_mode_} near ${_neardays_} days, depth: ${_dirdepth_}"
+    fi
+    echo "Recuring on ${#_grp_dirs_[@]} dir(s) ... ${_act_mode_}"
     for _dir_ in "${_grp_dirs_[@]}"; do
       local _dir_base_="$( cd "${_dir_}/.." && pwd )"
       if [[ ${_dirdepth_} -ne 0 ]]; then
@@ -815,6 +854,7 @@ function touchd() {
     echo "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     echo ""
   fi
+  echo ""
 }
 
 ############################################################
@@ -904,14 +944,14 @@ function ydlo() {
       fi
     fi
     if [[ ! "${_snum_}" == "" ]]; then
-      _sarg_="--autonumber-start ${_snum_}"
+      _sarg_="--autonumber-start ${_snum_} ${_sarg_}"
       _sarg_="--playlist-start ${_snum_} ${_sarg_}"
       if [[ ! "${_enum_}" == "" ]]; then
         local _xend_=$((${_enum_} - ${_snum_} + 1))
-        _sarg_="--autonumber-start ${_snum_}"
+        _sarg_="--autonumber-start ${_snum_} ${_sarg_}"
         _sarg_="--autonumber-size ${_xend_} ${_sarg_}"
         _sarg_="--playlist-end ${_xend_} ${_sarg_}"
-        _sarg_="--playlist-start 1 ${_sarg_}"
+        _sarg_="--playlist-start ${_snum_} ${_sarg_}"
       fi
       echo "start: ${_snum_}"
     fi
