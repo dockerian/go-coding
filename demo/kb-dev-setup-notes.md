@@ -8,6 +8,8 @@
 
   * [Mac OS X Restore](#mac-os-x-restore)
   * [Setup on Mac OS X](#setup-mac-os)
+    - [Keyboard Shortcuts](#keys)
+    - [Dev Env Example](#devenv)
   * [Software Install on Mac OS X](#software-install-mac-os)
   * [Software Install on Ubuntu](#software-install-ubuntu)
     - [Command lines](#command-lines)
@@ -20,7 +22,7 @@
 <br/><a name="mac-os-x-restore"></a>
 ## Mac OS X Restore
   * Recovery by holding [Option] key (https://support.apple.com/kb/DL1433)
-  * Re-install OS X by holding [`Command+R`] during restart
+  * Re-install OS X by holding [`Command+R`] during restart from [macOS Recovery](https://support.apple.com/en-us/102518)
   * System Integrity protection
     - Boot with holding [`Command+R`]
     - Launch Terminal from Utilities menu
@@ -48,24 +50,28 @@
     - And retry update in App Store
 
   * Apple Startup key combinations for Mac OS
-    - see https://support.apple.com/en-us/HT201255
-    - `Eject (⏏)` or `F12`: Eject removable media, such as an optical disc.
-    - `Command-R`: Recovery mode (reinstalling the latest MacOS that was installed on your Mac), or use `Option-Command-R` (upgrading to the latest MacOS that is compatible) or `Shift-Option-Command-R` (reinstalling the macOS that came with your Mac, or the version closest to it that is still available) to start up from MacOS Recovery over the Internet.
-    - `Command-S`: Start up in single-user mode.
+    - See [Apple Support](https://support.apple.com/en-us/102603)
+    - Recovery mode (start up from MacOS Recovery over the Internet)
+      * `Command-R`: reinstalling the latest MacOS installed on Mac.
+      * `Option-Command-R`: upgrading to the latest MacOS that is compatible.
+      * `Shift-Option-Command-R`: reinstalling the macOS that came with Mac, or the version closest to it that is still available.
+    - `Shift(⇧)`: Safe mode.
+    - `Command-S`: Single-user mode.
     - `Command-V`: Start up in verbose mode.
     - `C`: Start up from an available CD, DVD, or USB drive
-    - `D`: Start up from the built-in Apple Hardware Test or Apple Diagnostics
-    - `N`: Start up from a compatible NetBoot server, if available. To use the default boot image on the NetBoot server, hold down Option-N instead.
-    - `Option (⌥)`: Startup Manager, to choose other startup disk
+    - `D`: Start [Apple Diagnostics](https://support.apple.com/en-us/102550), or [`Option-D`] over the internet.
+    - `N`: Start up from a [compatible](https://support.apple.com/en-us/101676) NetBoot server. To use the default boot image on the NetBoot server, hold down [`Option-N`] instead.
+    - `Option (⌥)` or [`Alt`]: [Startup Manager](https://support.apple.com/guide/mac-help/change-your-mac-startup-disk-mchlp1034/mac), to choose other startup disk.
     - `Option-Command (⌘)-P-R`:	Reset NVRAM or PRAM.
-    - `Shift(⇧)`: Safe mode
-    - `T`: Start up in target disk mode.
+    - `T`: Start up in [target disk mode](https://support.apple.com/guide/mac-help/transfer-files-mac-computers-target-disk-mode-mchlp1443/mac).
     - `X`: Start up from startup disk (e.g. a Windows partition), or use Startup Manager.
+    - `Eject (⏏)` or [`F12`]: Eject removable media, such as an optical disc.
 
   * Check kernal
 
     ```
-    uname -vi # uname -vipsorm
+    uname -v # /usr/local/opt/coreutils/libexec/gnubin/uname [-vipsorm]
+             # /usr/bin/uname [-amnprsv]
     ```
 
   * Get basic info
@@ -79,15 +85,162 @@
     cat /proc/meminfo # for RAM status
     ```
 
+  * Arrange windows / menu bar / finder / mission control
+    - http://apple.stackexchange.com/questions/9659/what-window-management-options-exist-for-os-x
+    - https://computers.tutsplus.com/tutorials/customizing-the-os-x-menu-bar--mac-49391
+
+  * Mac OS X key shortcuts <a name="keys"></a>
+    * block/column selection
+      - Atom: `Control+Shift+`[`up`|`down`].
+      - Atom with Sublime Column Selection package: `Shift+`[`left`|`right`].
+      - TextMate: `Option (⌥)` or [`Alt`] to toggle for a selection.
+    * force quit: `Cmd+Alt+Esc` (Force Quit) or `Cmd+Alt+Esc` (for active window)
+    * moving cursor between words (iTerm)
+      - `⌥+←` or `Alt/Option+Left`: (Send Escape Sequence) `^[B` (ESC+B)
+      - `⌥+→` or `Alt/Option+Right` (Send Escape Sequence) `^[F` (ESC+F)
+    * moving cursor to beginning and end of line (Terminal)
+      - `Fn+←`: `Home`, Send Text: `\001` (no modifier)
+      - `Fn+→`: `End`, Send Text: `\005` (no modifier)
+    * screenshot:
+      - `Cmd+Shift+3`: copy screen to file;
+      - `Cmd+Shift+Alt+3`: copy screen to clipboard.
+      - `Cmd+Shift+4`: start rectangle selection;
+      - `Cmd+Shift+4`, `Space`: to select a window or dialog;
+      - `Cmd+Shift+Alt+4` to clipboard (original `Control+Cmd+Shift+4`).
+      - `Cmd+Shift+5`: screenshot or recording options.
+    * show hidden files in open file dialog: `Cmd+Shift+.`(Period).
+    * switch between app windows: Cmd+\` (back-quote above Tab key)
+    * switch between Finder history: `Cmd+[`, `Cmd+]`
+    * see
+      - https://support.apple.com/en-us/HT201236
+      - https://www.danrodney.com/mac/
+
+  <br/><a name="devenv"></a>
+  * Dev Env [example on macOS 15 Sequoia](https://blog.driftingruby.com/my-development-environment-on-macos-15-sequoia/)
+
+    - Installing Homebrew
+
+      ```bash
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      ```
+      and then be prompted to run some additional commands
+
+      ```
+      (echo; echo 'eval "$(/usr/local/bin/brew shellenv)"') >> /Users/$(whoami)/.zprofile
+      eval "$(/usr/local/bin/brew shellenv)"
+      ```
+
+    - Installing from previous `brew list`
+
+      ```
+      # brew_list.txt was from `brew list` standard output
+      xargs brew install < brew_list.txt
+      ```
+
+    - Installing core packages
+
+      ```
+      brew install \
+        autoconf bash ed flex \
+        binutils coreutils diffutils findutils moreutils \
+        gnu-indent gnu-sed gnu-tar gnu-which \
+        grep gawk gpatch gzip less \
+        gcc git ffmpeg jq perl ruby rar rsync \
+        m4 make nano openssh rar screen tmux \
+        wakeonlan watch wdiff wget
+      ```
+
+    - Installing extendable version manager (with support for Ruby, Node.js, Erlang & more)
+
+      ```
+      brew install asdf
+      ```
+
+    - Installing Apps
+
+      ```
+      brew install \
+        iterm2 \
+        orbstack \
+        1password \
+        cleanshot \
+        cyberduck \
+        obsidian \
+        google-chrome \
+        rectangle \
+        magic-wormhole \
+        ollama --cask \
+        tableplus \
+        tree
+
+      # For other Rails development with both MySQL and PostgreSQL.
+      brew install libpq mysql-client
+
+      # Install VS Code
+      brew install --cask visual-studio-code
+
+      # Intellij IDEA Community Edition
+      brew install --cask intellij-idea-ce
+
+      # Android Studio
+      brew install --cask android-studio
+      ```
+
+    - Installing Python ([the right way](https://medium.com/marvelous-mlops/the-rightway-to-install-python-on-a-mac-f3146d9d9a32))
+
+      ```
+      xcode-select --install
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      brew update; brew upgrade
+      brew install pyenv pyenv-virtualenv
+      ```
+      and the following in `.bash_profile`:
+      ```
+      eval "$(pyenv init -)"
+      if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+      ```
+
+    - Fixing lock issue
+
+      ```
+      # ls $(brew --prefix)/var/homebrew/locks
+      sudo chown -R "$USER":admin /usr/local/*
+      brew cleanup
+      brew doctor
+      ```
+
+    - Cron job
+
+      ```
+      brew update && brew upgrade && brew cleanup
+      ```
+      **Note** `brew cleanup` only removes files (under `~/Library/Caches/Homebrew`) more than 120 days old; to force removing all, use
+
+      ```
+      brew cleanup --prune=all ; or =<days>
+      ```
+
+    - [Oh-my-zsh](https://ohmyz.sh/?ref=blog.driftingruby.com) | [comparison](https://www.educba.com/zsh-vs-bash/)
+
+      ```
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+      # and separate a `.devrc` from the main `.zshrc` file
+      echo 'source ~/.devrc' >> ~/.zshrc
+      ```
+
   * Finder
     - Preview `*.webp`
       ```
-      brew cask install WebPQuickLook
+      brew install --cask WebPQuickLook
       # available with Preview after restart
       # and licensing requirements for MacOS Catalina
       xattr -d com.apple.quarantine ~/Library/QuickLook/WebpQuickLook.qlgenerator
       ```
     - Show hidden files in dialog: pressing `CMD + Shift + '.'`
+
+    - For hidden dot-underscore (`._*`) files not shown in Finder on the drive that does not support [AppleDouble](https://en.wikipedia.org/wiki/AppleSingle_and_AppleDouble_formats) format, use [`dot_clean`](https://ss64.com/mac/dot_clean.html) command.
+
     - Show hidden files in Finder
 
       ```
@@ -115,36 +268,29 @@
       chflags hidden|nohidden folder_or_file
       ```
 
-  * Mac OS X key shortcuts
-    * block/column selection in Atom: Control+Shift+[up|down], Shift+[left|right] (or install Sublime Column Selection package)
-    * force quit: Cmd+Alt+Esc (Force Quit) or Cmd+Alt+Esc (for active window)
-    * moving cursor between words, added in iTerm
-      - Alt/Option+, (Send Escape Sequence) ^[B (ESC+B)
-      - Alt/Option+. (Send Escape Sequence) ^[F (ESC+F)
-    * screenshot: Cmd+Shift+4 (or Cmd+4 to clipboard, original Control+Cmd+Shift+4)
-    * show hidden files in open file dialog: Cmd+Shift+Period
-    * switch between app windows: Cmd+\` (back-quote above Tab key)
-    * switch between Finder history: `Cmd+[`, `Cmd+]`
-    * see
-      - https://support.apple.com/en-us/HT201236
-      - https://www.danrodney.com/mac/
-
-  * Arrange windows / menu bar / finder / mission control
-    - http://apple.stackexchange.com/questions/9659/what-window-management-options-exist-for-os-x
-    - https://computers.tutsplus.com/tutorials/customizing-the-os-x-menu-bar--mac-49391
-
   * Bash
-    - http://www.network-theory.co.uk/docs/bashref/ShellParameterExpansion.html
-    - http://tldp.org/LDP/abs/html/index.html
-    - http://tldp.org/LDP/abs/html/fto.html
-    - Rename
+    - Default Shell:
+      * Go to `System Settings`|`Users & Groups`
+      * Hold `Control` key and click on the user
+      * Select `Advanced Options`
+      * Change `Login Shell`
+    - Change Shell:
+
+      ```
+      chsh -s /bin/bash # or chsh -s /bin/zsh
+      ```
+
+    - Behind [OS X's Unix tools](http://robservatory.com/behind-os-xs-modern-face-lies-an-aging-collection-of-unix-tools/)
+    - Shell [Parameter Expansion](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html) | [ss64](https://ss64.com/mac/syntax-expand.html)
+    - Advanced [Bash-Scripting Guide](http://tldp.org/LDP/abs/html/index.html)
+    - File [test operators](http://tldp.org/LDP/abs/html/fto.html)
+    - Example: Rename
 
       ```
       mv $dir/{oldname,newname}
       ```
 
   * Bash update (using `#!/usr/bin/env bash` instead of `#!/bin/bash`)
-    - see http://robservatory.com/behind-os-xs-modern-face-lies-an-aging-collection-of-unix-tools/
 
       ```
       brew update
@@ -156,9 +302,9 @@
 
   * Change default opener ("Always Open With")
     - select a file with some extension
-    - open context menu and click Get Info
-    - select Open With
-    - click Change All
+    - open context menu and click "`Get Info`"
+    - select "`Open With`"
+    - click "`Change All`"
 
   * Command history
 
@@ -174,7 +320,7 @@
   * Delete all `*.pyc` and "`.DS_Store`" recursively
 
     ```bash
-    sudo find . -name *.DS_Store -type f -delete
+    find . -type f \( -name *.DS_Store -o -name Thumbs.db \) -delete 2>/dev/null
     find . -name *.pyc -delete
     rm -rf **/*.pyc
     ```
@@ -193,6 +339,7 @@
     sudo nvram SystemAudioVolume=%01 # some mac may require different syntax
     sudo nvram -d SystemAudioVolume  # enable the sound
     ```
+    **Note** in new OSX: `System Settings` => `Sound`, uncheck "`Play sound on startup`".
 
   * DNS:
     - using `dig` or `host` over `nslookup`
@@ -305,6 +452,23 @@
       - add difference name for each
 
   * MySQL
+    - install by HomeBrew
+      ```
+      brew install mysql maven sonar-scanner
+      ```
+      configured to only allow connections from localhost
+      ```
+      mysql -u root
+      ```
+      start without a background service
+      ```
+      /usr/local/opt/mysql/bin/mysqld_safe --datadir\=/usr/local/var/mysql
+      ```
+      start as a background service
+      ```
+      brew services start mysql
+      ```
+
     - start mysql.server
 
       ```
@@ -362,7 +526,7 @@
     - Command "`unrar`"
 
       ```bash
-      brew install unrar  # no rar command from brew
+      brew install rar  # no unrar formulae from brew
       ```
 
   * Ruby
@@ -427,17 +591,18 @@
 
   * VLC
     - cannot start/launch
-	```
-	rm ~/Library/Preferences/org.videolan.vlc/vlcrc  # or rename to vlcrc.bak
-	# optionally to reset defaults if clearing preference does not work
-	defaults delete org.videolan.vlc
-	```
+
+    ```
+    rm ~/Library/Preferences/org.videolan.vlc/vlcrc  # or rename to vlcrc.bak
+    # optionally to reset defaults if clearing preference does not work
+    defaults delete org.videolan.vlc
+    ```
 
   * Git/GitHub
     - SSH (see [SSH keys](#keys-ssh))
 
       ```
-      # ssh-keygen -t rsa -b 4096 -C "jzhu@infoblox.com"
+      # ssh-keygen -t rsa -b 4096 -C "dockeria@gmail.com"
       chmod 600 ~/.ssh/id*
       chmod 644 ~/.ssh/id*.pub
       # using `-key` option to specify key file
@@ -636,18 +801,45 @@
   * Bible Study (App store)
 
   * Clipboard managers:
-    - [1Clipboard](http://1clipboard.io/)
+    - [1Clipboard](http://1clipboard.io/) ★★★
+    - AppStore [PasteBar](https://www.pastebar.app/) ★★★★
     - [ClipMenu](http://www.clipmenu.com/)
+    - [ClipTools](https://macmost.com/cliptools) ★★★★★
+    - [ClipUp](https://clickup.com/)
     - [CopyClip](https://itunes.apple.com/us/app/copyclip-clipboard-history/id595191960)
     - [Flycut - app store](https://itunes.apple.com/in/app/flycut-clipboard-manager/id442160987)
     - [Jumpcut](http://jumpcut.sourceforge.net/)
 
+  * Developer editors
+    - [CotEditor](https://coteditor.com/)
+    - [TextMate](https://macromates.com/)
+    - [MacVim](https://macvim.org/)
+
+      ```
+      # global settings in ~/.vimrc
+      set guifont=Menlo\ Regular:h18
+      ```
+
   * Download managers:
-    - [Folx](https://mac.eltima.com/download-manager.html)
+    - [FDM](https://www.freedownloadmanager.org/download-fdm-for-mac.htm)
+    - [Folx](https://www.mac-downloader.com/) or from [eltima.com](https://mac.eltima.com/download-manager.html) ★★
     - [iGetter](http://www.igetter.net/downloads.html)
+    - [Motrix](https://motrix.app/) ★★★★
     - [Progressive Downloader](https://www.macpsd.net/)
-    - [SiteSucker](https://ricks-apps.com/osx/sitesucker/index.html)
+    - [qBittorrent](https://www.qbittorrent.org/) ★★★★★
+    - [res-downloader](https://github.com/putyy/res-downloader) ★★★★
+      * 🖥️ 支持Windows、Mac、Linux
+      * 🌐 支持视频、音频、图片、m3u8、直播流等常见网络资源
+      * 💪 支持微信视频号、小程序、抖音、快手、小红书、酷狗音乐、QQ音乐等网络资源下载
+      * 👼 支持设置代理以获取特殊网络下的资源
+    - [SEO Spider Tool](https://www.screamingfrog.co.uk/)
+    - [SiteSucker](https://ricks-apps.com/osx/sitesucker/index.html) ★★
     - [Xtreme](https://sourceforge.net/projects/xdman/)
+
+  * Free VPN with kill switch
+    - Free [TunnelBear](https://www.tunnelbear.com/)
+    - [Hotspot Shield](https://apps.apple.com/us/app/vpn-hotspot-shield-super-vpn/id443369807)
+    - [ProtonVPN](https://protonvpn.com/)
 
   * Homebrew [brew.sh](http://brew.sh/)
 
@@ -796,7 +988,7 @@
     - Opera: Dictionary, LastPass
 
   * Dictionary
-    - [Bob](https://github.com/ripperhe/Bob 翻译软件
+    - 翻译软件[Bob](https://github.com/ripperhe/Bob)
     - http://diary.taskinghouse.com/posts/383137-mac-built-in-dictionary-install-traditional-chinese-dictionary
     - http://blogger.gtwang.org/2013/03/mac-os-x-dicttionary-add-chinese.html
     - Rhyme [github](https://github.com/shaunplee/homebrew-rhyme)
@@ -812,6 +1004,7 @@
     - [Kdiff3](http://kdiff3.sourceforge.net/)
   * Developer tools
     * Atom and plugins
+      **NOTE**: copy `~/.atom` (except `~/.atom/.gitignore`) for migration between computers
       - atom-beautify, linter, sort-lines, tabs-to-spaces
       - convert-to-utf8, file-icons, file-type-icons
       - find-and-replace, fuzzy-finder
@@ -888,6 +1081,12 @@
     - [HxD](https://sourceforge.net/projects/osxhxd/)
     - [wxHexEditor](http://www.wxhexeditor.org/download.php)
     - [wxMEditor](https://wxmedit.github.io/)
+    - Xcode: Open file with Xcode, press [`Command + Shift + J`], right click file name in left pane, `Open as` Hex
+    - vim:
+      ```
+      :%!xxd # transform buffer to hex
+      :%!xxd -r # reverse transformation
+      ```
 
   * Kubernetes
     - Install a Hypervisor
@@ -959,31 +1158,79 @@
       minikube logs -f
       ```
 
+  * PDF Editor/Reader
+    - [Foxit PDF Reader](https://www.foxit.com/pdf-reader/)
+
+          ```
+          brew install --cask foxitreader
+          ```
+
+    - [LibreOffice](https://www.libreoffice.org/download/download-libreoffice/?type=mac-x86_64)
+    - [PDF Reader Pro: Convert & Edit](https://apps.apple.com/us/app/pdf-reader-pro-convert-edit/id919472673?mt=12)
+
+      ```
+      brew install --cask pdf-reader-pro
+      ```
+
+    - [PDFescape](https://www.pdfescape.com/)
+    - [PDFgear](https://www.pdfgear.com/)
+
   * Photo Tools
     - [DigiKam](https://www.digikam.org/download)
+
+      ```
+      # Fixing "Finder does not have permission" issue
+      for s in digikam showfoto; do \
+      sudo codesign --remove-signature /Applications/digiKam.org/$s.app; \
+      sudo codesign --force --deep --sign - /Applications/digiKam.org/$s.app; \
+      done
+      ```
+
     - [DxO OpticsPro 10](http://www.dxo.com)
-    - [ExifTool](http://www.sno.phy.queensu.ca/~phil/exiftool/install.html)
-    - [GIMP](https://www.gimp.org/downloads/)
+    - [ExifTool](http://www.sno.phy.queensu.ca/~phil/exiftool/install.html) ★★★★
+    - [GIMP](https://www.gimp.org/downloads/) ★★★
     - [Pixlr](https://pixlr.com/desktop)
     - [QuickLook for Webp](https://github.com/emin/WebPQuickLook)
     - Raw editors: [darktable](https://www.darktable.org/) | [RawTherapee](https://rawtherapee.com/)
-    - [XnViewMP](http://www.xnview.com/)
+    - [XnViewMP](http://www.xnview.com/) ★★★★
   * Movie Editors
     - http://filmora.wondershare.com/video-editor/free-video-editing-software-mac.html
     - http://www.makeuseof.com/tag/top-6-free-video-editors-mac-os/
+    - [DaVinci Resolve](https://www.blackmagicdesign.com/products/davinciresolve)
+    - [Kdenlive](https://kdenlive.org)
+    - [OpenShot](https://www.openshot.org/)
+    - [Shotcut](https://www.shotcut.org/)
   * Mutlimedia/Media Players
     - [5K Player](http://www.5kplayer.com/)
     - [4K Video Downloader 4.2](https://www.4kdownload.com/products/product-videodownloader)
       - Serial Keys: XS3W4CD4VF5GB8HU / NJKM9JN8UHYB7GTV / F5RCD4X3XAQSW4CD / E5FRV6GTBH6YN8JU
       - License Keys: MI0KMPOK0I9NJUBHV / G5FC5DX4ESW3AXWS
       - Activation Keys: DCF5VG68B9HP0KMI / N9B7Y6VT5CR4X3HS
-    - [AviDemux](http://avidemux.sourceforge.net/)
-    - [HandBrake](https://handbrake.fr/downloads.php) - video transcoder
-    - [DivX](http://www.divx.com/)
-    - [Kid3](https://kid3.sourceforge.io/)
-    - [Calibre](https://calibre-ebook.com/)
-    - [Sigil](https://github.com/Sigil-Ebook/Sigil)
-    - [XLD](https://sourceforge.net/projects/xld/)
+    - [AviDemux](http://avidemux.sourceforge.net/) ★★★★
+    - [Audacity](https://www.audacityteam.org/download/)
+    - [foobar2000](https://www.foobar2000.org/)
+    - [HandBrake](https://handbrake.fr/downloads.php) - video transcoder ★★★
+    - [Shutter Encoder](https://www.shutterencoder.com/)
+    - [Kid3](https://kid3.sourceforge.io/) ★★★★★
+    - [XLD](https://sourceforge.net/projects/xld/) ★★★★★
+    - [Calibre](https://calibre-ebook.com/) ★★★★★
+    - [Sigil](https://github.com/Sigil-Ebook/Sigil) ★★★★
+
+  <br/><a name="netdrive"></a>
+  * 雲盘、网盘应用
+    - [阿里](https://www.aliyundrive.com)
+    - [百度](https://pan.baidu.com)
+    - [城通](https://ctfile.com/get_mac)
+    - [苹果iCloud](https://www.icloud.com)
+    - [谷歌](https://drive.google.com) | [Google Drive](https://workspace.google.com/products/drive)
+    - [微软](https://onedrive.live.com)
+    - [MEGA cloud storage](https://mega.io)
+    - [FlowUs](https://flowus.cn/product)
+    - [坚果雲](https://www.jianguoyun.com/)
+    - [巴别鸟](http://www.babel.cc)
+    - [迅雷](https://pan.xunlei.com/)
+    - [夸克](https://pan.quark.cn/)
+    - [天翼](https://cloud.189.cn)
 
   * Weather
     - [Meteorologist](http://macappstore.org/meteorologist/)

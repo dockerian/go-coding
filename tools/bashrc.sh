@@ -21,21 +21,53 @@ script_path="$( cd "$( echo "${script_file%/*}" )" && pwd )"
 PS1='\n\[\033[0;36m\]\h\[\033[0m\]:\[\033[0;35m\]\u\[\033[0m\] \W [\#]:\n\$ '
 PS1='$(printf "%$((COLUMNS-1))s\r")'$PS1
 
-export JAVA_HOME="${JAVA_HOME:-$(/usr/libexec/java_home)}"
-export JAVA_HOME="${JAVA_HOME:-$(type -p javac|xargs readlink -n 2>/dev/null|xargs dirname|xargs dirname)}"
+# disable warning message "The default interactive shell is now zsh"
+export BASH_SILENCE_DEPRECATION_WARNING=1
+export HISTCONTROL=erasedups:ignoredups:ignorespace
+export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin
+
+
+# Java
+ unset JAVA_HOME
+export JAVA_HOME="${JAVA_HOME:-$(java -XshowSettings:properties -version 2>&1 > /dev/null | grep 'java.home'|awk -F='[ .]' '{print $2}')}"
+export JAVA_HOME="${JAVA_HOME:-$(/usr/libexec/java_home 2>/dev/null)}"
+export JAVA_HOME="${JAVA_HOME:-$(type -p javac|xargs greadlink -f 2>/dev/null|xargs dirname|xargs dirname)}"
 export JAVA_HOME="${JAVA_HOME:-$(type -p javac|xargs dirname|xargs dirname)}"
+
+# Go
+ unset GOROOT
 export GOROOT="${GOROOT:-$(type -p go|xargs readlink -n 2>/dev/null|xargs dirname|xargs dirname)}"
 export GOPATH="${HOME}/go"
-export HOMEBREW_GITHUB_API_TOKEN="d430484ccbfc32c58135b5a3e8e1bc92a5c5a1d8"
-export MAVEN_HOME="${MAVEN_HOME:-$(mvn -v 2>/dev/null|grep -i 'maven home:'|awk '{print substr($0, index($0,$3))}')}"
-export MAVEN_HOME="${MAVEN_HOME:-/opt/apache-maven-3.3.3}"
 
-export HISTCONTROL=ignoredups
-export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007"'
+export HOMEBREW_GITHUB_API_TOKEN="d430484ccbfc32c58135b5a3e8e1bc92a5c5a1d8"
+
+# MYSQL
 # export PATH="$MYSQL_HOME/bin:$MAVEN_HOME/bin"
 # export PATH="/Library/PostgreSQL/10/bin:$PATH"
 # export PATH="/usr/local/bin:$PATH"
+
+# For compilers to find libpq
+export LDFLAGS="-L/usr/local/opt/libpq/lib"
+export CPPFLAGS="-I/usr/local/opt/libpq/include"
+export PATH="/usr/local/opt/libpq/bin:$PATH"
+
+# For compilers to find mysql-client
+export LDFLAGS="-L/usr/local/opt/mysql-client/lib"
+export CPPFLAGS="-I/usr/local/opt/mysql-client/include"
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+
+# For compilers to find binutils
+export LDFLAGS="-L/usr/local/opt/binutils/lib"
+export CPPFLAGS="-I/usr/local/opt/binutils/include"
+
+# For using GNU commands without prefix "g"
 export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+export PATH="$(brew --prefix findutils)/libexec/gnubin:$PATH"
+export PATH="$(brew --prefix  binutils)/libexec/gnubin:$PATH"
+
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/bin:$PATH" # Add python and aws
 export PATH="${JAVA_HOME}/bin:$PATH" # Add java
 export PATH="${GOPATH}/bin:$PATH" # Add golang
 
@@ -44,8 +76,9 @@ echo "Loading bash aliases ..."
 alias a="alias|cut -d' ' -f 2- "
 alias airdrop='mdfind $HOME com.apple.AirDrop'
 alias bashrc='source ~/.bash_profile; title ${PWD##*/};'
-alias brewery='brew update && brew upgrade && brew cleanup'
-alias bu='brew upgrade; brew update --debug --verbose'
+alias brewery='sudo chown -R "$USER":admin /usr/local/* && brew upgrade; brew list --cask | xargs brew upgrade 2>/dev/null; brew update --debug --verbose && brew cleanup; brew doctor'
+alias bu='brew update && brew upgrade && brew cleanup'
+alias buc='brew list --cask | xargs brew upgrade && brew upgrade && brew cleanup'
 alias cdp='cd -P .'
 alias clean='find . -type f \( -name *.DS_Store -o -name Thumbs.db \) -delete 2>/dev/null'
 alias cls='clear && printf "\e[3J"'
@@ -55,7 +88,9 @@ alias dater='date +"%Y-%m-%d %H:%M:%S" -r'
 alias dated='date +"%Y-%m-%d %H:%M:%S" -d'
 alias dh='du -hs'
 alias dir='ls -al '
-alias dsclean='sudo find . -name Thumbs.db -delete -name *.DS_Store -type f -delete'
+alias demons='launchctl list'
+alias dns='scutil --dns # or see `cat /etc/resolv.conf`'
+alias dsclean='sudo find . -type f \( -name *.DS_Store -o -name Thumbs.db -o -name *.pyc \) -delete'
 alias dsf1='diskutil secureErase freespace 1'
 alias dswake='wakeonlan -i 192.168.1.218 00:11:32:aa:e3:5d'
 alias envi='env | grep -i '
@@ -68,6 +103,7 @@ alias fixunzip='ditto -V -x -k --sequesterRsrc ' # $1.zip $2/dir'
 alias hide='chflags hidden'
 alias hs='history | grep'
 alias ip='echo $(ipconfig getifaddr en0) $(dig +short myip.opendns.com @resolver1.opendns.com)'
+alias ipwan='dig +short myip.opendns.com @resolver1.opendns.com # or `curl -s icanhazip.com`'
 alias ll='ls -al'
 alias lll='ls -al -T | sort -f -k9,9'  # --time-style=full-iso
 alias lln='ls -al | sort -f -k9,9'
@@ -89,7 +125,7 @@ alias si='echo -e $(for k in ~/.ssh/*.pub;do echo -e "\\\n$(ssh-keygen -E md5 -l
 alias sshv='ssh -v -o HostKeyAlgorithms=ssh-dss -o KexAlgorithms=diffie-hellman-group14-sha1'
 alias ver='echo -e "$(uname -a)"; echo ""; echo -e "$(bash --version)"'
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC --width 800 --height 600 --aspect-ratio 16x9 &'
-alias ydl='youtube-dl -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' # -o '%(playlist_index)s.%(ext)s'
+alias ydl='yt-dlp -f bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' # -o '%(playlist_index)s.%(ext)s'
 alias t='title ${PWD##*/}'
 
 
@@ -204,6 +240,7 @@ function main() {
   # eval $(minikube docker-env)
   # eval $(docker-machine env)
 
+  # (brew update && brew upgrade && brew cleanup) &
   find . -name '.DS_Store' -type f -delete 2>/dev/null &
 
   ipy_autoreload
@@ -542,6 +579,26 @@ c.InteractiveShellApp.exec_lines.append('print(\"**ATTENTION**: %autoreload 2 en
   echo "${ipy_script}"
   echo "........................................................................"
   echo ""
+}
+
+############################################################
+# function: Keep watching a log ($1) for keyword ($2)
+############################################################
+function logwatch () {
+  if [[ ! -f "${1}" ]] || [[ "${2// /}" == "" ]]; then
+    echo ""
+    echo '........................................'
+    echo "  Usage: ${FUNCNAME[0]} <log> '<keyword>'"
+    echo ''
+    return 9
+  fi
+  echo ""
+  echo `date '+%Y-%m-%d %H:%M:%S'`" Start watching '$2' in $1"
+  echo '...................'
+  echo ""
+  tail -f "$1" | while read LOGLINE
+  do [[ "$LOGLINE" =~ "${2}" ]] && echo "$LOGLINE [$$]" && pkill -P $$ && break;
+  done
 }
 
 ############################################################
