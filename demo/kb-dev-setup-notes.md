@@ -1158,6 +1158,9 @@
       minikube logs -f
       ```
 
+  * Microsoft Office
+    - See [msoffice-for-mac](./msoffice-for-mac.md)
+
   * PDF Editor/Reader
     - [Foxit PDF Reader](https://www.foxit.com/pdf-reader/)
 
