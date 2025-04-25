@@ -16,6 +16,7 @@
     - [Keyboard shortcuts](#keyboard-shortcuts)
     - [Install Apps](#install-apps)
   * [Software and Tools on Windows](#software-windows)
+  * [VirtualBox Setup and Network](#vbox-setup)
   * [Online Tools](#online-tools)
 
 
@@ -81,8 +82,7 @@
     uname -a
     system_profiler SPSoftwareDataType
     system_profiler -detailLevel full # -xml output to XML
-    cat /proc/cpuinfo # for processor info
-    cat /proc/meminfo # for RAM status
+    /usr/sbin/sysctl -a machdep.cpu
     ```
 
   * Arrange windows / menu bar / finder / mission control
@@ -101,6 +101,8 @@
     * moving cursor to beginning and end of line (Terminal)
       - `Fn+←`: `Home`, Send Text: `\001` (no modifier)
       - `Fn+→`: `End`, Send Text: `\005` (no modifier)
+    * clear current command line during input
+      - `ESC` or `Cmd+L`: Send Hex `0x05 0x15` (moving to end and delete line)
     * screenshot:
       - `Cmd+Shift+3`: copy screen to file;
       - `Cmd+Shift+Alt+3`: copy screen to clipboard.
@@ -323,6 +325,13 @@
     find . -type f \( -name *.DS_Store -o -name Thumbs.db \) -delete 2>/dev/null
     find . -name *.pyc -delete
     rm -rf **/*.pyc
+    ```
+
+  * Disable `.DS_Store`
+
+    ```
+    defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool TRUE
+    defaults write com.apple.desktopservices DSDontWriteUSBStores -bool TRUE
     ```
 
   * Disable Airplay
@@ -837,9 +846,10 @@
     - [Xtreme](https://sourceforge.net/projects/xdman/)
 
   * Free VPN with kill switch
-    - Free [TunnelBear](https://www.tunnelbear.com/)
-    - [Hotspot Shield](https://apps.apple.com/us/app/vpn-hotspot-shield-super-vpn/id443369807)
     - [ProtonVPN](https://protonvpn.com/)
+    - [Hotspot Shield](https://apps.apple.com/us/app/vpn-hotspot-shield-super-vpn/id443369807)
+    - Free [TunnelBear](https://www.tunnelbear.com/)
+    - [Windscribe](https://windscribe.com/)
 
   * Homebrew [brew.sh](http://brew.sh/)
 
@@ -849,6 +859,29 @@
     brew upgrade
     brew install tree
     ```
+
+  * Java
+    - [Basic guide](https://www.freecodecamp.org/news/how-to-set-up-java-development-environment-a-comprehensive-guide/)
+      - see [versions history](java-history.png) | [wiki](https://en.wikipedia.org/wiki/Java_version_history)
+    - [Jabba](https://github.com/shyiko/jabba) - a lightweight version manager
+
+      ```
+      brew install jabba
+      jabba ls-remote
+      jabba install <version> # ~/.jabba/jdk/
+      jabba use <version>
+      ```
+
+    - [SDKMAN](https://sdkman.io/) - a dev kit manager
+
+      ```
+      curl -s "https://get.sdkman.io" | bash
+      source "$HOME/.sdkman/bin/sdkman-init.sh"
+      sdk list java
+      sdk install java 17.0.1-open # sdk install java <version> at ~/.sdkman/candidates/java/
+      sdk use java 17.0.1-open
+      java -version
+      ```
 
   * MongoDB
 
@@ -967,6 +1000,7 @@
     - [tmate](https://tmate.io/): `brew install tmate`
     - [Tunnelblick](https://tunnelblick.net/)
     - [Unarchiver](http://wakaba.c3.cx/s/apps/unarchiver.html)
+    - Oracle [VirtualBox](https://www.virtualbox.org/)
     - [VMware Fusion for Mac](https://www.vmware.com/products/fusion.html)
     - [Wine](https://www.winehq.org/)
       - [PlayOnMac](https://www.playonmac.com)
@@ -1245,6 +1279,13 @@
 
 <br/><a name="command-lines"></a>
 ### Command lines
+
+  - basic info
+
+    ```
+    cat /proc/cpuinfo # for processor info
+    cat /proc/meminfo # for RAM status
+    ```
 
   - check installed packages
 
@@ -1641,8 +1682,8 @@
     sudo tar -xvf go$VERSION*.$OS*-$ARCH*.tar.gz
     sudo mv go /usr/local
     # add the following to ~/.bashrc
-    export GOROOT=/usr/local/go
-    export GOPATH=$HOME/go
+    export GOROOT="${GOROOT:-$(type -p go|xargs greadlink -f 2>/dev/null|xargs dirname|xargs dirname)}"
+    export GOPATH=${HOME}/go
     export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
     # test go
     go version
@@ -1808,6 +1849,39 @@
   * [Advanced English Dictionary](https://www.microsoft.com/en-in/p/advanced-english-dictionary/9wzdncrfhmvb)
   * [The Free Dictionary](https://www.microsoft.com/en-us/p/dictionary/9wzdncrfj1z0) from Microsoft Store
   * (Native) Search Box: e.g. "fox mean"
+
+
+
+<br/><a name="vbox-setup"></a>
+## VirtualBox Setup and Network
+
+### Install and Setup
+
+  ```
+  brew install virtualbox
+  ```
+
+### Network
+
+VBox's implementation of NAT only supports TCP & UDP among all transport layer protocols [[1]](https://www.virtualbox.org/manual/ch06.html#nat-limitations), so VPN via PPTP won't work. As support for bridged networking with wireless interfaces is also limited [[2]](https://www.virtualbox.org/manual/ch06.html#network_bridged). Consider the followings alternative.
+
+**Host-only network with Internet** can be achieved with IP routing by host. Good with Windows/Ubuntu host and guests. It should work for MacOS too.
+
+In OSX host (e.g. 192.168.8.109), enable ip routing by
+
+	```
+	sudo sysctl -w net.inet.ip.forwarding=1
+	```
+
+In Win10 guest with host-only adapter (e.g. 192.168.56.10), set default gateway to OSX (e.g. 192.168.56.1), set DNS to router.
+
+In router (e.g. 192.168.8.1), add static route via web interface or SSH
+
+	```
+	route add -net 192.168.56.0/24 gw 192.168.8.109
+	```
+
+Read this [lab manual](http://www.cs.dartmouth.edu/~sergey/cs60/lab3/vm-networking.pdf) (courtesy of CS@Dartmouth) for setting up internet in VBox guest with Host-only Adapter and native NAT by MacOS host.
 
 
 

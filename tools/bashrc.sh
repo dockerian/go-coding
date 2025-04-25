@@ -104,6 +104,7 @@ alias hide='chflags hidden'
 alias hs='history | grep'
 alias ip='echo $(ipconfig getifaddr en0) $(dig +short myip.opendns.com @resolver1.opendns.com)'
 alias ipwan='dig +short myip.opendns.com @resolver1.opendns.com # or `curl -s icanhazip.com`'
+alias javaenv='java -version && echo JAVA_HOME='`echo ${JAVA_HOME}`
 alias ll='ls -al'
 alias lll='ls -al -T | sort -f -k9,9'  # --time-style=full-iso
 alias lln='ls -al | sort -f -k9,9'
