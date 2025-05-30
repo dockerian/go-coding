@@ -47,6 +47,7 @@
 
 <br /><a name="css"></a>
 ### CSS
+  - https://www.codedex.io/css
   - https://css-tricks.com/all-about-floats/
   - http://learnlayout.com/toc.html
 
@@ -86,6 +87,7 @@
 
 <br /><a name="nodejs"></a>
 ### Node.js
+  - https://www.codedex.io/nodejs
   - http://www.fromdev.com/2013/09/webdriver-selenium-code-snippets.html
   - http://blog.fusioncharts.com/2013/12/jsdoc-vs-yuidoc-vs-doxx-vs-docco-choosing-a-javascript-documentation-generator/
   - https://www.joyent.com/developers/node/design/errors
@@ -124,6 +126,7 @@
 ### Python
   - http://www.quora.com/How-do-I-learn-Python-3
   - http://code.tutsplus.com/articles/the-best-way-to-learn-python--net-26288
+  - https://www.codedex.io/python
   - http://docs.python-guide.org/en/latest/intro/learning/
   - https://docs.python.org/2/tutorial/index.html
   - https://docs.python.org/2/install/

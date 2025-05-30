@@ -116,11 +116,11 @@
     - composition
   * Breaking down to smaller problems
   * See blogs
-    - [here](https://www.palantir.com/2011/09/how-to-ace-an-algorithms-interview/)
+    - [here](https://www.google.com/search?q=how+to+ace+an+algorithms+interview)
     - [ace the coding interview](https://www.linkedin.com/pulse/20141120061048-6976444-ace-the-coding-interview-every-time)
-    - [Facebook interview](https://www.facebook.com/notes/facebook-engineering/get-that-job-at-facebook/10150964382448920)
+    - [Facebook interview](https://carlos.bueno.org/2012/07/get-that-job.html)
     - [Google interview](http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html)
-    - [Google interview preparation](http://blog.gainlo.co/index.php/category/google-interview-preparation/)
+    - [Google interview preparation](https://www.google.com/search?q=google+interview+preparation)
     - [Big-O](http://bigocheatsheet.com/)
 
       | Data Structure | Read (Avg/Worst) | Write       | Space    |
