@@ -6,12 +6,21 @@ shopt -s promptvars
 echo ""
 
 ########################################
-# file_name="${file##*.}"
-# file_extension="${file%.*}"
-script_file="$( readlink "${BASH_SOURCE[0]}" 2>/dev/null || echo ${BASH_SOURCE[0]} )"
-script_name="${script_file##*/}"
-script_base="$( cd "$( echo "${script_file%/*}/.." )" && pwd )"
-script_path="$( cd "$( echo "${script_file%/*}" )" && pwd )"
+# remove the longest match of *. from the beginning
+# file_type="${file##*.}"
+# remove the shortest match of .* from the end
+# file_name="${file%.*}"
+script_path="$( readlink -f "${BASH_SOURCE[0]}" 2>/dev/null || echo ${BASH_SOURCE[0]} )"
+script_base="$( cd "${script_path%/*}" 2>/dev/null && pwd )"
+script_file="${script_path##*/}" # aka `basename`
+script_type="${script_file##*.}"
+script_name="${script_file%.*}"
+echo "script path: ${script_path}"
+echo "script base: ${script_base}"
+echo "script file: ${script_file}"
+echo "script name: ${script_name}"
+echo "script type: ${script_type}"
+echo ""
 ########################################
 
 # see:
@@ -944,9 +953,9 @@ function ydlo() {
   local _sarg_=""
   local _earg_=""
   local _snum_=""
-  local _bmkv_="--merge-output-format mkv"
-  local _bmp3_="-f bestaudio -x --audio-format mp3 --audio-quality 0"
-  local _bmp4_="-f bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4"
+  local _bmkv_="--merge-output-format mkv --remux-video mkv --preset-alias mkv"
+  local _bmp3_="-f bestaudio -x --audio-format mp3 --audio-quality 0 --preset-alias mp3"
+  local _bmp4_="-f bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4 --merge-output-format mp4 --preset-alias mp4"
   local _subt_="--write-subs --sub-format srt"
   local _enum_=""
   local _rvpl_=""
