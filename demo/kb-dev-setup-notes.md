@@ -1036,6 +1036,7 @@
   * Diff tools
     - [DiffMerge](https://sourcegear.com/diffmerge/)
     - [Kdiff3](http://kdiff3.sourceforge.net/)
+
   * Developer tools
     * Atom and plugins
       **NOTE**: copy `~/.atom` (except `~/.atom/.gitignore`) for migration between computers
@@ -1057,6 +1058,7 @@
     * Microsoft Visual Studio
     * Microsoft VS Code [VSCode](https://www.visualstudio.com/vs/visual-studio-mac/) + go + react
     * Concourse/VirtualBox/Vagrant
+    * [Notepad Next](https://github.com/dail8859/NotepadNext)
     * [GitHub Desktop](https://desktop.github.com/)
     * [Graphviz](http://www.graphviz.org/download/)
     * ipython
@@ -1107,6 +1109,7 @@
         - Browser-based: [pgAdmin](https://www.pgadmin.org/download/)
         - IDE: [DataGrip](https://www.jetbrains.com/datagrip/)
     * [Sequel Pro](http://www.sequelpro.com/)
+
   * Hex Editors
     - [010 Editor](http://www.sweetscape.com/010editor/)
     - [Hex Fiend](http://ridiculousfish.com/hexfiend/)
@@ -1194,6 +1197,10 @@
 
   * Microsoft Office
     - See [msoffice-for-mac](./msoffice-for-mac.md)
+
+  * Notes (for iPad)
+    - [Goodnotes](https://apps.apple.com/us/app/goodnotes-6-ai-notes-docs/id1444383602)
+    - MarginNotes [3](https://apps.apple.com/us/app/marginnote-3/id1348317163)+[4](https://apps.apple.com/us/app/marginnote-4/id1531657269)
 
   * PDF Editor/Reader
     - [Foxit PDF Reader](https://www.foxit.com/pdf-reader/)
@@ -1888,6 +1895,14 @@ Read this [lab manual](http://www.cs.dartmouth.edu/~sergey/cs60/lab3/vm-networki
 <br/><a name="online-tools"></a>
 ## Online tools
 
+  * AI
+    - [ChatGPT](https://chatgpt.com/)
+    - [Copilot](https://copilot.microsoft.com/)
+    - [Claude.AI](https://claude.ai/)
+    - [Deepseek](https://chat.deepseek.com/)
+    - [Gemini](https://gemini.google.com/app)
+    - [Grok](https://grok.com/)
+
   * Chrome extensions:
     - Better Go Playground
     - DHC (Dynamic HTTP Client)
@@ -2021,6 +2036,15 @@ Read this [lab manual](http://www.cs.dartmouth.edu/~sergey/cs60/lab3/vm-networki
     - [Code Beautify](http://codebeautify.org/)
     - [ToHtml syntax highlighting for masses](https://tohtml.com/)
     - [Hilite](http://hilite.me/)
+
+  * Periodic Table of Elements
+    - [NIH](https://pubchem.ncbi.nlm.nih.gov/periodic-table/)
+    - [LiveScience](https://www.livescience.com/25300-periodic-table.html)
+    - [Pictures and Words](https://elements.wlonk.com/)
+    - [S-Link](https://s-ink.org/periodic-table-of-elements)
+    - [Sigma](https://www.sigmaaldrich.com/US/en/technical-documents/technical-article/chemistry-and-synthesis/organic-reaction-toolbox/periodic-table-of-elements-names?srsltid=AfmBOoqLkZv39ZHEMjHHjJ3u3FzgMFHAjbkC-Ti6PGhjfUByBf6OjnOt)
+    - [Trajan](https://www.trajanscimed.com/products/ed-0830-g)
+    - [Wiki](https://commons.wikimedia.org/wiki/File:Periodic_Table_-_Atomic_Properties_of_the_Elements.png)
 
   * Regular expression
     - Regex 101 [regex101.com](https://regex101.com)
