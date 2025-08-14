@@ -528,6 +528,26 @@
         mysql> quit
         ```
 
+  * PAM (Pluggable Authentication Module) system.
+    Configure macOS Terminal to accept Touch ID (finger biometric) for sudo authentication, which allows you to execute commands with root privileges without typing your password:
+    - Open Terminal
+    - Edit the `sudo` PAM configuration file
+
+      ```
+      sudo nano /etc/pam.d/sudo
+      ```
+
+    - Add the **Touch ID** module
+
+      ```
+      auth sufficient pam_tid.so
+      ```
+
+    - Save and exit
+      * For `nano`, press `Control+O` to save, then `Control+X` to exit.
+      * For `vim`, press `Esc`, then type `:wq` and press `Enter`.
+
+
   * Rar
     - Official website: https://www.rarlab.com/download.htm
     - WinRar for Mac: https://www.techspot.com/downloads/5169-winrar-for-mac/similar/
