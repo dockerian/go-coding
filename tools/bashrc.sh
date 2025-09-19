@@ -952,7 +952,10 @@ function ydlo() {
   local _name_=""
   local _sarg_=""
   local _earg_=""
+  local _aarg_=""
   local _snum_=""
+  local _user_=""
+  local _pass_=""
   local _bmkv_="--merge-output-format mkv --remux-video mkv --preset-alias mkv"
   local _bmp3_="-f bestaudio -x --audio-format mp3 --audio-quality 0 --preset-alias mp3"
   local _bmp4_="-f bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4 --merge-output-format mp4 --preset-alias mp4"
@@ -986,6 +989,11 @@ function ydlo() {
     elif [[ "$p" =~ ^[/-]{1,2}[rR] ]]; then
       _extn_='-%(playlist_autonumber)02d.%(ext)s'
       _rvpl_="--playlist-reverse"
+    elif [[ "$p" =~ ^[/-]{1,2}u[:=](.*)$ ]]; then
+      echo "MATCH: ${BASH_REMATCH[0]}"
+      _user_=${BASH_REMATCH[1]}
+    elif [[ "$p" =~ ^[/-]{1,2}p[:=](.*)$ ]]; then
+      _pass_=${BASH_REMATCH[1]}
     else
       _name_="$p"
     fi
@@ -1033,8 +1041,13 @@ function ydlo() {
     _args_=$(echo "${_args_} ${_subt_}"|xargs)
     _extn_='.%(ext)s'
   fi
+  if [[ "${_user_}" != "" && "${_pass_}" != "" ]]; then
+    echo " user: ${_user_}"
+    echo " pass: ${_pass_}"
+    _aarg_="-u ${_user_} -p ${_pass_}"
+  fi
   echo " args: ${_ycmd_}"
-  echo "       ${_args_}"
+  echo "       ${_args_} ${_aarg_}"
   echo "       ${_sarg_} ${_earg_}"
   echo "----------"
 
