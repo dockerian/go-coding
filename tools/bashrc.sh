@@ -697,6 +697,7 @@ function timeout() {
 ############################################################
 function touchdbyfile() {
   if [[ ! -d "$1" ]]; then return 1; fi
+  # echo "touchdbyfile $@"
   local _dir_=${1%/}
   local _lvl_=$((${2:-0} - 1))
   local _opt_=${3%/}
@@ -719,18 +720,6 @@ function touchdbyfile() {
     # Do NOT echo. Should be handled by upper caller.
     _dig_="no"
   fi
-  if [[ "${_dth_#-}" -gt 1 ]]; then
-    if [[ ${_act_mode_} =~ --quick ]]; then
-      if [[ ${_ddf_} -gt 0 ]]; then
-        if [[ "${_day_skip_}" == "" ]]; then
-          echo ""
-        fi
-        _day_skip_="${_ddf_}"
-      elif [[ ! "${_day_skip_}" == "" ]]; then
-        _day_skip_=""
-      fi
-    fi
-  fi
 
   for d in "${_dir_}"/*; do
     if [[ -d "$d" ]] && [[ "${_dig_}" == "yes" ]]; then
@@ -738,8 +727,21 @@ function touchdbyfile() {
     fi
   done
 
+  if [[ "${_dth_#-}" -gt 1 ]]; then
+    if [[ ${_act_mode_} =~ --qui(ck|et) ]]; then
+      if [[ ${_ddf_} -gt 0 ]]; then
+        _day_skip_="${_ddf_}"
+      elif [[ ! "${_day_skip_}" == "" ]]; then
+        _day_skip_=""
+      fi
+    fi
+  fi
+
   if [[ ! "${_day_skip_}" == "" ]]; then
-    echo "Skipping ${_old_} beyond ${_num_} days on ${_dir_}"
+    if [[ ! ${_act_mode_} =~ --qui(ck|et) ]]; then
+      echo "Skipping ${_old_} beyond ${_num_} days on ${_dir_}"
+      _new_line_=""
+    fi
     return ${_ddf_}
   fi
 
@@ -782,11 +784,16 @@ function touchdbyfile() {
      [[ "${_opt_}" == "" ]]; then
       _act_="Reserved ${_old_} on ${_dir_}"
   fi
-  echo ""
   if [[ "${_act_}" == "" ]]; then
+    if [[ "${_new_line_}" == "" ]]; then
+      echo ""
+    fi
     echo Applying ${_ymd_} to ${_dir_} [${_old_}]
     touch -d "${_ymd_}" "${_dir_}"
-  else
+    _new_line_="done"
+    echo ""
+  elif [[ ! ${_act_mode_} =~ --quiet ]]; then
+    _new_line_=""
     echo ${_act_}
   fi
 }
@@ -797,6 +804,7 @@ function touchdbyfile() {
 ############################################################
 function touchdpath {
   if [[ ! -d "$1" ]]; then return 1; fi
+  # echo "touchdpath $@"
   local _spath_="$( cd "$( echo "${1}" )" && pwd )"
   local _sbase_="$( cd "${_spath_}/.." && pwd )"
   local _upper_="$( cd "${_sbase_}/.." && pwd )"
@@ -830,6 +838,7 @@ function touchd() {
   local _dirdepth_=${DIRDEPTH:-3}
   local _grp_dirs_=()
   local _grp_file_=()
+  local _new_line_=""
 
   # echo "---args: $@"
   for p in "$@"; do
@@ -862,6 +871,8 @@ function touchd() {
       _act_mode_='--always'
     elif [[ "$p" =~ [/-]{1,2}[kK] ]]; then
       _act_mode_='--quick'
+    elif [[ "$p" =~ [/-]{1,2}[qQ] ]]; then
+      _act_mode_='--quiet'
     fi
   done
   if [[ "${_dirdepth_}" == "0" ]]; then
@@ -898,10 +909,12 @@ function touchd() {
       echo " Sorting by oldest "
       echo "+-----------------+"
     fi
-    if [[ ${_act_mode_} =~ --quick ]]; then
-      _act_mode_="${_act_mode_} near ${_neardays_} days, depth: ${_dirdepth_}"
+    if [[ ${_act_mode_} =~ --qui(ck|et) ]]; then
+      _act_mode_="${_act_mode_} [mode] near ${_neardays_} days, depth: ${_dirdepth_}"
     fi
     echo "Recuring on ${#_grp_dirs_[@]} dir(s) ... ${_act_mode_}"
+    _new_line_="done"
+    echo ""
     for _dir_ in "${_grp_dirs_[@]}"; do
       local _dir_base_="$( cd "${_dir_}/.." && pwd )"
       if [[ ${_dirdepth_} -ne 0 ]]; then
@@ -921,7 +934,9 @@ function touchd() {
     echo "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     echo ""
   fi
-  echo ""
+  if [[ "${_new_line_}" == "" ]]; then
+    echo ""
+  fi
 }
 
 ############################################################
