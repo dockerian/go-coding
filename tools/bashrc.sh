@@ -619,6 +619,186 @@ function members () {
 }
 
 ############################################################
+# function: Rename camera photo IMG* files
+############################################################
+function mvp () {
+  mvp_oppo
+  mvp_vivo
+  echo ""
+  echo "DONE. `date +"%Y-%m-%d %H:%M:%S"`"
+  echo ""
+}
+#----------------------------------------
+# function internal to fix duplicate name
+function _mvps_ () {
+  if [[ $1 == "" || $2 == "" || $3 == "" ]]; then
+    return;
+  fi
+  local _file_="$1"
+  local _part_="$2"
+  local _secs_="$3"
+  local _date_="$4"
+  local _orgf_="${_file_%.*}"
+  local _type_="${_file_##*.}"
+  local _name_="${_part_}_${_secs_}0"
+  local _newf_="${_name_}"
+  local _raws_="dng nef raw CR2 CR3 DNG NEF NRW ARW RAF ORF RAW PEF PTX"
+  local _secf_=""
+  local _cmdl_=""
+
+  if [[ "${_type_,,}" == "mp4" ]]; then
+    _name_="${_part_}_0${_secs_}"
+    _newf_="${_name_}"
+  fi
+  # adding to seconds for duplicate name
+  for n in {1..9}; do
+    if [[ ! -e "${_newf_}.${_type_}" ]]; then break; fi
+    if [[ "${_type_}" == "jpg" ]]; then
+      _secf_=$((10 * ${_secs_##+(0)} + ${n##+(0)}))
+    else
+      _secf_=$((${_secs_##+(0)} + ${n##+(0)}))
+    fi
+    _newf_=`printf "%s_%03d" ${_part_} ${_secf_}`
+  done
+  # appending dash for duplicate name
+  for n in {1..5}; do
+    if [[ ! -e "${_newf_}.${_type_}" ]]; then break; fi
+    _newf_="${_name_}$(for i in $(seq 1 $n); do printf "~"; done)"
+  done
+
+  _cmdl_="mv $1 ${_newf_}.${_type_}"
+  echo "- [${_date_}] ${_cmdl_}"
+  ${_cmdl_}
+
+  for x in ${_raws_}; do
+    if [[ -e "${_orgf_}.$x" ]]; then
+      _cmdl_="mv ${_orgf_}.$x ${_newf_}.$x"
+      echo "- [${_date_}] ${_cmdl_}"
+      ${_cmdl_}
+    fi
+  done
+}
+####################################
+# function: Rename OPPO camera files
+####################################
+function mvp_oppo () {
+  local _pattern_='IMG??????????????'
+  local _pat_mp4_='VID??????????????.mp4'
+  local _date_=''
+  local _part_=''
+  local _secs_=''
+  local _orgf_=''
+  local _done_='NONE'
+
+  for x in jpg JPG dng DNG RAW; do
+    if ls ${_pattern_}.$x 1>/dev/null 2>&1; then
+      echo ""
+      echo "Processing OPPO ${_pattern_} ..."
+      for f in ${_pattern_}.$x; do
+        _date_="${f:3:4}-${f:7:2}-${f:9:2} ${f:11:2}:${f:13:2}"
+        _part_="${f:3:8}_${f:11:4}" # in format yyyymmdd_HHMM
+        _secs_="${f:15:2}" # 2-digit seconds at offset 15
+        # do renaming IMG file
+        _mvps_ "${f}" "${_part_}" "${_secs_}" "${_date_}"
+        _done_="DONE"
+
+        # checking sequenced files
+        _orgf_="${f%.*}"
+        for n in $(printf "%02d\n" {1..20}); do
+          if [[ -e ${_orgf_}_$n.jpg ]]; then
+            _mvps_ "${_orgf_}_$n.jpg" "${_part_}" "${_secs_}" "${_date_}"
+          fi
+        done
+      done
+    fi
+  done
+
+  if ls ${_pat_mp4_} 1>/dev/null 2>&1; then
+    echo ""
+    echo "Processing OPPO ${_pattern_} ..."
+    for f in ${_pat_mp4_}; do
+      _date_="${f:3:4}-${f:7:2}-${f:9:2} ${f:11:2}:${f:13:2}"
+      _part_="${f:3:8}_${f:11:4}" # in format yyyymmdd_HHMM
+      _secs_="${f:15:2}" # 2-digit seconds at offset 15
+      _mvps_ "${f}" "${_part_}" "${_secs_}" "${_date_}"
+      _done_="DONE"
+    done
+  fi
+
+  echo ""
+  echo "${_done_} (OPPO) `date +"%Y-%m-%d %H:%M:%S"`"
+}
+####################################
+# function: Rename vivo camera files
+####################################
+function mvp_vivo () {
+  local _raws_="dng DNG RAW"
+  local _pattern_='IMG_????????_??????'
+  local _pat_vid_='VID_?????????????????.mp4' # VID_yyyymmddHHMMsssnnnnnn.mp4
+  local _pat_mp4_='video_????????_??????.mp4'
+  local _date_=''
+  local _part_=''
+  local _secs_=''
+  local _orgf_=''
+  local _done_='NONE'
+
+  for x in jpg JPG dng DNG RAW; do
+    if ls ${_pattern_}.$x 1>/dev/null 2>&1; then
+      echo ""
+      echo "Processing vivo ${_pattern_} ..."
+      for f in ${_pattern_}.$x; do
+        _date_="${f:4:4}-${f:8:2}-${f:10:2} ${f:13:2}:${f:15:2}"
+        _part_="${f:4:8}_${f:13:4}" # in format yyyymmdd_HHMM
+        _secs_="${f:17:2}" # 2-digit seconds at offset 17
+        # do renaming IMG file
+        _mvps_ "${f}" "${_part_}" "${_secs_}" "${_date_}"
+        _done_="DONE"
+
+        # checking sequenced files
+        _orgf_="${f%.*}"
+        for n in $(printf "%02d\n" {1..20}); do
+          if [[ -e ${_orgf_}~$n.jpg ]]; then
+            _mvps_ "${_orgf_}~$n.jpg" "${_part_}" "${_secs_}" "${_date_}"
+          fi
+        done
+        for n in {1..20}; do
+          if [[ -e ${_orgf_}_$n.jpg ]]; then
+            _mvps_ "${_orgf_}_$n.jpg" "${_part_}" "${_secs_}" "${_date_}"
+          fi
+        done
+      done
+    fi
+  done
+
+  if ls ${_pat_vid_} 1>/dev/null 2>&1; then
+    echo ""
+    echo "Processing vivo ${_pat_vid_} ..."
+    for f in ${_pat_vid_}; do
+      _date_="${f:4:4}-${f:8:2}-${f:10:2} ${f:12:2}:${f:14:2}"
+      _part_="${f:4:8}_${f:12:4}" # in format yyyymmdd_HHMM
+      _secs_="${f:16:2}" # 2-digit seconds at offset 19
+      _mvps_ "${f}" "${_part_}" "${_secs_}" "${_date_}"
+      _done_="DONE"
+    done
+  fi
+
+  if ls ${_pat_mp4_} 1>/dev/null 2>&1; then
+    echo ""
+    echo "Processing vivo ${_pat_mp4_} ..."
+    for f in ${_pat_mp4_}; do
+      _date_="${f:6:4}-${f:10:2}-${f:12:2} ${f:15:2}:${f:17:2}"
+      _part_="${f:6:8}_${f:15:4}" # in format yyyymmdd_HHMM
+      _secs_="${f:19:2}" # 2-digit seconds at offset 19
+      _mvps_ "${f}" "${_part_}" "${_secs_}" "${_date_}"
+      _done_="DONE"
+    done
+  fi
+
+  echo ""
+  echo "${_done_} (vivo) `date +"%Y-%m-%d %H:%M:%S"`"
+}
+
+############################################################
 # function: Print info
 ############################################################
 function myinfo () {
@@ -930,7 +1110,7 @@ function touchd() {
     echo "┃ Syntax:                                          ┃"
     echo "┃  touchd <file>|'yyyy-mm-dd HH:MM' <dir>|<file>   ┃"
     echo "┃     or:                                          ┃"
-    echo "┃  touchd <dir> [-L<depth>] [-v]                   ┃"
+    echo "┃  touchd <dir> [-L<depth>] [-fkq] [-v]            ┃"
     echo "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     echo ""
   fi
