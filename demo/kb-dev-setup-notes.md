@@ -829,6 +829,19 @@
 
   * Bible Study (App store)
 
+  * Cleanup
+    - Clean up manually, e.g.
+      ```
+      dh -hs ~/Library/Group\ Containers/group.com.apple.coreservices.useractivityd/*
+      dh -hs ~/Library/Caches/*  # delete with caution
+      ```
+    - [Apple support](https://support.apple.com/en-us/102624)
+    - [CC Cleaner](https://www.ccleaner.com/)
+    - [Clean One Pro](https://apps.apple.com/us/app/cleaner-one-pro-uninstaller/id1133028347)
+    - [Clean-Me](https://github.com/Kevin-De-Koninck/Clean-Me)
+    - [Crucial tips](https://www.crucial.com/articles/mac-users/how-to-clear-space-on-a-mac)
+    - [MacKeeper](https://mackeeper.com/)
+
   * Clipboard managers:
     - [1Clipboard](http://1clipboard.io/) ★★★
     - AppStore [PasteBar](https://www.pastebar.app/) ★★★★
@@ -841,6 +854,12 @@
 
   * Developer editors
     - [CotEditor](https://coteditor.com/)
+    - [FreshEditor](https://getfresh.dev/)
+
+      ```bash
+      brew tap sinelaw/fresh
+      brew install fresh-editor
+      ```
     - [TextMate](https://macromates.com/)
     - [MacVim](https://macvim.org/)
 
@@ -961,6 +980,9 @@
       pip install -e git+git://github.com/nose-devs/nose2.git#egg=nose2
       ```
 
+  * Remote Access
+    - [网易uuyc远程](https://uuyc.163.com/)
+
   * Snort (NDIS - network intrusion )
 
     ```
@@ -988,8 +1010,6 @@
     - [Adobe Flash Player](http://labs.adobe.com/downloads/flashplayer.html)
     - [Baidu](http://srf.baidu.com/input/mac.html)
     * Disk tools
-      - [CC Cleaner](https://www.ccleaner.com/)
-      - [Clean-Me](https://github.com/Kevin-De-Koninck/Clean-Me)
       - [Disk Drill 3](https://www.cleverfiles.com)
       - [DiskInventoryX](http://www.derlien.com/)
       - [Daisy Disk](https://daisydiskapp.com/) (free trial)
@@ -1252,11 +1272,15 @@
 
     - [DxO OpticsPro 10](http://www.dxo.com)
     - [ExifTool](http://www.sno.phy.queensu.ca/~phil/exiftool/install.html) ★★★★
+    - [ExifToolGUI](https://github.com/FrankBijnen/ExifToolGui/releases)
+    - [GeoTagNinja](https://geotagninja.com/)
     - [GIMP](https://www.gimp.org/downloads/) ★★★
+    - [KGeoTag](https://apps.kde.org/kgeotag/)
     - [Pixlr](https://pixlr.com/desktop)
     - [QuickLook for Webp](https://github.com/emin/WebPQuickLook)
     - Raw editors: [darktable](https://www.darktable.org/) | [RawTherapee](https://rawtherapee.com/)
     - [XnViewMP](http://www.xnview.com/) ★★★★
+
   * Movie Editors
     - http://filmora.wondershare.com/video-editor/free-video-editing-software-mac.html
     - http://www.makeuseof.com/tag/top-6-free-video-editors-mac-os/
@@ -2024,6 +2048,8 @@ Read this [lab manual](http://www.cs.dartmouth.edu/~sergey/cs60/lab3/vm-networki
     - [MarkMyWords](https://github.com/voldyman/MarkMyWords) - Linux only
     - [Markable](https://markable.in/)
     - [Markdown converter](https://daringfireball.net/projects/markdown/dingus)
+    - [Markdown Live Edit](https://markdownlivepreview.dev/viewer)
+    - [Markdown viewer](https://github.com/simov/markdown-viewer) (browser plugin)
     - [MEditor](https://pandao.github.io/editor.md/en.html)
     - [Remarkable](https://remarkableapp.github.io/) - Linux/Windows
     - [StackEdit](https://stackedit.io/editor)
@@ -2056,6 +2082,22 @@ Read this [lab manual](http://www.cs.dartmouth.edu/~sergey/cs60/lab3/vm-networki
     - [Code Beautify](http://codebeautify.org/)
     - [ToHtml syntax highlighting for masses](https://tohtml.com/)
     - [Hilite](http://hilite.me/)
+
+  * Multimedia tools
+    - [Avidemux](https://avidemux.sourceforge.net/download.html)
+    - [GeoSpy](https://geospy.net/en)
+    - [Mkvtoolnix](https://mkvtoolnix.download/downloads.html)
+    - [Download Helper](https://downloadhelper.net/) (Firefox extension)
+    - [Rednote video downloader](https://dy.kukutool.com/en)
+    - [res-downloader](https://github.com/putyy/res-downloader)
+    - [Soundcloud](https://soundcloud.com) | [downloader](https://www.klickaud.org/en17/)
+    - [Subtitle converters](https://toolslick.com/conversion/subtitle)
+    - [Subtitle downloader](https://downsub.com) |
+      [YouTube](https://www.downloadyoutubesubtitles.com)
+    - [Subtitle editor](https://subtitleedit.github.io/subtitleedit/) on [github](https://github.com/SubtitleEdit/subtitleedit) | [online](https://www.happyscribe.com/tools/srt-editor-online)
+    - [SubShifter](https://subshifter.bitsnbites.eu/) | [SRT Timing Adjuster](https://caption-x.com/srt-timing-adjuster) | [Resync](https://subtitletools.com/subtitle-sync-shifter)
+    - [番茄小说下载](https://github.com/POf-L/Fanqie-novel-Downloader) on [github](https://github.com/search?q=fanqie&type=repositories)
+    - [歌曲宝](https://gequbao.com)
 
   * Periodic Table of Elements
     - [NIH](https://pubchem.ncbi.nlm.nih.gov/periodic-table/)

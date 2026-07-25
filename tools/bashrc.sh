@@ -12,9 +12,9 @@ echo ""
 # file_name="${file%.*}"
 script_path="$( readlink -f "${BASH_SOURCE[0]}" 2>/dev/null || echo ${BASH_SOURCE[0]} )"
 script_base="$( cd "${script_path%/*}" 2>/dev/null && pwd )"
-script_file="${script_path##*/}" # aka `basename`
-script_type="${script_file##*.}"
-script_name="${script_file%.*}"
+script_file="${script_path##*/}" # aka `basename`, remove all up to the last slash
+script_type="${script_file##*.}" # remove everything before the last dot
+script_name="${script_file%.*}"  # remove shortest match from the end
 echo "script path: ${script_path}"
 echo "script base: ${script_base}"
 echo "script file: ${script_file}"
